@@ -12,6 +12,8 @@ from resources.store import Store, Stores
 from datetime import timedelta
 from db import db
 
+api_necessary = False # this is only used when I don't want the API to run in deployment, for example: during design periods an early stages
+
 app = Flask(__name__)
 app.secret_key = 'example-key'
 app.config['JWT_AUTH_URL_RULE'] = '/login'
@@ -46,5 +48,5 @@ api.add_resource(Store, '/store/<string:name>')
 api.add_resource(Stores, '/stores')
 api.add_resource(UserRegister, '/register')
 
-if __name__ == '__main__':
+if __name__ == '__main__' and api_necessary:
 	app.run(port=5000, debug=True)
