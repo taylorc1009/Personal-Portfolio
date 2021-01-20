@@ -38,7 +38,7 @@ def customized_response_handler(access_token, identity):
 
 @app.route("/")
 def home():
-	return render_template("lab.html")
+	return render_template("home.html")
 
 api.add_resource(Item, '/item/<string:name>')
 api.add_resource(Items, '/items')
