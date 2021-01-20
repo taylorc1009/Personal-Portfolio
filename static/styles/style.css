@@ -1,30 +1,89 @@
 body {
-	background-color: black;
+	padding: 0;
+	margin: 0;
+	/* background-color: rgb(50, 50, 50); */
 }
-#title {
-	color: tomato;
+body > #page-bg {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	width: 100%;
+
+	position: fixed;
+	z-index: -1;
+
+	background-image: linear-gradient(to right, rgb(0, 112, 255), rgb(2, 211, 248));
+	clip-path: polygon(0 0, 100% 0, 100% 35%, 0 65%);
+}
+.page-grid {
+	display: grid;
+	grid-template-columns: 80% 20%;
+	grid-gap: 10px;
+	padding: 10px;
+}
+.page-grid > div { /* CSS selector ‘>’ selects all the direct descendents (children) of the class that the style is applied to */
 	text-align: center;
-	font-family: Arial, Helvetica, sans-serif;
+	padding: 20px;
 }
-#logo {
-	/* centres the image */
+
+/*.page-grid-item3 {
+	grid-column-start: 1;
+	grid-column-end: 3;
+}*/
+
+.body-card {
+	background-color: white;
+	border-radius: 15px;
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+.body-card * {
+	padding: 10px;
+}
+/*.body-card:first-child {
+	padding-top: 10px;
+}
+.body-card > section {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.body-card:last-child {
+	padding-bottom: 10px;
+}*/
+
+#title {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+	padding-left: 25px;
+	padding-top: 100px;
+	padding-bottom: 600px;
 
-	/* dynamically resizes the image */
-	max-width: 100%;
-    height: auto;
-    width: auto;
-}
-#introduction {
+	font-size: 50px;
+  font-size: 6vw; /* adjusts the font size with the page */
 	color: white;
-	font-size: larger;
-	text-align: center;
+	text-align: left;
 	font-family: Arial, Helvetica, sans-serif;
 }
+#logo {
+	display: block; /* tried using 'inline-block' to fix the minimum width */
+	margin-top: 0;
+	max-width: 75%;
+	/* min-width: 40%; <-- doesn't work */
+  width: auto;
+	float: right;
+}
+#introduction {
+	font-size: larger;
+	text-align: left;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+
+
+
 #datetime {
-	color: white;
 	font-family: Arial, Helvetica, sans-serif;
 }
 .flex-container {
@@ -41,7 +100,7 @@ body {
 	width: 200px;
 	height: 150px;
 	margin-top: 10px;
-	
+
 	line-height: 150px;
 	color: white;
 	font-weight: bold;
