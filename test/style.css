@@ -6,7 +6,7 @@ body {
 body > #page-bg {
 	padding: 0;
 	margin: 0;
-	height: 100%;
+	height: 50%;
 	width: 100%;
 
 	position: fixed;
@@ -14,6 +14,11 @@ body > #page-bg {
 
 	background-image: linear-gradient(to right, rgb(0, 112, 255), rgb(2, 211, 248));
 	clip-path: polygon(0 0, 100% 0, 100% 35%, 0 65%);
+}
+@media screen and (min-width: 1080px) {
+   body > #page-bg {
+     height: 100%
+   }
 }
 .page-grid {
 	display: grid;
