@@ -1,0 +1,157 @@
+body {
+	background-color: black;
+}
+#title {
+	color: tomato;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+}
+#logo {
+	/* centres the image */
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+
+	/* dynamically resizes the image */
+	max-width: 100%;
+    height: auto;
+    width: auto;
+}
+#introduction {
+	color: white;
+	font-size: larger;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+}
+#datetime {
+	color: white;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.flex-container {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-around;
+}
+.flex-item {
+	background: tomato;
+	padding: 5px;
+	width: 200px;
+	height: 150px;
+	margin-top: 10px;
+	
+	line-height: 150px;
+	color: white;
+	font-weight: bold;
+	font-size: 3em;
+	text-align: center;
+}
+.wrapper {
+	display: flex;
+	flex-flow: row wrap;
+	font-weight: bold;
+	text-align: center;
+}
+.wrapper > * { /* apply the style to all child objects of 'wrapper' */
+	padding: 12px;
+	flex: 1 100%;
+}
+.header {
+	background: tomato;
+}
+.footer {
+	background: lightgreen;
+}
+.main {
+	/* text-align: left; */
+	background: deepskyblue;
+}
+.aside-1 {
+	background: gold;
+}
+.aside-2 {
+	background: hotpink;
+}
+@media all and (min-width: 600px) {
+	.aside { flex: 1 0 0; }
+}
+@media all and (min-width: 800px) {
+	.main { flex: 3 0 px; }
+	.aside-1 { order: 1; }
+	.aside-2 { order: 2; }
+	.footer { order: 3; }
+}
+.navigation {
+	list-style: none;
+	margin: 0;
+
+	background: tomato;
+
+	display: flex;
+
+	flex-flow: row wrap;
+	justify-content: flex-end;
+}
+.navigation a {
+	text-decoration: none;
+	display: block;
+	padding-right: 10px;
+	color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.navigation a:hover { /* on mouse over ('hover'), change colour */
+	color: royalblue;
+}
+@media all and (max-width: 800px) { /* @media rule is used in media queries to apply different styles for different media types/devices - this one resizes the navigation bar, based on the window width */
+	.navigation {
+		justify-content: space-around;
+	}
+}
+@media all and (max-width: 600px) {
+	.navigation {
+		flex-flow: column wrap;
+		padding: 0;
+	}
+	.navigation a {
+		text-align: center;
+		padding: 10px;
+		border-top: 1px solid rgba(255, 255, 255, 0.3);
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	}
+	.navigation li:last-of-type a {
+		border-bottom: none;
+	}
+}
+.grid-container {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	background-color: tomato;
+	padding: 20px;
+}
+.grid-item {
+	background-color: rgba(255, 255, 255, 0.8);
+	border: 1px solid rgba(0, 0, 0, 0.4);*
+	padding: 10px;
+	font-size: 30px;
+	text-align: center;
+}
+.grid-container2 {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	grid-gap: 10px;
+	background-color: tomato;
+	padding: 10px;
+}
+.grid-container2 > div { /* CSS selector ‘>’ selects all the direct descendents (children) of the class that the style is applied to */
+	background-color: rgba(255, 255, 255, 0.8);
+	text-align: center;
+	padding: 20px 0;
+	font-size: 30px;
+}
+.item1 {
+	grid-column-start: 1;
+	grid-column-end: 3;
+}
