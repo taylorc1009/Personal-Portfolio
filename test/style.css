@@ -3,32 +3,35 @@ body {
 	margin: 0;
 	/* background-color: rgb(50, 50, 50); */
 }
-body > #page-bg {
+
+.page-grid {
 	padding: 0;
 	margin: 0;
-	height: 50%;
-	width: 100%;
-
-	position: fixed;
-	z-index: -1;
-
-	background-image: linear-gradient(to right, rgb(0, 112, 255), rgb(2, 211, 248));
-	clip-path: polygon(0 0, 100% 0, 100% 35%, 0 65%);
-}
-@media screen and (min-width: 1080px) {
-   body > #page-bg {
-     height: 100%
-   }
-}
-.page-grid {
 	display: grid;
 	grid-template-columns: 80% 20%;
-	grid-gap: 10px;
-	padding: 10px;
 }
-.page-grid > div { /* CSS selector ‘>’ selects all the direct descendents (children) of the class that the style is applied to */
+.page-grid > div:not(:first-child) {
 	text-align: center;
 	padding: 20px;
+}
+.page-grid > div:first-child { /* heading */
+	min-height: 300px;
+	max-height: 1000px;
+	width: auto;
+	height: auto;
+	grid-column-start: 1;
+	grid-column-end: 3;
+}
+
+#heading {
+	height: 50vw;
+	width: inherit;
+	position: relative;
+	background-image: linear-gradient(to right, rgb(0, 112, 255), rgb(2, 211, 248));
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	clip-path: polygon(0 0, 100% 0, 100% 35%, 0 65%);
 }
 
 /*.page-grid-item3 {
@@ -56,26 +59,24 @@ body > #page-bg {
 }*/
 
 #title {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	padding-left: 25px;
-	padding-top: 100px;
-	padding-bottom: 600px;
-
-	font-size: 50px;
   font-size: 6vw; /* adjusts the font size with the page */
 	color: white;
 	text-align: left;
 	font-family: Arial, Helvetica, sans-serif;
+
+	margin: 0;
+	padding-left: 10px;
+  position: absolute;
+  top: 30%;
+	transform: translateY(-50%);
 }
 #logo {
-	display: block; /* tried using 'inline-block' to fix the minimum width */
-	margin-top: 0;
-	max-width: 75%;
+	display: inline-block; /* tried using 'inline-block' to fix the minimum width */
+	min-width: 30%;
 	/* min-width: 40%; <-- doesn't work */
-  width: auto;
+  width: 15px;
 	float: right;
+	padding: 10px
 }
 #introduction {
 	font-size: larger;
