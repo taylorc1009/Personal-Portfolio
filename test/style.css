@@ -65,7 +65,7 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 
 	margin: 0;
-	padding-left: 10px;
+	padding-left: 20px;
   position: absolute;
   top: 30%;
 	transform: translateY(-50%);
@@ -78,13 +78,16 @@ body {
 	float: right;
 	padding: 10px
 }
-#introduction {
-	font-size: larger;
+.body-title {
+	font-size: 2vw;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.body-text {
+	font-size: 1vw;
 	text-align: left;
 	font-family: Arial, Helvetica, sans-serif;
 }
-
-
 
 
 
