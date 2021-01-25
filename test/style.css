@@ -57,6 +57,58 @@ body {
 .body-card:last-child {
 	padding-bottom: 10px;
 }*/
+#heading-svg {
+	width: 50vw;
+  height: 50vh; /* adjusts the font size with the page */
+
+	padding-left: 20px;
+  position: absolute;
+  top: 30%;
+	transform: translateY(-50%);
+}
+
+#heading-svg path:nth-child(1) {
+
+}
+#heading-svg path:nth-child(2) {
+
+}
+#heading-svg path:nth-child(3) {
+
+}
+#heading-svg path:nth-child(4) {
+
+}
+#heading-svg path:nth-child(5) {
+
+}
+#heading-svg path:nth-child(6) {
+
+}
+#heading-svg path:nth-child(7) {
+
+}
+#heading-svg path:nth-child(8) {
+
+}
+#heading-svg path:nth-child(9) {
+
+}
+#heading-svg path:nth-child(10) {
+
+}
+#heading-svg path:nth-child(11) {
+
+}
+#heading-svg path:nth-child(12) {
+
+}
+#heading-svg path:nth-child(13) {
+
+}
+#heading-svg path:nth-child(14) {
+
+}
 
 #title {
   font-size: 6vw; /* adjusts the font size with the page */
