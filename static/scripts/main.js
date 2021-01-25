@@ -10,6 +10,37 @@
     xmlHttp.send(null);
 }*/
 
+/*oldSizes = {};
+
+function fixSmallText() {
+	var elems = document.body.getElementsByTagName("*");
+	for(var elem of elems) {
+		var style = window.getComputedStyle(elem, null).getPropertyValue('font-size');
+		var fontSize = parseFloat(style);
+		if(fontSize < 12) {
+			if(!(elem in oldSizes))
+				oldSizes[elem] = style;
+			elem.style.fontSize = '12px';
+		}
+		else if(elem in oldSizes)
+				elem.style.fontSize = oldSizes[elem];
+	};
+
+	/* $("*").each(function () {
+    var $this = $(this);
+    if (parseInt($this.css("fontSize")) < 12) {
+        $this.css({ "font-size": "12px" });
+    }
+	}); *
+}*/
+
+/*function logVectorSizes(vector_element) {
+	const vectors = document.querySelectorAll(vector_element);
+	for (let i = 0; i < vectors.length; i++) {
+		console.log(`Vector letter ${i + 1} is ${vectors[i].getTotalLength()}`);
+	}
+}*/
+
 function getDateTime() {
 	var dateTime = Date();
 	document.getElementById('datetime').innerHTML = '<p>' + dateTime + ' (with JavaScript onMouseOver and onMouseOut example).</p>';

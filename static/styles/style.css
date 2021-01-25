@@ -58,6 +58,102 @@ body {
 	padding-bottom: 10px;
 }*/
 
+#heading-svg {
+	width: 50vw;
+  height: 50vh; /* adjusts the font size with the page */
+
+	padding-left: 20px;
+  position: absolute;
+  top: 30%;
+	transform: translateY(-50%);
+
+	animation: vector-fill-animation 0.5s ease forwards 4.4s;
+}
+/* all the numbers with high amounts of significant figures were gatheres using the 'logVectorSizes' function in JavaScript */
+#heading-svg path:nth-child(1) {
+	stroke-dasharray: 747.5885620117188;
+	stroke-dashoffset: 747.5885620117188;
+	animation: vector-stroke-animation 2s ease forwards;
+}
+#heading-svg path:nth-child(2) {
+	stroke-dasharray: 260.1737060546875;
+	stroke-dashoffset: 260.1737060546875;
+	animation: vector-stroke-animation 2s ease forwards 0.2s;
+}
+#heading-svg path:nth-child(3) {
+	stroke-dasharray: 274.0929870605469;
+	stroke-dashoffset: 274.0929870605469;
+	animation: vector-stroke-animation 2s ease forwards 0.4s;
+}
+#heading-svg path:nth-child(4) {
+	stroke-dasharray: 171.22608947753906;
+	stroke-dashoffset: 171.22608947753906;
+	animation: vector-stroke-animation 2s ease forwards 0.6s;
+}
+#heading-svg path:nth-child(5) {
+	stroke-dasharray: 167.51434326171875;
+	stroke-dashoffset: 167.51434326171875;
+	animation: vector-stroke-animation 2s ease forwards 0.8s;
+}
+#heading-svg path:nth-child(6) {
+	stroke-dasharray: 210.1481475830078;
+	stroke-dashoffset: 210.1481475830078;
+	animation: vector-stroke-animation 2s ease forwards 1s;
+}
+#heading-svg path:nth-child(7) {
+	stroke-dasharray: 480.7109375;
+	stroke-dashoffset: 480.7109375;
+	animation: vector-stroke-animation 2s ease forwards 1.2s;
+}
+#heading-svg path:nth-child(8) {
+	stroke-dasharray: 167.51449584960938;
+	stroke-dashoffset: 167.51449584960938;
+	animation: vector-stroke-animation 2s ease forwards 1.4s;
+}
+#heading-svg path:nth-child(9) {
+	stroke-dasharray: 263.85113525390625;
+	stroke-dashoffset: 263.85113525390625;
+	animation: vector-stroke-animation 2s ease forwards 1.6s;
+}
+#heading-svg path:nth-child(10) {
+	stroke-dasharray: 210.14837646484375;
+	stroke-dashoffset: 210.14837646484375;
+	animation: vector-stroke-animation 2s ease forwards 1.8s;
+}
+#heading-svg path:nth-child(11) {
+	stroke-dasharray: 216.20518493652344;
+	stroke-dashoffset: 216.20518493652344;
+	animation: vector-stroke-animation 2s ease forwards 2s;
+}
+#heading-svg path:nth-child(12) {
+	stroke-dasharray: 276.8485412597656;
+	stroke-dashoffset: 276.8485412597656;
+	animation: vector-stroke-animation 2s ease forwards 2.2s;
+}
+#heading-svg path:nth-child(13) {
+	stroke-dasharray: 211.9447784423828;
+	stroke-dashoffset: 211.9447784423828;
+	animation: vector-stroke-animation 2s ease forwards 2.4s;
+}
+#heading-svg path:nth-child(14) {
+	stroke-dasharray: 274.0936279296875;
+	stroke-dashoffset: 274.0936279296875;
+	animation: vector-stroke-animation 2s ease forwards 2.6s;
+}
+@keyframes vector-stroke-animation {
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+@keyframes vector-fill-animation {
+	from {
+		fill: transparent;
+	}
+	to {
+		fill: white;
+	}
+}
+
 #title {
   font-size: 6vw; /* adjusts the font size with the page */
 	color: white;
@@ -65,7 +161,7 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 
 	margin: 0;
-	padding-left: 10px;
+	padding-left: 20px;
   position: absolute;
   top: 30%;
 	transform: translateY(-50%);
@@ -78,13 +174,16 @@ body {
 	float: right;
 	padding: 10px
 }
-#introduction {
-	font-size: larger;
+.body-title {
+	font-size: 2vw;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.body-text {
+	font-size: 1vw;
 	text-align: left;
 	font-family: Arial, Helvetica, sans-serif;
 }
-
-
 
 
 
