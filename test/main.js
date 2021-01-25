@@ -34,6 +34,13 @@ function fixSmallText() {
 	}); *
 }*/
 
+/*function logVectorSizes(vector_element) {
+	const vectors = document.querySelectorAll(vector_element);
+	for (let i = 0; i < vectors.length; i++) {
+		console.log(`Vector letter ${i + 1} is ${vectors[i].getTotalLength()}`);
+	}
+}*/
+
 function getDateTime() {
 	var dateTime = Date();
 	document.getElementById('datetime').innerHTML = '<p>' + dateTime + ' (with JavaScript onMouseOver and onMouseOut example).</p>';
