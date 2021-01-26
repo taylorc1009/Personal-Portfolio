@@ -41,16 +41,58 @@ function fixSmallText() {
 	}
 }*/
 
-function animateTextVector(svg_element) {
+function animateVectorStroke(svg_element) {
 	const vectors = document.querySelectorAll(svg_element + " path");
-	for (let i = 0; i < vectors.length; i++) {
+	var i, delay;
+	for (i = 0; i < vectors.length; i++) {
 		var pathLength = vectors[i].getTotalLength(); //gets the full outer path length of the SVG
+		delay = 0.2 * i;
 		$('#' + `${vectors[i].id}`).css({
 			'stroke-dasharray': pathLength, //applies the dash effect to the outer path of the SVG, continuing the whole way round, to form the entire letter
 			'stroke-dashoffset': pathLength, //offsets the dash effect to essentially hide the stoke by creating a gap between the dash (or, would be, dashes) that is as long as the entire path
-			'animation': `vector-stroke-animation 2s ease forwards ${0.2 * i}s` //thisanimation 'ease's the offset of the dash from the entire path length back to 0, slowly revealing the stroke
+			'animation': `vector-stroke-animation 2s ease forwards ${delay}s` //thisanimation 'ease's the offset of the dash from the entire path length back to 0, slowly revealing the stroke
 		});
 	}
+	$(svg_element).css({
+		'animation': `vector-fill-animation 0.5s ease forwards ${(delay + (2 - delay / i))}s`
+	});
+}
+
+var $animation_elements = $('.inview')
+var $window = $(window);
+$window.on('scroll', );
+$window.on('scroll resize', animateWhenOnScreen);
+$window.trigger('scroll');
+function animateWhenOnScreen() {
+
+  var window_bottom_position = ($window.scrollTop() + $window.height());
+
+  $.each($animation_elements, function() {
+    var $element = $(this);
+    var element_height = $element.outerHeight();
+    var element_top_position = $element.offset().top;
+    var element_bottom_position = (element_top_position + element_height);
+
+    //check to see if this current container is within viewport
+    if ((element_bottom_position >= window_top_position) && (element_top_position <= window_bottom_position)) {
+      $element.addClass(animateVectorStroke(element));
+    }
+		/*else {
+      $element.removeClass('in-view');
+    }*/
+  });
+	/*jQuery(document).ready(function(){})
+	console.log("ready");
+	jQuery(element).bind('.inview', function(event, visible) {
+		console.log("in view?");
+		animation(element);
+    if(visible == true) {
+        jQuery(element).addClass(animation(element));
+    }
+    /*else {
+        jQuery('.animated').removeClass("some-class-name-from-animated-css");
+    }*
+	});*/
 }
 
 function getDateTime() {
