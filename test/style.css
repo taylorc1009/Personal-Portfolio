@@ -23,7 +23,7 @@ body {
 	grid-column-end: 3;
 }
 
-#heading {
+#heading-container {
 	height: 50vw;
 	width: inherit;
 	position: relative;
@@ -64,7 +64,7 @@ body {
 
 	padding-left: 20px;
   position: absolute;
-  top: 30%;
+  top: 18%;
 	transform: translateY(-50%);
 
 	animation: vector-fill-animation 0.5s ease forwards 4.4s;
@@ -153,6 +153,30 @@ body {
 		fill: white;
 	}
 }
+
+#heading-text {
+	/*width: auto;
+  height: 50vw;*/ /* adjusts the font size with the page */
+	font-size: 3vw;
+	padding-left: 20px;
+  position: absolute;
+
+	font-family: Arial, Helvetica, sans-serif;
+	color: rgba(255, 255, 255, 0);
+  top: 21%;
+	animation: text-reveal-animation 1s ease forwards 4.4s;
+}
+@keyframes text-reveal-animation {
+	from {
+		color: rgba(255, 255, 255, 0);
+		top: 21%;
+	}
+	to {
+		color: rgba(255, 255, 255, 1);
+		top: 20%;
+	}
+}
+
 #heading-icon {
 	display: inline-block;
   width: auto;
@@ -194,13 +218,13 @@ body {
 	float: right;
 	padding: 10px
 }*/
-.body-title {
-	font-size: 2vw;
+#body-title {
+	font-size: 15pt;
 	text-align: center;
 	font-family: Arial, Helvetica, sans-serif;
 }
 .body-text {
-	font-size: 1vw;
+	font-size: 12pt;
 	text-align: left;
 	font-family: Arial, Helvetica, sans-serif;
 }
