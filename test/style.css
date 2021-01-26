@@ -41,19 +41,18 @@ body {
 }
 
 #heading-svg {
-	width: 50vw;
-  height: 50vh; /* adjusts the font size with the page */
+	width: 52vw;
+  height: 52vh; /* adjusts the font size with the page */
 
 	padding-left: 20px;
   position: absolute;
   top: 18%;
 	transform: translateY(-50%);
 
-	animation: vector-fill-animation 0.5s ease forwards 4.4s;
+	/*animation: vector-fill-animation 0.5s ease forwards 4.4s;*/
 }
 /* all the numbers with high amounts of significant figures were gatheres using the 'logVectorSizes' function in JavaScript
  * EDIT: no longer used, now using jQuery script */
-
 /*#heading-svg path:nth-child(1) {
 	stroke-dasharray: 747.5885620117188;
 	stroke-dashoffset: 747.5885620117188;
@@ -146,18 +145,18 @@ body {
   position: absolute;
 
 	font-family: Arial, Helvetica, sans-serif;
-	color: rgba(255, 255, 255, 0);
-  top: 21%;
+	color: rgba(var(--color-transparent));
+  top: 24%;
 	animation: text-reveal-animation 1s ease forwards 4.4s;
 }
 @keyframes text-reveal-animation {
 	from {
 		color: rgba(var(--color-transparent));
-		top: 21%;
+		top: 24%;
 	}
 	to {
 		color: rgba(var(--color-pure-white));
-		top: 20%;
+		top: 21%;
 	}
 }
 
