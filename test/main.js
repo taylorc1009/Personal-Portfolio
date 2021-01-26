@@ -44,11 +44,11 @@ function fixSmallText() {
 function animateTextVector(svg_element) {
 	const vectors = document.querySelectorAll(svg_element + " path");
 	for (let i = 0; i < vectors.length; i++) {
-		var pathLength = vectors[i].getTotalLength();
+		var pathLength = vectors[i].getTotalLength(); //gets the full outer path length of the SVG
 		$('#' + `${vectors[i].id}`).css({
-			'stroke-dasharray': pathLength,
-			'stroke-dashoffset': pathLength,
-			'animation': `vector-stroke-animation 2s ease forwards ${0.2 * i}s`
+			'stroke-dasharray': pathLength, //applies the dash effect to the outer path of the SVG, continuing the whole way round, to form the entire letter
+			'stroke-dashoffset': pathLength, //offsets the dash effect to essentially hide the stoke by creating a gap between the dash (or, would be, dashes) that is as long as the entire path
+			'animation': `vector-stroke-animation 2s ease forwards ${0.2 * i}s` //thisanimation 'ease's the offset of the dash from the entire path length back to 0, slowly revealing the stroke
 		});
 	}
 }
