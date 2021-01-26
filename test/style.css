@@ -1,7 +1,7 @@
 body {
 	padding: 0;
 	margin: 0;
-	/* background-color: rgb(50, 50, 50); */
+	background-color: rgb(50, 50, 50);
 }
 
 .page-grid {
@@ -27,7 +27,7 @@ body {
 	height: 50vw;
 	width: inherit;
 	position: relative;
-	background-image: linear-gradient(to right, rgb(0, 112, 255), rgb(2, 211, 248));
+	background-image: linear-gradient(to right, rgb(171, 0, 255), rgb(255, 128, 0)); /* blue to cyan: rgb(0, 112, 255), rgb(2, 211, 248) */
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -153,9 +153,29 @@ body {
 		fill: white;
 	}
 }
+#heading-icon {
+	display: inline-block;
+  width: auto;
+	height: 6vw;
 
-#title {
-  font-size: 6vw; /* adjusts the font size with the page */
+	padding-right: 20px;
+	transform: translateY(100%);
+	float: right;
+
+	fill-opacity: 0;
+	animation: vector-reveal-animation 0.5s ease forwards 4.4s;
+}
+@keyframes vector-reveal-animation {
+	from {
+		fill-opacity: 0;
+	}
+	to {
+		fill-opacity: 1;
+	}
+}
+
+/*#title {
+  font-size: 6vw; /* adjusts the font size with the page *
 	color: white;
 	text-align: left;
 	font-family: Arial, Helvetica, sans-serif;
@@ -167,13 +187,13 @@ body {
 	transform: translateY(-50%);
 }
 #logo {
-	display: inline-block; /* tried using 'inline-block' to fix the minimum width */
+	display: inline-block; /* tried using 'inline-block' to fix the minimum width *
 	min-width: 30%;
-	/* min-width: 40%; <-- doesn't work */
+	/* min-width: 40%; <-- doesn't work *
   width: 15px;
 	float: right;
 	padding: 10px
-}
+}*/
 .body-title {
 	font-size: 2vw;
 	text-align: center;
