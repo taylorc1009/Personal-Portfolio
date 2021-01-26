@@ -41,6 +41,18 @@ function fixSmallText() {
 	}
 }*/
 
+function animateTextVector(svg_element) {
+	const vectors = document.querySelectorAll(svg_element + " path");
+	for (let i = 0; i < vectors.length; i++) {
+		var pathLength = vectors[i].getTotalLength();
+		$('#' + `${vectors[i].id}`).css({
+			'stroke-dasharray': pathLength,
+			'stroke-dashoffset': pathLength,
+			'animation': `vector-stroke-animation 2s ease forwards ${0.2 * i}s`
+		});
+	}
+}
+
 function getDateTime() {
 	var dateTime = Date();
 	document.getElementById('datetime').innerHTML = '<p>' + dateTime + ' (with JavaScript onMouseOver and onMouseOut example).</p>';

@@ -1,5 +1,6 @@
 :root {
 	--color-transparent: 255, 255, 255, 0;
+	--color-soft-white: 255, 255, 255, 0.5;
 	--color-pure-white: 255, 255, 255, 1;
 }
 
@@ -39,30 +40,6 @@ body {
 	clip-path: polygon(0 0, 100% 0, 100% 35%, 0 65%);
 }
 
-/*.page-grid-item3 {
-	grid-column-start: 1;
-	grid-column-end: 3;
-}*/
-
-.body-card {
-	background-color: white;
-	border-radius: 15px;
-	box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
-}
-.body-card * {
-	padding: 10px;
-}
-/*.body-card:first-child {
-	padding-top: 10px;
-}
-.body-card > section {
-	padding-left: 10px;
-	padding-right: 10px;
-}
-.body-card:last-child {
-	padding-bottom: 10px;
-}*/
-
 #heading-svg {
 	width: 50vw;
   height: 50vh; /* adjusts the font size with the page */
@@ -74,8 +51,10 @@ body {
 
 	animation: vector-fill-animation 0.5s ease forwards 4.4s;
 }
-/* all the numbers with high amounts of significant figures were gatheres using the 'logVectorSizes' function in JavaScript */
-#heading-svg path:nth-child(1) {
+/* all the numbers with high amounts of significant figures were gatheres using the 'logVectorSizes' function in JavaScript
+ * EDIT: no longer used, now using jQuery script */
+
+/*#heading-svg path:nth-child(1) {
 	stroke-dasharray: 747.5885620117188;
 	stroke-dashoffset: 747.5885620117188;
 	animation: vector-stroke-animation 2s ease forwards;
@@ -144,7 +123,7 @@ body {
 	stroke-dasharray: 274.0936279296875;
 	stroke-dashoffset: 274.0936279296875;
 	animation: vector-stroke-animation 2s ease forwards 2.6s;
-}
+}*/
 @keyframes vector-stroke-animation {
 	to {
 		stroke-dashoffset: 0;
@@ -223,10 +202,36 @@ body {
 	float: right;
 	padding: 10px
 }*/
-#body-title {
+
+.body-card {
+	background-color: rgba(var(--color-soft-white));
+	border-radius: 15px;
+	box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+	backdrop-filter: blur(5px);
+}
+.body-card * {
+	padding: 10px;
+}
+.body-card p {
+	color: rgba(var(--color-pure-white))
+}
+/* this allows us to only pad only the element edges at the edge of the card, rather than between every element as well */
+/*.body-card:first-child {
+	padding-top: 10px;
+}
+.body-card > section {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.body-card:last-child {
+	padding-bottom: 10px;
+}*/
+
+.title-text {
 	font-size: 15pt;
 	text-align: center;
 	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
 }
 .body-text {
 	font-size: 12pt;
