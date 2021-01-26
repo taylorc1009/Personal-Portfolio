@@ -1,7 +1,13 @@
+:root {
+	--color-transparent: 255, 255, 255, 0;
+	--color-soft-white: 255, 255, 255, 0.5;
+	--color-pure-white: 255, 255, 255, 1;
+}
+
 body {
 	padding: 0;
 	margin: 0;
-	/* background-color: rgb(50, 50, 50); */
+	background-color: rgb(50, 50, 50);
 }
 
 .page-grid {
@@ -23,54 +29,31 @@ body {
 	grid-column-end: 3;
 }
 
-#heading {
+#heading-container {
 	height: 50vw;
 	width: inherit;
 	position: relative;
-	background-image: linear-gradient(to right, rgb(0, 112, 255), rgb(2, 211, 248));
+	background-image: linear-gradient(to right, rgb(171, 0, 255), rgb(255, 128, 0)); /* blue to cyan: rgb(0, 112, 255), rgb(2, 211, 248) */
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
 	clip-path: polygon(0 0, 100% 0, 100% 35%, 0 65%);
 }
 
-/*.page-grid-item3 {
-	grid-column-start: 1;
-	grid-column-end: 3;
-}*/
-
-.body-card {
-	background-color: white;
-	border-radius: 15px;
-	box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
-}
-.body-card * {
-	padding: 10px;
-}
-/*.body-card:first-child {
-	padding-top: 10px;
-}
-.body-card > section {
-	padding-left: 10px;
-	padding-right: 10px;
-}
-.body-card:last-child {
-	padding-bottom: 10px;
-}*/
-
 #heading-svg {
-	width: 50vw;
-  height: 50vh; /* adjusts the font size with the page */
+	width: 52vw;
+  height: 52vh; /* adjusts the font size with the page */
 
 	padding-left: 20px;
   position: absolute;
-  top: 30%;
+  top: 18%;
 	transform: translateY(-50%);
 
-	animation: vector-fill-animation 0.5s ease forwards 4.4s;
+	/*animation: vector-fill-animation 0.5s ease forwards 4.4s;*/
 }
-/* all the numbers with high amounts of significant figures were gatheres using the 'logVectorSizes' function in JavaScript */
-#heading-svg path:nth-child(1) {
+/* all the numbers with high amounts of significant figures were gatheres using the 'logVectorSizes' function in JavaScript
+ * EDIT: no longer used, now using jQuery script */
+/*#heading-svg path:nth-child(1) {
 	stroke-dasharray: 747.5885620117188;
 	stroke-dashoffset: 747.5885620117188;
 	animation: vector-stroke-animation 2s ease forwards;
@@ -139,7 +122,7 @@ body {
 	stroke-dasharray: 274.0936279296875;
 	stroke-dashoffset: 274.0936279296875;
 	animation: vector-stroke-animation 2s ease forwards 2.6s;
-}
+}*/
 @keyframes vector-stroke-animation {
 	to {
 		stroke-dashoffset: 0;
@@ -147,15 +130,59 @@ body {
 }
 @keyframes vector-fill-animation {
 	from {
-		fill: transparent;
+		fill: rgba(var(--color-transparent));
 	}
 	to {
-		fill: white;
+		fill: rgba(var(--color-pure-white));;
 	}
 }
 
-#title {
-  font-size: 6vw; /* adjusts the font size with the page */
+#heading-text {
+	/*width: auto;
+  height: 50vw;*/ /* adjusts the font size with the page */
+	font-size: 3vw;
+	padding-left: 20px;
+  position: absolute;
+
+	font-family: Arial, Helvetica, sans-serif;
+	color: rgba(var(--color-transparent));
+  top: 24%;
+	animation: text-reveal-animation 1s ease forwards 4.4s;
+}
+@keyframes text-reveal-animation {
+	from {
+		color: rgba(var(--color-transparent));
+		top: 24%;
+	}
+	to {
+		color: rgba(var(--color-pure-white));
+		top: 21%;
+	}
+}
+
+#heading-icon {
+	display: inline-block;
+  width: auto;
+	height: 6vw;
+
+	padding-right: 20px;
+	transform: translateY(100%);
+	float: right;
+
+	fill-opacity: 0;
+	animation: vector-reveal-animation 0.5s ease forwards 4.4s;
+}
+@keyframes vector-reveal-animation {
+	from {
+		fill-opacity: 0;
+	}
+	to {
+		fill-opacity: 1;
+	}
+}
+
+/*#title {
+  font-size: 6vw; /* adjusts the font size with the page *
 	color: white;
 	text-align: left;
 	font-family: Arial, Helvetica, sans-serif;
@@ -167,20 +194,46 @@ body {
 	transform: translateY(-50%);
 }
 #logo {
-	display: inline-block; /* tried using 'inline-block' to fix the minimum width */
+	display: inline-block; /* tried using 'inline-block' to fix the minimum width *
 	min-width: 30%;
-	/* min-width: 40%; <-- doesn't work */
+	/* min-width: 40%; <-- doesn't work *
   width: 15px;
 	float: right;
 	padding: 10px
+}*/
+
+.body-card {
+	background-color: rgba(var(--color-soft-white));
+	border-radius: 15px;
+	box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+	backdrop-filter: blur(5px);
 }
-.body-title {
-	font-size: 2vw;
+.body-card * {
+	padding: 10px;
+}
+.body-card p {
+	color: rgba(var(--color-pure-white))
+}
+/* this allows us to only pad only the element edges at the edge of the card, rather than between every element as well */
+/*.body-card:first-child {
+	padding-top: 10px;
+}
+.body-card > section {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.body-card:last-child {
+	padding-bottom: 10px;
+}*/
+
+.title-text {
+	font-size: 15pt;
 	text-align: center;
 	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
 }
 .body-text {
-	font-size: 1vw;
+	font-size: 12pt;
 	text-align: left;
 	font-family: Arial, Helvetica, sans-serif;
 }
