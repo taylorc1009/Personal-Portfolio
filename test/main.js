@@ -41,35 +41,57 @@ function fixSmallText() {
 	}
 }*/
 
-function animateVectorStroke(svg_element, delay_quantifier, duration_per_letter) {
-	element_id = '#' + svg_element;
-	const vectors = document.querySelectorAll(element_id + " path");
+function animateVectorStroke(svg_element, delay_quantifier, duration_per_letter, fade_in_duration) {
+	element_id = `#${svg_element}`;
+	const vectors = document.querySelectorAll(`${element_id} path`);
 	var i, delay;
 
 	for (i = 0; i < vectors.length; i++) {
 		var pathLength = vectors[i].getTotalLength(); //gets the full outer path length of the SVG
 		delay = delay_quantifier * i;
 
-		$('#' + `${vectors[i].id}`).css({
-			'stroke-dasharray': pathLength, //applies the dash effect to the outer path of the SVG, continuing the whole way round, to form the entire letter
-			'stroke-dashoffset': pathLength, //offsets the dash effect to essentially hide the stoke by creating a gap between the dash (or, would be, dashes) that is as long as the entire path
+		$(`#${vectors[i].id}`).css({
+			//'stroke-dasharray': pathLength, //applies the dash effect to the outer path of the SVG, continuing the whole way round, to form the entire letter
+			//'stroke-dashoffset': pathLength, //offsets the dash effect to essentially hide the stoke by creating a gap between the dash (or, would be, dashes) that is as long as the entire path
 			'animation': `vector-stroke-animation ${duration_per_letter}s ease forwards ${delay}s` //thisanimation 'ease's the offset of the dash from the entire path length back to 0, slowly revealing the stroke
 		});
 	}
 
 	$(element_id).css({
-		'animation': `vector-fill-animation 0.5s ease forwards ${(delay + (duration_per_letter - delay / i))}s`
+		'animation': `vector-fill-animation ${fade_in_duration}s ease forwards ${delay + (duration_per_letter - delay / i)}s`
 	});
 }
 
-function animateVectorsWhenVisible() {
-	const svgs = document.querySelectorAll(".inview");
+function initialiseVectors() {
+	const svgs = document.getElementsByClassName("text-as-svg");
+
 	for (let i = 0; i < svgs.length; i++) {
-		window.onscroll = function() {
-			if (checkVisible(svgs[i])){
-		  	animateVectorStroke(svgs[i].id, 0.1, 1.5);
+		const vectors = document.querySelectorAll(`#${svgs[i].id} path`);
+
+		for (let j = 0; j < vectors.length; j++) {
+			var pathLength = vectors[j].getTotalLength(); //gets the full outer path length of the SVG
+
+			$(`#${vectors[j].id}`).css({
+				'stroke-dasharray': pathLength, //applies the dash effect to the outer path of the SVG, continuing the whole way round, to form the entire letter
+				'stroke-dashoffset': pathLength, //offsets the dash effect to essentially hide the stoke by creating a gap between the dash (or, would be, dashes) that is as long as the entire path
+			});
+		}
+
+		if (svgs[i].id === "heading-svg") { //animates the heading differently and whether it's out of sight or not (as the other 2 heading elements will not wait for this anyway)
+			animateVectorStroke(svgs[i].id, 0.2, 2, 0.5);
+		}
+		else {
+			if (checkVisible(svgs[i])) { //this prevents the animation waiting for the user to scroll, dispite already being visible
+				animateVectorStroke(svgs[i].id, 0.1, 1.5, 0.25);
 			}
-		};
+			else {
+				window.onscroll = function() {
+					if (checkVisible(svgs[i])){
+				  	animateVectorStroke(svgs[i].id, 0.1, 1.5, 0.25);
+					}
+				};
+			}
+		}
 	}
 }
 
@@ -77,47 +99,6 @@ function checkVisible(elm) {
   var rect = elm.getBoundingClientRect();
   var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
   return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
-}
-
-/*var $animation_elements = $('.inview')
-var $window = $(window);
-$window.on('scroll', );
-$window.on('scroll resize', animateWhenOnScreen);
-$window.trigger('scroll');*/
-function animateWhenOnScreen(element, animation) {
-	element_id = '#' + element;
-	if($(element_id).is(':visible')) {
-		animation(element, quant, dur);
-	}
-
-  /*var window_bottom_position = ($window.scrollTop() + $window.height());
-
-  $.each($animation_elements, function() {
-    var $element = $(this);
-    var element_height = $element.outerHeight();
-    var element_top_position = $element.offset().top;
-    var element_bottom_position = (element_top_position + element_height);
-
-    //check to see if this current container is within viewport
-    if ((element_bottom_position >= window_top_position) && (element_top_position <= window_bottom_position)) {
-      $element.addClass(animateVectorStroke(element));
-    }
-		/*else {
-      $element.removeClass('in-view');
-    }*
-  });*/
-	/*jQuery(document).ready(function(){})
-	console.log("ready");
-	jQuery(element).bind('.inview', function(event, visible) {
-		console.log("in view?");
-		animation(element);
-    if(visible == true) {
-        jQuery(element).addClass(animation(element));
-    }
-    /*else {
-        jQuery('.animated').removeClass("some-class-name-from-animated-css");
-    }*
-	});*/
 }
 
 function getDateTime() {
