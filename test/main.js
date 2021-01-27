@@ -1,5 +1,3 @@
-//you may have noticed the 'example.json' file is inactive: to read it, we need a web server (https://stackoverflow.com/a/19706080/11136104)
-
 /*function httpGetAsync(theUrl, callback) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
@@ -32,13 +30,6 @@ function fixSmallText() {
         $this.css({ "font-size": "12px" });
     }
 	}); *
-}*/
-
-/*function logVectorSizes(vector_element) {
-	const vectors = document.querySelectorAll(vector_element);
-	for (let i = 0; i < vectors.length; i++) {
-		console.log(`Vector letter ${i + 1} is ${vectors[i].getTotalLength()}`);
-	}
 }*/
 
 function animateVectorStroke(svg_element, delay_quantifier, duration_per_letter, fade_in_duration) {
@@ -101,14 +92,9 @@ function checkVisible(elm) {
   return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
 }
 
-function getDateTime() {
-	var dateTime = Date();
-	document.getElementById('datetime').innerHTML = '<p>' + dateTime + ' (with JavaScript onMouseOver and onMouseOut example).</p>';
-}
 
-function changeColour(obj, color) {
-	obj.style.color = color;
-}
+
+
 
 function storageTest() {
 	if(window.confirm('Would you like to test the storage examples?')) { //confirmation prompt example
