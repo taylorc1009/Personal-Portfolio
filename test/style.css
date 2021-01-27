@@ -109,6 +109,11 @@ body {
 	}
 }
 
+.body-svg {
+	width: 55vw;
+  /* height: 55vh; / * adjusts the font size with the page */
+}
+
 .body-card {
 	background-color: rgba(var(--color-soft-white));
 	border-radius: 15px;
