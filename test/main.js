@@ -41,31 +41,56 @@ function fixSmallText() {
 	}
 }*/
 
-function animateVectorStroke(svg_element) {
-	const vectors = document.querySelectorAll(svg_element + " path");
+function animateVectorStroke(svg_element, delay_quantifier, duration_per_letter) {
+	element_id = '#' + svg_element;
+	const vectors = document.querySelectorAll(element_id + " path");
 	var i, delay;
+
 	for (i = 0; i < vectors.length; i++) {
 		var pathLength = vectors[i].getTotalLength(); //gets the full outer path length of the SVG
-		delay = 0.2 * i;
+		delay = delay_quantifier * i;
+
 		$('#' + `${vectors[i].id}`).css({
 			'stroke-dasharray': pathLength, //applies the dash effect to the outer path of the SVG, continuing the whole way round, to form the entire letter
 			'stroke-dashoffset': pathLength, //offsets the dash effect to essentially hide the stoke by creating a gap between the dash (or, would be, dashes) that is as long as the entire path
-			'animation': `vector-stroke-animation 2s ease forwards ${delay}s` //thisanimation 'ease's the offset of the dash from the entire path length back to 0, slowly revealing the stroke
+			'animation': `vector-stroke-animation ${duration_per_letter}s ease forwards ${delay}s` //thisanimation 'ease's the offset of the dash from the entire path length back to 0, slowly revealing the stroke
 		});
 	}
-	$(svg_element).css({
-		'animation': `vector-fill-animation 0.5s ease forwards ${(delay + (2 - delay / i))}s`
+
+	$(element_id).css({
+		'animation': `vector-fill-animation 0.5s ease forwards ${(delay + (duration_per_letter - delay / i))}s`
 	});
 }
 
-var $animation_elements = $('.inview')
+function animateVectorsWhenVisible() {
+	const svgs = document.querySelectorAll(".inview");
+	for (let i = 0; i < svgs.length; i++) {
+		window.onscroll = function() {
+			if (checkVisible(svgs[i])){
+		  	animateVectorStroke(svgs[i].id, 0.1, 1.5);
+			}
+		};
+	}
+}
+
+function checkVisible(elm) {
+  var rect = elm.getBoundingClientRect();
+  var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+  return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+}
+
+/*var $animation_elements = $('.inview')
 var $window = $(window);
 $window.on('scroll', );
 $window.on('scroll resize', animateWhenOnScreen);
-$window.trigger('scroll');
-function animateWhenOnScreen() {
+$window.trigger('scroll');*/
+function animateWhenOnScreen(element, animation) {
+	element_id = '#' + element;
+	if($(element_id).is(':visible')) {
+		animation(element, quant, dur);
+	}
 
-  var window_bottom_position = ($window.scrollTop() + $window.height());
+  /*var window_bottom_position = ($window.scrollTop() + $window.height());
 
   $.each($animation_elements, function() {
     var $element = $(this);
@@ -79,8 +104,8 @@ function animateWhenOnScreen() {
     }
 		/*else {
       $element.removeClass('in-view');
-    }*/
-  });
+    }*
+  });*/
 	/*jQuery(document).ready(function(){})
 	console.log("ready");
 	jQuery(element).bind('.inview', function(event, visible) {
