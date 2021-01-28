@@ -55,29 +55,53 @@ function animateVectorStroke(svg_element, delay_quantifier, duration_per_letter,
 
 function initialiseVectors() {
 	const svgs = document.getElementsByClassName("text-as-svg");
+	var isHeading, isVisible;
 
 	for (let i = 0; i < svgs.length; i++) {
 		const vectors = document.querySelectorAll(`#${svgs[i].id} path`);
+		isHeading = (svgs[i].id === "heading-svg");
+		isVisible = isOnScreen(svgs[i]);
+		var preventIntro = isHeading && !isVisible;
 
 		for (let j = 0; j < vectors.length; j++) {
 			var pathLength = vectors[j].getTotalLength(); //gets the full outer path length of the SVG
 
 			$(`#${vectors[j].id}`).css({
 				'stroke-dasharray': pathLength, //applies the dash effect to the outer path of the SVG, continuing the whole way round, to form the entire letter
-				'stroke-dashoffset': pathLength, //offsets the dash effect to essentially hide the stoke by creating a gap between the dash (or, would be, dashes) that is as long as the entire path
+				'stroke-dashoffset': preventIntro ? 0 : pathLength, //offsets the dash effect to essentially hide the stoke by creating a gap between the dash (or, would be, dashes) that is as long as the entire path
 			});
 		}
+		$(`#${svgs[i].id}`).css({
+			'fill': preventIntro ? 'rgba(var(--color-pure-white))' : 'rgba(var(--color-transparent))'
+		})
 
-		if (svgs[i].id === "heading-svg") { //animates the heading differently and whether it's out of sight or not (as the other 2 heading elements will not wait for this anyway)
-			animateVectorStroke(svgs[i].id, 0.2, 2, 0.5);
+		if (isHeading) { //animates the heading differently and whether it's out of sight or not (as the other 2 heading elements will not wait for this anyway)
+			if(isVisible) {
+				animateVectorStroke(svgs[i].id, 0.2, 2, 0.5);
+				$('#heading-text').css({
+					'animation': 'text-reveal-animation 1s ease forwards 4.4s'
+				});
+				$('#heading-icon').css({
+					'animation': 'vector-reveal-animation 0.5s ease forwards 4.4s'
+				});
+			}
+			else {
+				$('#heading-text').css({
+					'color': 'rgba(var(--color-pure-white))',
+					'top': '21%'
+				});
+				$('#heading-icon').css({
+					'fill-opacity': 1
+				});
+			}
 		}
 		else {
-			if (checkVisible(svgs[i])) { //this prevents the animation waiting for the user to scroll, dispite already being visible
+			if (isVisible) { //this prevents the animation waiting for the user to scroll, dispite already being visible
 				animateVectorStroke(svgs[i].id, 0.1, 1.5, 0.25);
 			}
 			else {
-				window.onscroll = function() {
-					if (checkVisible(svgs[i])){
+				window.onscroll = function() { //when the user has scrolled far enough to see this vector, initiate the animation
+					if (isVisible){
 				  		animateVectorStroke(svgs[i].id, 0.1, 1.5, 0.25);
 					}
 				};
@@ -86,7 +110,7 @@ function initialiseVectors() {
 	}
 }
 
-function checkVisible(elm) {
+function isOnScreen(elm) {
   var rect = elm.getBoundingClientRect();
   var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
   return !(rect.bottom < 0 || rect.top - viewHeight >= 0);

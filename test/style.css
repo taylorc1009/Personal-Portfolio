@@ -42,11 +42,11 @@ body {
 
 #heading-svg {
 	width: 52vw;
-  height: 52vh; /* adjusts the font size with the page */
+  	height: 52vh; /* adjusts the font size with the page */
 
 	padding-left: 20px;
-  position: absolute;
-  top: 18%;
+  	position: absolute;
+  	top: 18%;
 	transform: translateY(-50%);
 
 	/*animation: vector-fill-animation 0.5s ease forwards 4.4s;*/
@@ -67,15 +67,16 @@ body {
 
 #heading-text {
 	/*width: auto;
-  height: 50vw;*/ /* adjusts the font size with the page */
+  	height: 50vw;*/ /* adjusts the font size with the page */
 	font-size: 3vw;
 	padding-left: 20px;
-  position: absolute;
+  	position: absolute;
 
 	font-family: Arial, Helvetica, sans-serif;
 	color: rgba(var(--color-transparent));
-  top: 24%;
-	animation: text-reveal-animation 1s ease forwards 4.4s;
+	top: 24%;
+	/* animation: text-reveal-animation 1s ease forwards 4.4s; */
+
 }
 @keyframes text-reveal-animation {
 	from {
@@ -89,8 +90,8 @@ body {
 }
 
 #heading-icon {
-	display: inline-block;
-  width: auto;
+	/* display: inline-block; */
+  	width: auto;
 	height: 6vw;
 
 	padding-right: 20px;
@@ -98,7 +99,7 @@ body {
 	float: right;
 
 	fill-opacity: 0;
-	animation: vector-reveal-animation 0.5s ease forwards 4.4s;
+	/* animation: vector-reveal-animation 0.5s ease forwards 4.4s; */
 }
 @keyframes vector-reveal-animation {
 	from {
@@ -111,7 +112,7 @@ body {
 
 .body-svg {
 	width: 55vw;
-  /* height: 55vh; / * adjusts the font size with the page */
+  	/* height: 55vh; / * adjusts the font size with the page */
 }
 
 .body-card {
