@@ -57,9 +57,9 @@ body {
 	}
 }
 @keyframes vector-fill-animation {
-	from {
+	/*from {
 		fill: rgba(var(--color-transparent));
-	}
+	}*/
 	to {
 		fill: rgba(var(--color-pure-white));;
 	}

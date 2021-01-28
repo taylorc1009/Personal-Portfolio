@@ -101,7 +101,7 @@ function initialiseVectors() {
 			}
 			else {
 				window.onscroll = function() { //when the user has scrolled far enough to see this vector, initiate the animation
-					if (isVisible){
+					if (isOnScreen(svgs[i])){
 				  		animateVectorStroke(svgs[i].id, 0.1, 1.5, 0.25);
 					}
 				};
