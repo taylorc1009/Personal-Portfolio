@@ -78,7 +78,7 @@ function initialiseVectors() {
 			else {
 				window.onscroll = function() {
 					if (checkVisible(svgs[i])){
-				  	animateVectorStroke(svgs[i].id, 0.1, 1.5, 0.25);
+				  		animateVectorStroke(svgs[i].id, 0.1, 1.5, 0.25);
 					}
 				};
 			}
