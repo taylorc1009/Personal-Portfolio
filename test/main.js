@@ -55,12 +55,13 @@ function animateVectorStroke(svg_element, delay_quantifier, duration_per_letter,
 
 function initialiseVectors() {
 	const svgs = document.getElementsByClassName("text-as-svg");
-	var isHeading, isVisible;
 
 	for (let i = 0; i < svgs.length; i++) {
 		const vectors = document.querySelectorAll(`#${svgs[i].id} path`);
-		isHeading = (svgs[i].id === "heading-svg");
-		isVisible = isOnScreen(svgs[i]);
+
+		//these are used to determine whether or not to skip the intro animation: if the elements are off-screen
+		var isHeading = (svgs[i].id === "heading-svg");
+		var isVisible = isOnScreen(svgs[i]);
 		var preventIntro = isHeading && !isVisible;
 
 		for (let j = 0; j < vectors.length; j++) {

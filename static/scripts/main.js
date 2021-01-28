@@ -1,5 +1,3 @@
-//you may have noticed the 'example.json' file is inactive: to read it, we need a web server (https://stackoverflow.com/a/19706080/11136104)
-
 /*function httpGetAsync(theUrl, callback) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
@@ -34,75 +32,94 @@ function fixSmallText() {
 	}); *
 }*/
 
-/*function logVectorSizes(vector_element) {
-	const vectors = document.querySelectorAll(vector_element);
-	for (let i = 0; i < vectors.length; i++) {
-		console.log(`Vector letter ${i + 1} is ${vectors[i].getTotalLength()}`);
-	}
-}*/
-
-function animateVectorStroke(svg_element) {
-	const vectors = document.querySelectorAll(svg_element + " path");
+function animateVectorStroke(svg_element, delay_quantifier, duration_per_letter, fade_in_duration) {
+	element_id = `#${svg_element}`;
+	const vectors = document.querySelectorAll(`${element_id} path`);
 	var i, delay;
+
 	for (i = 0; i < vectors.length; i++) {
 		var pathLength = vectors[i].getTotalLength(); //gets the full outer path length of the SVG
-		delay = 0.2 * i;
-		$('#' + `${vectors[i].id}`).css({
-			'stroke-dasharray': pathLength, //applies the dash effect to the outer path of the SVG, continuing the whole way round, to form the entire letter
-			'stroke-dashoffset': pathLength, //offsets the dash effect to essentially hide the stoke by creating a gap between the dash (or, would be, dashes) that is as long as the entire path
-			'animation': `vector-stroke-animation 2s ease forwards ${delay}s` //thisanimation 'ease's the offset of the dash from the entire path length back to 0, slowly revealing the stroke
+		delay = delay_quantifier * i;
+
+		$(`#${vectors[i].id}`).css({
+			//'stroke-dasharray': pathLength, //applies the dash effect to the outer path of the SVG, continuing the whole way round, to form the entire letter
+			//'stroke-dashoffset': pathLength, //offsets the dash effect to essentially hide the stoke by creating a gap between the dash (or, would be, dashes) that is as long as the entire path
+			'animation': `vector-stroke-animation ${duration_per_letter}s ease forwards ${delay}s` //thisanimation 'ease's the offset of the dash from the entire path length back to 0, slowly revealing the stroke
 		});
 	}
-	$(svg_element).css({
-		'animation': `vector-fill-animation 0.5s ease forwards ${(delay + (2 - delay / i))}s`
+
+	$(element_id).css({
+		'animation': `vector-fill-animation ${fade_in_duration}s ease forwards ${delay + (duration_per_letter - delay_quantifier)}s`
 	});
 }
 
-var $animation_elements = $('.inview')
-var $window = $(window);
-$window.on('scroll', );
-$window.on('scroll resize', animateWhenOnScreen);
-$window.trigger('scroll');
-function animateWhenOnScreen() {
+function initialiseVectors() {
+	const svgs = document.getElementsByClassName("text-as-svg");
 
-  var window_bottom_position = ($window.scrollTop() + $window.height());
+	for (let i = 0; i < svgs.length; i++) {
+		const vectors = document.querySelectorAll(`#${svgs[i].id} path`);
 
-  $.each($animation_elements, function() {
-    var $element = $(this);
-    var element_height = $element.outerHeight();
-    var element_top_position = $element.offset().top;
-    var element_bottom_position = (element_top_position + element_height);
+		//these are used to determine whether or not to skip the intro animation: if the elements are off-screen
+		var isHeading = (svgs[i].id === "heading-svg");
+		var isVisible = isOnScreen(svgs[i]);
+		var preventIntro = isHeading && !isVisible;
 
-    //check to see if this current container is within viewport
-    if ((element_bottom_position >= window_top_position) && (element_top_position <= window_bottom_position)) {
-      $element.addClass(animateVectorStroke(element));
-    }
-		/*else {
-      $element.removeClass('in-view');
-    }*/
-  });
-	/*jQuery(document).ready(function(){})
-	console.log("ready");
-	jQuery(element).bind('.inview', function(event, visible) {
-		console.log("in view?");
-		animation(element);
-    if(visible == true) {
-        jQuery(element).addClass(animation(element));
-    }
-    /*else {
-        jQuery('.animated').removeClass("some-class-name-from-animated-css");
-    }*
-	});*/
+		for (let j = 0; j < vectors.length; j++) {
+			var pathLength = vectors[j].getTotalLength(); //gets the full outer path length of the SVG
+
+			$(`#${vectors[j].id}`).css({
+				'stroke-dasharray': pathLength, //applies the dash effect to the outer path of the SVG, continuing the whole way round, to form the entire letter
+				'stroke-dashoffset': preventIntro ? 0 : pathLength, //offsets the dash effect to essentially hide the stoke by creating a gap between the dash (or, would be, dashes) that is as long as the entire path
+			});
+		}
+		$(`#${svgs[i].id}`).css({
+			'fill': preventIntro ? 'rgba(var(--color-pure-white))' : 'rgba(var(--color-transparent))'
+		})
+
+		if (isHeading) { //animates the heading differently and whether it's out of sight or not (as the other 2 heading elements will not wait for this anyway)
+			if(isVisible) {
+				animateVectorStroke(svgs[i].id, 0.2, 2, 0.5);
+				$('#heading-text').css({
+					'animation': 'text-reveal-animation 1s ease forwards 4.4s'
+				});
+				$('#heading-icon').css({
+					'animation': 'vector-reveal-animation 0.5s ease forwards 4.4s'
+				});
+			}
+			else {
+				$('#heading-text').css({
+					'color': 'rgba(var(--color-pure-white))',
+					'top': '35%'
+				});
+				$('#heading-icon').css({
+					'fill-opacity': 1
+				});
+			}
+		}
+		else {
+			if (isVisible) { //this prevents the animation waiting for the user to scroll, dispite already being visible
+				animateVectorStroke(svgs[i].id, 0.1, 1.5, 0.25);
+			}
+			else {
+				window.onscroll = function() { //when the user has scrolled far enough to see this vector, initiate the animation
+					if (isOnScreen(svgs[i])){
+				  		animateVectorStroke(svgs[i].id, 0.1, 1.5, 0.25);
+					}
+				};
+			}
+		}
+	}
 }
 
-function getDateTime() {
-	var dateTime = Date();
-	document.getElementById('datetime').innerHTML = '<p>' + dateTime + ' (with JavaScript onMouseOver and onMouseOut example).</p>';
+function isOnScreen(elm) {
+  var rect = elm.getBoundingClientRect();
+  var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+  return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
 }
 
-function changeColour(obj, color) {
-	obj.style.color = color;
-}
+
+
+
 
 function storageTest() {
 	if(window.confirm('Would you like to test the storage examples?')) { //confirmation prompt example
