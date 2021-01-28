@@ -10,43 +10,32 @@ body {
 	background-color: rgb(50, 50, 50);
 }
 
-.page-grid {
+#page-grid {
 	padding: 0;
 	margin: 0;
 	display: grid;
-	grid-template-columns: 80% 20%;
-}
-.page-grid > div:not(:first-child) {
-	text-align: center;
-	padding: 20px;
-}
-.page-grid > div:first-child { /* heading */
-	min-height: 300px;
-	max-height: 1000px;
-	width: auto;
-	height: auto;
-	grid-column-start: 1;
-	grid-column-end: 3;
+	grid-template-columns: auto;
+	grid-row-gap: 50vh;
 }
 
 #heading-container {
-	height: 50vw;
+	height: 30vw;
 	width: inherit;
 	position: relative;
 	background-image: linear-gradient(to right, rgb(171, 0, 255), rgb(255, 128, 0)); /* blue to cyan: rgb(0, 112, 255), rgb(2, 211, 248) */
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	clip-path: polygon(0 0, 100% 0, 100% 35%, 0 65%);
+	clip-path: polygon(0 0, 100% 0, 100% 60%, 0 100%);
 }
 
 #heading-svg {
-	width: 52vw;
-  	height: 52vh; /* adjusts the font size with the page */
+	width: 52vw; /* adjusts the size with the page (viewport width) */
+  	height: 52vh;
 
 	padding-left: 20px;
   	position: absolute;
-  	top: 18%;
+  	top: 30%;
 	transform: translateY(-50%);
 
 	/*animation: vector-fill-animation 0.5s ease forwards 4.4s;*/
@@ -74,28 +63,27 @@ body {
 
 	font-family: Arial, Helvetica, sans-serif;
 	color: rgba(var(--color-transparent));
-	top: 24%;
 	/* animation: text-reveal-animation 1s ease forwards 4.4s; */
 
 }
 @keyframes text-reveal-animation {
 	from {
 		color: rgba(var(--color-transparent));
-		top: 24%;
+		top: 37%;
 	}
 	to {
 		color: rgba(var(--color-pure-white));
-		top: 21%;
+		top: 35%;
 	}
 }
 
 #heading-icon {
 	/* display: inline-block; */
-  	width: auto;
-	height: 6vw;
+  	width: 6vw;
+	height: auto;
 
 	padding-right: 20px;
-	transform: translateY(100%);
+	transform: translateY(140%);
 	float: right;
 
 	fill-opacity: 0;
@@ -111,6 +99,8 @@ body {
 }
 
 .body-svg {
+	display: block;
+	margin: auto;
 	width: 55vw;
   	/* height: 55vh; / * adjusts the font size with the page */
 }
