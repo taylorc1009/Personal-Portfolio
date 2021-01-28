@@ -49,7 +49,7 @@ function animateVectorStroke(svg_element, delay_quantifier, duration_per_letter,
 	}
 
 	$(element_id).css({
-		'animation': `vector-fill-animation ${fade_in_duration}s ease forwards ${delay + (duration_per_letter - delay / i)}s`
+		'animation': `vector-fill-animation ${fade_in_duration}s ease forwards ${delay + (duration_per_letter - delay_quantifier)}s`
 	});
 }
 
@@ -88,7 +88,7 @@ function initialiseVectors() {
 			else {
 				$('#heading-text').css({
 					'color': 'rgba(var(--color-pure-white))',
-					'top': '21%'
+					'top': '35%'
 				});
 				$('#heading-icon').css({
 					'fill-opacity': 1
