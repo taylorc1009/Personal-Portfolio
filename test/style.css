@@ -1,6 +1,7 @@
 :root {
 	--color-transparent: 255, 255, 255, 0;
-	--color-soft-white: 255, 255, 255, 0.5;
+	--color-soft-white: 255, 255, 255, 0.3;
+	--color-hard-white: 255, 255, 255, 0.6;
 	--color-pure-white: 255, 255, 255, 1;
 }
 
@@ -32,7 +33,7 @@ body {
 
 #heading-svg {
 	width: 52vw; /* adjusts the size with the page (viewport width) */
-  	height: 52vh;
+	height: 52vh;
 
 	padding-left: 20px;
   	position: absolute;
@@ -116,12 +117,20 @@ body {
 	justify-content: space-around;
 }
 .body-card {
-	width: 400px;
-	height: 600px;
-	margin-top: 20px;
-	background-color: rgba(var(--color-soft-white));
+	width: 40vw;
+	height: 50vh;
+	min-width: 300px;
+	min-height: 400px;
+	max-width: 400px;
+	max-height: 500px;
+	margin: 10px;
+
+	/* find a way to change the background gradient opacity */
+	background-image: linear-gradient(to right top, rgb(128, 128, 128), rgb(255, 255, 255));
+	opacity: 0.5; /* this changes the whole card */
+	
 	border-radius: 15px;
-	box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+	box-shadow: 0 0 10px rgba(var(--color-soft-white));
 	backdrop-filter: blur(5px);
 }
 .body-card > .card-title {
@@ -130,7 +139,6 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 	font-weight: bold;
 	color: rgba(var(--color-pure-white));
-	
 }
 .body-card > .card-text {
 	font-size: 12pt;
@@ -140,16 +148,21 @@ body {
 .body-card p {
 	color: rgba(var(--color-pure-white))
 }
-.body-card:first-child {
+
+/* these don't work yet */
+.body-card > :first-child ~ :first-child {
 	padding-top: 10px;
 }
 .body-card * {
 	padding-left: 10px;
 	padding-right: 10px;
+	overflow: hidden;
 }
-.body-card:last-child {
+.body-card > :last-child ~ :last-child {
 	padding-bottom: 10px;
 }
+
+
 
 /*.body-card {
 	background-color: rgba(var(--color-soft-white));
