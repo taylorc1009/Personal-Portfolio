@@ -116,6 +116,7 @@ body {
 	flex-flow: row wrap;
 	justify-content: space-around;
 }
+
 .body-card {
 	width: 40vw;
 	height: 50vh;
@@ -145,9 +146,7 @@ body {
 .body-card p {
 	color: rgba(var(--color-pure-white))
 }
-
-/* these don't work yet */
-.body-card > :first-child ~ :first-child {
+.body-card > :first-child {
 	padding-top: 10px;
 }
 .body-card * {
@@ -155,7 +154,7 @@ body {
 	padding-right: 10px;
 	overflow: hidden;
 }
-.body-card > :last-child ~ :last-child {
+.body-card > :last-child {
 	padding-bottom: 10px;
 }
 
