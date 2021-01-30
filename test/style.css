@@ -115,12 +115,15 @@ body {
 .card-list {
 	list-style: none;
 	padding-inline-start: 0;
+
 	display: inline-flex;
 	flex-wrap: wrap;
 	justify-content: space-around;
 }
 .body-card {
 	display: inline;
+	overflow: hidden;
+	
 	width: 40vw;
 	height: 50vh;
 	min-width: 300px;
@@ -155,7 +158,6 @@ body {
 .body-card * {
 	padding-left: 10px;
 	padding-right: 10px;
-	overflow: hidden;
 }
 .body-card > :last-child {
 	padding-bottom: 10px;

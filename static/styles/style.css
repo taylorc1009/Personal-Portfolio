@@ -1,13 +1,15 @@
 :root {
 	--color-transparent: 255, 255, 255, 0;
-	--color-soft-white: 255, 255, 255, 0.5;
+	--color-soft-white: 255, 255, 255, 0.3;
+	--color-hard-white: 255, 255, 255, 0.6;
 	--color-pure-white: 255, 255, 255, 1;
 }
 
 body {
 	padding: 0;
 	margin: 0;
-	background-color: rgb(50, 50, 50);
+	/* background-color: rgb(40, 40, 40); */
+	background-image: linear-gradient(to right, rgb(20, 20, 30), rgb(20, 20, 55));
 }
 
 #page-grid {
@@ -15,7 +17,7 @@ body {
 	margin: 0;
 	display: grid;
 	grid-template-columns: auto;
-	grid-row-gap: 50vh;
+	grid-row-gap: 20vw;
 }
 
 #heading-container {
@@ -31,7 +33,7 @@ body {
 
 #heading-svg {
 	width: 52vw; /* adjusts the size with the page (viewport width) */
-  	height: 52vh;
+	height: 52vh;
 
 	padding-left: 20px;
   	position: absolute;
@@ -102,10 +104,68 @@ body {
 	display: block;
 	margin: auto;
 	width: 55vw;
+	min-width: 400px;
   	/* height: 55vh; / * adjusts the font size with the page */
 }
 
+.card-container {
+	display: table;   /* allows centre-ing of lists to work */
+	margin: 0 auto;
+}
+.card-list {
+	list-style: none;
+	padding-inline-start: 0;
+
+	display: inline-flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
 .body-card {
+	display: inline;
+	overflow: hidden;
+	
+	width: 40vw;
+	height: 50vh;
+	min-width: 300px;
+	min-height: 400px;
+	max-width: 300px;
+	max-height: 500px;
+	margin: 20px;
+
+	background-image: linear-gradient(to right top, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.35));
+	border-radius: 15px;
+	box-shadow: 0 0 10px rgba(var(--color-soft-white));
+	backdrop-filter: blur(5px);
+}
+.body-card > .card-title {
+	font-size: 20pt;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: rgba(var(--color-pure-white));
+}
+.body-card > .card-text {
+	font-size: 12pt;
+	text-align: left;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.body-card p {
+	color: rgba(var(--color-pure-white))
+}
+.body-card > :first-child {
+	padding-top: 10px;
+}
+.body-card * {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.body-card > :last-child {
+	padding-bottom: 10px;
+}
+
+
+
+/*.body-card {
 	background-color: rgba(var(--color-soft-white));
 	border-radius: 15px;
 	box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
@@ -116,7 +176,7 @@ body {
 }
 .body-card p {
 	color: rgba(var(--color-pure-white))
-}
+}*/
 /* this allows us to only pad only the element edges at the edge of the card, rather than between every element as well */
 /*.body-card:first-child {
 	padding-top: 10px;
@@ -129,17 +189,11 @@ body {
 	padding-bottom: 10px;
 }*/
 
-.body-text {
-	font-size: 12pt;
-	text-align: left;
-	font-family: Arial, Helvetica, sans-serif;
-}
 
 
 
 
-
-.flex-container {
+/*.flex-container {
 	padding: 0;
 	margin: 0;
 	list-style: none;
@@ -166,7 +220,7 @@ body {
 	font-weight: bold;
 	text-align: center;
 }
-.wrapper > * { /* apply the style to all child objects of 'wrapper' */
+.wrapper > * { /* apply the style to all child objects of 'wrapper' *
 	padding: 12px;
 	flex: 1 100%;
 }
@@ -177,7 +231,7 @@ body {
 	background: lightgreen;
 }
 .main {
-	/* text-align: left; */
+	/* text-align: left; *
 	background: deepskyblue;
 }
 .aside-1 {
@@ -214,10 +268,10 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 	font-weight: bold;
 }
-.navigation a:hover { /* on mouse over ('hover'), change colour */
+.navigation a:hover { /* on mouse over ('hover'), change colour *
 	color: royalblue;
 }
-@media all and (max-width: 800px) { /* @media rule is used in media queries to apply different styles for different media types/devices - this one resizes the navigation bar, based on the window width */
+@media all and (max-width: 800px) { /* @media rule is used in media queries to apply different styles for different media types/devices - this one resizes the navigation bar, based on the window width *
 	.navigation {
 		justify-content: space-around;
 	}
@@ -257,7 +311,7 @@ body {
 	background-color: tomato;
 	padding: 10px;
 }
-.grid-container2 > div { /* CSS selector ‘>’ selects all the direct descendents (children) of the class that the style is applied to */
+.grid-container2 > div { /* CSS selector ‘>’ selects all the direct descendents (children) of the class that the style is applied to *
 	background-color: rgba(255, 255, 255, 0.8);
 	text-align: center;
 	padding: 20px 0;
@@ -266,4 +320,4 @@ body {
 .item1 {
 	grid-column-start: 1;
 	grid-column-end: 3;
-}
+}*/
