@@ -121,14 +121,11 @@ body {
 	height: 50vh;
 	min-width: 300px;
 	min-height: 400px;
-	max-width: 400px;
+	max-width: 300px;
 	max-height: 500px;
 	margin: 10px;
 
-	/* find a way to change the background gradient opacity */
-	background-image: linear-gradient(to right top, rgb(128, 128, 128), rgb(255, 255, 255));
-	opacity: 0.5; /* this changes the whole card */
-	
+	background-image: linear-gradient(to right top, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.35));
 	border-radius: 15px;
 	box-shadow: 0 0 10px rgba(var(--color-soft-white));
 	backdrop-filter: blur(5px);
