@@ -109,22 +109,25 @@ body {
 }
 
 .card-container {
-	padding: 10px;
-	margin: 0;
+	display: table;   /* allows centre-ing of lists to work */
+	margin: 0 auto;
+}
+.card-list {
 	list-style: none;
-	display: flex;
-	flex-flow: row wrap;
+	padding-inline-start: 0;
+	display: inline-flex;
+	flex-wrap: wrap;
 	justify-content: space-around;
 }
-
 .body-card {
+	display: inline;
 	width: 40vw;
 	height: 50vh;
 	min-width: 300px;
 	min-height: 400px;
 	max-width: 300px;
 	max-height: 500px;
-	margin: 10px;
+	margin: 20px;
 
 	background-image: linear-gradient(to right top, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.35));
 	border-radius: 15px;
