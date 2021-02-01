@@ -36,6 +36,26 @@ body_dq = 0.1; //the delay between the beginning of 1 letter stroke animation an
 body_dpl = 1.5; //the duration it takes to animate 1 full letters' stroke
 body_fid = 0.25; //the duration of the SVG fill fade in effect
 
+scrollAnimations = { //contains a list of methods that begin animations when specific elements are scrolled down to
+	animations: [], //this is a list of methods which invoke pending animations
+	deleteAnimation: (i) => { //we don't want the animation to run every time it's scrolled to so once it has ran, delete it
+		const index = scrollAnimations.animations[i];
+		console.log(index);
+		if (index !== -1) {
+			scrollAnimations.animations.splice(index, 1);
+		}
+	}
+};
+
+window.onscroll = () => {
+	for (let i = 0; i < scrollAnimations.animations.length; i++) {
+		console.log(scrollAnimations.animations[i]);
+		if (scrollAnimations.animations[i].method.apply(this, scrollAnimations.animations[i].args)) { //'.apply()' unpacks the list of arguments required for this animation
+			scrollAnimations.deleteAnimation(i); //if this animation has begun (the animations' method returned 'true') then it is time to stop the animation from pending
+		}
+	}
+}
+
 function getVectorStrokeDuration(delay, delay_quantifier, duration_per_letter) {
 	return delay + (duration_per_letter - delay_quantifier);
 }
@@ -87,7 +107,8 @@ function initialiseCards() {
 		}
 		else {
 			//$(window).on('scroll', cardsOnScrollEvent(cards[i], delay, local_body_dq, local_body_dpl))
-			window.addEventListener('scroll', cardsOnScrollEvent(cards[i], delay, local_body_dq, local_body_dpl), {passive: true});
+			//window.addEventListener('scroll', cardsOnScrollEvent(cards[i], delay, local_body_dq, local_body_dpl), {passive: true});
+			scrollAnimations.animations.push({method: cardsOnScrollEvent, args: [cards[i], delay, local_body_dq, local_body_dpl]}); //adds this animate function to the list of pending animations, with its respective arguments
 		}
 	}
 }
@@ -99,7 +120,8 @@ var cardsOnScrollEvent = (card, delay, local_body_dq, local_body_dpl) => {
 		$(`#${card.id}`).css({
 			'animation': `cards-reveal-animation ${body_fid}s ease forwards ${getVectorStrokeDuration(delay, local_body_dq, local_body_dpl)}s`
 		});
-		window.removeEventListener('scroll', cardsOnScrollEvent(card, delay, local_body_dq, local_body_dpl), {passive: true});
+		//window.removeEventListener('scroll', cardsOnScrollEvent(card, delay, local_body_dq, local_body_dpl), {passive: true});
+		return true;
 	}
 }
 
@@ -153,7 +175,8 @@ function initialiseVectors() {
 			else {
 				// -- TODO -- for some reason this is only firing once, why?
 				// Update: this might be a bit advanced; look here - https://pantaley.com/blog/CSS-animations-triggered-when-elements-are-visible-on-screen/
-				window.addEventListener(window.onscroll, vectorOnScrollEvent(svgs[i]), {passive: true}); //when the user has scrolled far enough to see this vector, initiate the animation
+				//window.addEventListener('scroll', vectorOnScrollEvent(svgs[i]), {passive: true}); //when the user has scrolled far enough to see this vector, initiate the animation
+				scrollAnimations.animations.push({method: vectorOnScrollEvent, args: [svgs[i]]}); //adds this animate function to the list of pending animations, with its respective arguments
 			}
 		}
 	}
@@ -164,8 +187,9 @@ var vectorOnScrollEvent = (svg) => {
 	if (isOnScreen(svg)){
 		console.log("on screen");
 		animateVectorStroke(svg.id, body_dq, body_dpl, body_fid);
-		window.removeEventListener(window.onscroll, vectorOnScrollEvent(svg), {passive: true});
-  	}
+		//window.removeEventListener('scroll', vectorOnScrollEvent(svg), {passive: true});
+		return true;
+	}
 }
 
 function isOnScreen(elm) {

@@ -167,7 +167,7 @@ body {
 @keyframes cards-reveal-animation {
 	from {
 		opacity: 0;
-		transform: translateY(2%);
+		transform: translateY(1%);
 	}
 	to {
 		opacity: 1;
