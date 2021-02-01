@@ -40,16 +40,14 @@ scrollAnimations = { //contains a list of methods that begin animations when spe
 	animations: [], //this is a list of methods which invoke pending animations
 	deleteAnimation: (i) => { //we don't want the animation to run every time it's scrolled to so once it has ran, delete it
 		const index = scrollAnimations.animations[i];
-		console.log(index);
 		if (index !== -1) {
 			scrollAnimations.animations.splice(index, 1);
 		}
 	}
 };
 
-window.onscroll = () => {
+window.onscroll = () => { //I tried to use the "scroll" event listener instead of this, but the listener would be deleted after the users' first scroll, rendering it useless for this purpose
 	for (let i = 0; i < scrollAnimations.animations.length; i++) {
-		console.log(scrollAnimations.animations[i]);
 		if (scrollAnimations.animations[i].method.apply(this, scrollAnimations.animations[i].args)) { //'.apply()' unpacks the list of arguments required for this animation
 			scrollAnimations.deleteAnimation(i); //if this animation has begun (the animations' method returned 'true') then it is time to stop the animation from pending
 		}
@@ -101,27 +99,22 @@ function initialiseCards() {
 			local_body_dpl = body_dpl;
 		}
 
-		if (isOnScreen(cards[i])) {
+		if (isOnScreen(cards[i])) { //if the element is already on screen, this prevents the animation waiting for the user to scroll to it...
 			$(`#${cards[i].id}`).css({
 				'animation': `cards-reveal-animation ${body_fid}s ease forwards ${getVectorStrokeDuration(delay, local_body_dq, local_body_dpl)}s`
 			});
 		}
-		else {
-			//$(window).on('scroll', cardsOnScrollEvent(cards[i], delay, local_body_dq, local_body_dpl))
-			//window.addEventListener('scroll', cardsOnScrollEvent(cards[i], delay, local_body_dq, local_body_dpl), {passive: true});
+		else { //... otherwise, append it to the list of animations pending a positive visibility (on screen) check
 			scrollAnimations.animations.push({method: cardsOnScrollEvent, args: [cards[i], delay, local_body_dq, local_body_dpl]}); //adds this animate function to the list of pending animations, with its respective arguments
 		}
 	}
 }
 
 var cardsOnScrollEvent = (card, delay, local_body_dq, local_body_dpl) => {
-	console.log("scrolled");
 	if (isOnScreen(card)) {
-		console.log("on screen");
 		$(`#${card.id}`).css({
 			'animation': `cards-reveal-animation ${body_fid}s ease forwards ${getVectorStrokeDuration(delay, local_body_dq, local_body_dpl)}s`
 		});
-		//window.removeEventListener('scroll', cardsOnScrollEvent(card, delay, local_body_dq, local_body_dpl), {passive: true});
 		return true;
 	}
 	//return false; //shouldn't be needed as, at this point, the value returned will be 'undefined' which is the equivelant of 'false'
@@ -173,13 +166,10 @@ function initialiseVectors() {
 			}
 		}
 		else { //we use a different animation for text vectors in the body as we don't want the user to have to wait long for it to finish before they can do things
-			if (isVisible) { //this prevents the animation waiting for the user to scroll, dispite already being visible
+			if (isVisible) { //if the element is already on screen, this prevents the animation waiting for the user to scroll to it...
 				animateVectorStroke(svgs[i].id, body_dq, body_dpl, body_fid);
 			}
-			else {
-				// -- TODO -- for some reason this is only firing once, why?
-				// Update: this might be a bit advanced; look here - https://pantaley.com/blog/CSS-animations-triggered-when-elements-are-visible-on-screen/
-				//window.addEventListener('scroll', vectorOnScrollEvent(svgs[i]), {passive: true}); //when the user has scrolled far enough to see this vector, initiate the animation
+			else { //... otherwise, append it to the list of animations pending a positive visibility (on screen) check
 				scrollAnimations.animations.push({method: vectorOnScrollEvent, args: [svgs[i]]}); //adds this animate function to the list of pending animations, with its respective arguments
 			}
 		}
@@ -187,17 +177,14 @@ function initialiseVectors() {
 }
 
 var vectorOnScrollEvent = (svg) => {
-	console.log("scrolled");
 	if (isOnScreen(svg)){
-		console.log("on screen");
 		animateVectorStroke(svg.id, body_dq, body_dpl, body_fid);
-		//window.removeEventListener('scroll', vectorOnScrollEvent(svg), {passive: true});
 		return true;
 	}
 	//return false; //shouldn't be needed as, at this point, the value returned will be 'undefined' which is the equivelant of 'false'
 }
 
-function isOnScreen(elm) { //credit - https://stackoverflow.com/a/5354536/11136104
+function isOnScreen(elm) { //used to determine if an element is on screen (credit - https://stackoverflow.com/a/5354536/11136104)
 	var rect = elm.getBoundingClientRect();
 	var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
 	return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
