@@ -94,8 +94,9 @@ function initialiseCards() {
 		var local_svg = cards[i].parentElement.getElementsByClassName("text-as-svg"); //gets any SVG in the same block as the cards
 		var delay = local_svg ? body_dq * document.querySelectorAll(`#${local_svg[0].id} path`).length : 0; //calculates the delay, based on the amount of vector paths (if an SVG exists)
 
+		//if there is no delay, i.e. no neighbouring element that is of class 'text-as-svg', then there must be no delay in the card-reveal animation
 		var local_body_dq = 0, local_body_dpl = 0;
-		if (delay > 0) {
+		if (delay > 0) { //'delay' will be defined if there is a neighbouring SVG; if there isn't then the parameters have been initialised as 0 anyway (to skip the delay)
 			local_body_dq = body_dq;
 			local_body_dpl = body_dpl;
 		}
@@ -123,6 +124,7 @@ var cardsOnScrollEvent = (card, delay, local_body_dq, local_body_dpl) => {
 		//window.removeEventListener('scroll', cardsOnScrollEvent(card, delay, local_body_dq, local_body_dpl), {passive: true});
 		return true;
 	}
+	//return false; //shouldn't be needed as, at this point, the value returned will be 'undefined' which is the equivelant of 'false'
 }
 
 function initialiseVectors() {
@@ -148,8 +150,9 @@ function initialiseVectors() {
 			'fill': preventIntro ? 'rgba(var(--color-pure-white))' : 'rgba(var(--color-transparent))'
 		})
 
-		if (isHeading) { //animates the heading differently and whether it's out of sight or not (as the other 2 heading elements will not wait for this anyway)
-			if(isVisible) {
+		if (isHeading) { //the heading is animated differently; the duration is longer to give it a nicer effect
+			if(isVisible) { //checks whether the heading is out of sight or not...
+				//... if it isn't, animate all the heading elements...
 				animateVectorStroke(svgs[i].id, 0.2, 2, 0.5);
 				$('#heading-text').css({
 					'animation': 'text-reveal-animation 1s ease forwards 4.4s'
@@ -158,7 +161,8 @@ function initialiseVectors() {
 					'animation': 'vector-reveal-animation 0.5s ease forwards 4.4s'
 				});
 			}
-			else {
+			else { //... if it is out of sight, I don't want the animation to waste resources and I also don't want it to happen when it's scrolled to by the user, so just prevent it
+				//we therefore need to skip the animations of the other 2 heading elements as well and make them visible
 				$('#heading-text').css({
 					'color': 'rgba(var(--color-pure-white))',
 					'top': '35%'
@@ -168,7 +172,7 @@ function initialiseVectors() {
 				});
 			}
 		}
-		else {
+		else { //we use a different animation for text vectors in the body as we don't want the user to have to wait long for it to finish before they can do things
 			if (isVisible) { //this prevents the animation waiting for the user to scroll, dispite already being visible
 				animateVectorStroke(svgs[i].id, body_dq, body_dpl, body_fid);
 			}
@@ -190,12 +194,13 @@ var vectorOnScrollEvent = (svg) => {
 		//window.removeEventListener('scroll', vectorOnScrollEvent(svg), {passive: true});
 		return true;
 	}
+	//return false; //shouldn't be needed as, at this point, the value returned will be 'undefined' which is the equivelant of 'false'
 }
 
-function isOnScreen(elm) {
-  var rect = elm.getBoundingClientRect();
-  var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
-  return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+function isOnScreen(elm) { //credit - https://stackoverflow.com/a/5354536/11136104
+	var rect = elm.getBoundingClientRect();
+	var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+	return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
 }
 
 
