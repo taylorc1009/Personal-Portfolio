@@ -33,9 +33,9 @@ function fixSmallText() {
 }*/
 
 animator = {
-	body_dq: 0.1, //the delay between the beginning of 1 letter stroke animation and the next letters' beginning
-	body_dpl: 1.5, //the duration it takes to animate 1 full letters' stroke
-	body_fid: 0.25, //the duration of the SVG fill fade in effect
+	body_dq: 0.1, //delay between the beginning of 1 letter stroke animation and the next letters' beginning
+	body_dpl: 1.5, //duration it takes to animate 1 full letters' stroke
+	body_fid: 0.25, //duration of the SVG fill fade in effect
 
 	initialiseAnimations: () => {
 		animator.initialiseVectors();
