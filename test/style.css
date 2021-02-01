@@ -126,10 +126,10 @@ body {
 	display: inline;
 	overflow: hidden;
 
-	width: 40vw;
-	height: 50vh;
-	min-width: 300px;
-	min-height: 400px;
+	width: auto;
+	height: auto;
+	min-width: 150px;
+	min-height: 350px;
 	max-width: 300px;
 	max-height: 500px;
 	margin: 20px;
