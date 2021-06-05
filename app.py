@@ -6,8 +6,6 @@ from flask_jwt import JWT
 
 from security import authenticate, identity
 from resources.user import UserRegister
-from resources.item import Item, Items
-from resources.store import Store, Stores
 
 from datetime import timedelta
 from db import db
@@ -42,10 +40,6 @@ def customized_response_handler(access_token, identity):
 def home():
 	return render_template("home.html")
 
-api.add_resource(Item, '/item/<string:name>')
-api.add_resource(Items, '/items')
-api.add_resource(Store, '/store/<string:name>')
-api.add_resource(Stores, '/stores')
 api.add_resource(UserRegister, '/register')
 
 if __name__ == '__main__' and api_necessary:
