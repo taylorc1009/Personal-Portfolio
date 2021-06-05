@@ -33,7 +33,7 @@ body {
 
 #heading-svg {
 	width: 52vw; /* adjusts the size with the page (viewport width) */
-	height: 52vh;
+	height: 17vh;
 
 	padding-left: 20px;
   	position: absolute;
@@ -98,6 +98,32 @@ body {
 	}
 	to {
 		fill-opacity: 1;
+	}
+}
+
+@media screen and (max-width: 1282px) {
+	#heading-container {
+		clip-path: none;
+	}
+
+	#heading-svg {
+		padding-left: 0px;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	#heading-text {
+		padding-left: 0;
+		left: 50%;
+		transform: translate(-63%, 10%);
+	}
+
+	#heading-icon {
+		position: absolute;
+		float: none;
+		padding-right: 0;
+		left: 50%;
+		transform: translate(222%, 270%);
 	}
 }
 
