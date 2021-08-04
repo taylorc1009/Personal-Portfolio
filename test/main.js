@@ -37,7 +37,9 @@ animator = {
 					'stroke-dashoffset': `${preventIntro ? 0 : pathLength}`
 				})
 			}
-			svgs[i].style = `fill: ${preventIntro ? 'rgba(var(--color-pure-white))' : 'rgba(var(--color-transparent))'}`
+			$(`#${svgs[i].id}`).css({
+				'fill': `${preventIntro ? 'rgba(var(--color-pure-white))' : 'rgba(var(--color-transparent))'}`
+			});
 	
 			if (isHeading) { //the heading is animated differently; the duration is longer to give it a nicer effect
 				if(isVisible) { //checks whether the heading is out of sight or not...
