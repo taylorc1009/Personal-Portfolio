@@ -49,7 +49,7 @@ animator = {
 						'animation': `text-reveal-animation 1s ease forwards ${animator.getVectorAnimationDuration(svgs[i])}s`
 					});
 					$('#heading-icon').css({
-						'animation': `vector-reveal-animation 0.5s ease forwards ${animator.getVectorAnimationDuration(svgs[i])}s`
+						'animation': `vector-reveal-animation 1s ease forwards ${animator.getVectorAnimationDuration(svgs[i])}s`
 					});
 				}
 				else { //... if it is out of sight, I don't want the animation to waste resources and I also don't want it to happen when it's scrolled to by the user, so just prevent it

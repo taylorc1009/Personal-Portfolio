@@ -95,6 +95,8 @@ body {
 	/*width: auto;
   	height: 50vw;*/ /* adjusts the font size with the page */
 	margin-right: 5px;
+	margin-top: 10px;
+	margin-bottom: 0;
 	font-size: 40px;
 	/*padding-left: 20px;
   	position: absolute;*/
@@ -109,11 +111,13 @@ body {
 @keyframes text-reveal-animation {
 	from {
 		color: rgba(var(--color-transparent));
-		top: 37%;
+		margin-top: 10px;
+		margin-bottom: 0;
 	}
 	to {
 		color: rgba(var(--color-pure-white));
-		top: 35%;
+		margin-top: 0;
+		margin-bottom: 10px;
 	}
 }
 
@@ -122,6 +126,8 @@ body {
   	width: 50px;
 	height: auto;
 	margin-left: 5px;
+	margin-top: 10px;
+	margin-bottom: 0;
 
 	/*padding-right: 20px;
 	transform: translateY(140%);
@@ -133,9 +139,13 @@ body {
 @keyframes vector-reveal-animation {
 	from {
 		fill-opacity: 0;
+		margin-top: 10px;
+		margin-bottom: 0;
 	}
 	to {
 		fill-opacity: 1;
+		margin-top: 0;
+		margin-bottom: 10px;
 	}
 }
 
