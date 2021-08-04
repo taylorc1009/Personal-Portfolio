@@ -25,7 +25,7 @@ animator = {
 			const vectors = svgs[i].children; //document.querySelectorAll(`#${svgs[i].id} path`);
 	
 			//these are used to determine whether or not to skip the intro animation: if the elements are off-screen
-			var isHeading = svgs[i].className === "heading-svg";
+			var isHeading = svgs[i].classList.contains("heading-svg");
 			var isVisible = animator.isOnScreen(svgs[i]);
 			var preventIntro = isHeading && !isVisible;
 	
