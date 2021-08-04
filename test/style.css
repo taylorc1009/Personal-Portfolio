@@ -21,7 +21,7 @@ body {
 }
 
 #heading {
-	height: fit-content;
+	height: 40vw;
 	width: inherit;
 	position: relative;
 	background-image: linear-gradient(to right, rgb(171, 0, 255), rgb(255, 128, 0)); /* blue to cyan: rgb(0, 112, 255), rgb(2, 211, 248) */
@@ -33,7 +33,7 @@ body {
 
 #heading-container {
 	/*transform: translateY(50%);*/
-	padding: 10vw 20px;
+	padding: 9vw 20px;
 }
 
 #heading-items-list {
@@ -152,11 +152,22 @@ body {
 @media screen and (max-width: 1282px) {
 	#heading {
 		clip-path: none;
+		height: fit-content;
 	}
 
 	#heading-container {
 		display: table;   /* allows centre-ing of lists to work */
 		margin: 0 auto;
+	}
+
+	#heading-item-1 {
+		flex-direction: column;
+    	align-items: center;
+	}
+
+	#heading-item-2 {
+		flex-wrap: wrap;
+		justify-content: center;
 	}
 }
 
