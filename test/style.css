@@ -60,11 +60,11 @@ body {
 }*/
 
 #heading-svg-1 {
-	width: 337.5px;
+	width: 422px;
 	
 }
 #heading-svg-2 {
-	width: 474px;
+	width: 593px;
 }
 
 @keyframes vector-stroke-animation {
@@ -97,7 +97,7 @@ body {
 	margin-right: 5px;
 	margin-top: 10px;
 	margin-bottom: 0;
-	font-size: 40px;
+	font-size: 50px;
 	/*padding-left: 20px;
   	position: absolute;*/
 
