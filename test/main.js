@@ -12,7 +12,7 @@ animator = {
 	},
 
 	getVectorAnimationDuration: (svg) => { //delay, delay_between_letters, duration_per_letter) => {
-		const isHeading = svg.id === "heading-svg";
+		const isHeading = svg.className === "heading-svg";
 		const delay = isHeading ? animator.heading_svg_dbl : animator.delay_between_letters;
 		const duration = isHeading ? animator.heading_svg_dpl : animator.duration_per_letter;
 		return (delay * svg.childElementCount) + duration;
@@ -25,7 +25,7 @@ animator = {
 			const vectors = svgs[i].children; //document.querySelectorAll(`#${svgs[i].id} path`);
 	
 			//these are used to determine whether or not to skip the intro animation: if the elements are off-screen
-			var isHeading = svgs[i].id === "heading-svg";
+			var isHeading = svgs[i].className === "heading-svg";
 			var isVisible = animator.isOnScreen(svgs[i]);
 			var preventIntro = isHeading && !isVisible;
 	
@@ -74,7 +74,7 @@ animator = {
 
 	animateVectorStroke: (svg) => {
 		const vectors = svg.children;
-		const isHeading = svg.id === "heading-svg";
+		const isHeading = svg.className === "heading-svg";
 
 		for (let i = 0; i < vectors.length; i++)
 			$(`#${vectors[i].id}`).css({
