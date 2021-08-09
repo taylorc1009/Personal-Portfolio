@@ -100,10 +100,10 @@ body {
 	margin-top: 10px;
 	margin-bottom: 0;
 	font-size: 65px;
+	font-family: 'Varela Round', serif;
 	/*padding-left: 20px;
   	position: absolute;*/
-
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-weight: bold;
 	color: rgba(var(--color-transparent));
 
