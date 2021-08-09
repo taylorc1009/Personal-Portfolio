@@ -41,34 +41,40 @@ animator = {
 				'fill': `${preventIntro ? 'rgba(var(--color-pure-white))' : 'rgba(var(--color-transparent))'}`
 			});
 	
-			if (isHeading) { //the heading is animated differently; the duration is longer to give it a nicer effect
-				if(isVisible) { //checks whether the heading is out of sight or not...
-					//... if it isn't, animate all the heading elements...
-					animator.animateVectorStroke(svgs[i]);//, 0.2, 2, 0.5);
-					$('#heading-text').css({
-						'animation': `text-reveal-animation 1s ease forwards ${animator.getVectorAnimationDuration(svgs[i])}s`
-					});
-					$('#heading-icon').css({
-						'animation': `vector-reveal-animation 1s ease forwards ${animator.getVectorAnimationDuration(svgs[i])}s`
-					});
-				}
-				else { //... if it is out of sight, I don't want the animation to waste resources and I also don't want it to happen when it's scrolled to by the user, so just prevent it
-					//we therefore need to skip the animations of the other 2 heading elements as well and make them visible
-					$('#heading-text').css({
-						'color': 'rgba(var(--color-pure-white))',
-						'top': '35%'
-					});
-					$('#heading-icon').css({
-						'fill-opacity': 1
-					});
-				}
-			}
+			if (isHeading) //the heading is animated differently; the duration is longer to give it a nicer effect
+				animator.initialiseHeadingAnimation(svgs[i], isVisible);
 			else { //we use a different animation for text vectors in the body as we don't want the user to have to wait long for it to finish before they can do things
 				if (isVisible) //if the element is already on screen, this prevents the animation waiting for the user to scroll to it...
 					animator.animateVectorStroke(svgs[i]);
 				else //... otherwise, append it to the list of animations pending a positive visibility (on screen) check
 					scrollAnimations.animations.push({method: animator.vectorOnScrollEvent, args: [svgs[i]]}); //adds this animate function to the list of pending animations, with its respective arguments
 			}
+		}
+	},
+
+	initialiseHeadingAnimation: (svg, isVisible) => {
+		if(isVisible) { //checks whether the heading is out of sight or not...
+			//... if it isn't, animate all the heading elements...
+			animator.animateVectorStroke(svg);//, 0.2, 2, 0.5);
+			$('#heading-text').css({
+				'animation': `text-reveal-animation 1s ease forwards ${animator.getVectorAnimationDuration(svg)}s`
+			});
+			$('#heading-icon').css({
+				'animation': `vector-reveal-animation 1s ease forwards ${animator.getVectorAnimationDuration(svg)}s`
+			});
+		}
+		else { //... if it is out of sight, I don't want the animation to waste resources and I also don't want it to happen when it's scrolled to by the user, so just prevent it
+			//we therefore need to skip the animations of the other 2 heading elements as well and make them visible
+			$('#heading-text').css({
+				'color': 'rgba(var(--color-pure-white))',
+				'margin-top': 0,
+				'margin-bottom': '10px'
+			});
+			$('#heading-icon').css({
+				'fill-opacity': 1,
+				'margin-top': 0,
+				'margin-bottom': '10px'
+			});
 		}
 	},
 
