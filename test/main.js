@@ -4,7 +4,7 @@ animator = {
 		animator.initialiseCardsAnimations();
 	},
 
-	getVectorAnimationDuration: (svg) => { //delay, delay_between_letters, duration_per_letter) => {
+	getVectorAnimationDuration: (svg) => {
 		const isHeading = svg.classList.contains("heading-svg");
 		const delay = isHeading ? mathematics.heading_svg_dbl : mathematics.delay_between_letters;
 		const duration = isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter;
@@ -18,27 +18,15 @@ animator = {
 		let previousSVGClass = svgs[0].classList[1]; //used to record the previous SVG being initialised in the loop; the previous SVG is recorded as once each SVG in the same class is initialised, we need to give them all the same time delay on their fill animations so the can all fade in at the same time
 		var introPrevented = false; //this is used to prevent the "initialiseHeadingAnimation" function from triggering if the heading animation is prevented
 
-		for (let i = 0; i < svgs.length; i++) {
-			const vectors = svgs[i].children; //document.querySelectorAll(`#${svgs[i].id} path`);
-	
+		for (let i = 0; i < svgs.length; i++) {	
 			//these are used to determine whether or not to skip or pause animations if the elements are off-screen
 			var isHeading = svgs[i].classList.contains("heading-svg"); //the heading is animated differently; the duration is longer to give it a nicer effect
 			var isVisible = mathematics.isOnScreen(svgs[i].parentElement); //if a vector is not currently within the user's viewport, this is used to pause the animation until the user scrolls to the vector
 			var preventIntro = isHeading && !isVisible; //the intro animation should be prevented if it's off screen: it didn't seem necessary to have to run the slow heading animation if the user refreshes the page half way down and scrolls to the top
 			if (preventIntro)
 				introPrevented = true;
-	
-			for (let j = 0; j < vectors.length; j++) {
-				var pathLength = vectors[j].getTotalLength(); //gets the length of the SVG path's stroke
-	
-				$(`#${vectors[j].id}`).css({
-					'stroke-dasharray': `${pathLength}`,
-					'stroke-dashoffset': `${preventIntro ? 0 : pathLength}`
-				})
-			}
-			$(`#${svgs[i].id}`).css({
-				'fill': `${preventIntro ? 'rgba(var(--color-pure-white))' : 'rgba(var(--color-transparent))'}`
-			});
+
+			animator.hideVectorPaths(svgs[i], preventIntro);
 
 			//if the current SVG belongs to a new SVG class or it's in a new row within a flexbox, reset it's stroke animation delay to zero seconds
 			if (!svgs[i].classList.contains(previousSVGClass) || mathematics.calculateFlexChildRow(svgs[i].parentElement, svgs[i]) > currentFlexRow)
@@ -66,16 +54,31 @@ animator = {
 	},
 
 	determineVectorAnimationState: (svg, isVisible, isHeading, delay) => {
-		if (isVisible) { //if the SVG is already on screen, run the animation: preventing the animation waiting for the user to scroll to it...
+		if (isVisible) //if the SVG is already on screen, run the animation: preventing the animation waiting for the user to scroll to it...
 			animator.animateVectorStroke(svg, delay, isHeading);
 			//animator.animateVectorFill(`.${svg.classList[1]}`, delay + animator.getVectorAnimationDuration(svg), isHeading);
-		}
 		else { //... otherwise, either...
 			if (isHeading) //make the heading's subheading elements visible; "SOFTWARE ENGINEER" and the SVG icon
 				animator.initialiseHeadingAnimation(isVisible, undefined);
 			else //append it to the list of animations pending a positive visibility ("isOnScreen") check
 				animationsCollection.animations.push({method: animator.vectorOnScrollEvent, args: [svg, delay]}); //adds the animate SVG stroke function to the list of pending animations, with its respective arguments (being the SVG to be animated)
 		}
+	},
+
+	hideVectorPaths: (svg, preventIntro) => {
+		const paths = svg.children;
+
+		for (let j = 0; j < paths.length; j++) {
+			var pathLength = paths[j].getTotalLength(); //gets the length of the SVG path's stroke
+
+			$(`#${paths[j].id}`).css({
+				'stroke-dasharray': `${pathLength}`,
+				'stroke-dashoffset': `${preventIntro ? 0 : pathLength}`
+			})
+		}
+		$(`#${svg.id}`).css({
+			'fill': `${preventIntro ? 'rgba(var(--color-pure-white))' : 'rgba(var(--color-transparent))'}`
+		});
 	},
 
 	initialiseHeadingAnimation: (isVisible, delay) => {
@@ -204,7 +207,7 @@ animationsCollection = { //contains a list of methods that begin animations when
 	}
 };
 
-window.onscroll = () => { //I tried to use the "scroll" event listener instead of this, but the listener would be deleted after the users' first scroll, rendering it useless for this purpose
+window.onscroll = () => { //I tried to use the "scroll" event listener instead of this, but the listener would be deleted after the user's first scroll, rendering it useless for this purpose
 	for (let i = 0; i < animationsCollection.animations.length; i++)
 		if (animationsCollection.animations[i].method.apply(this, animationsCollection.animations[i].args)) //'.apply()' unpacks the list of arguments required for this animation
 			animationsCollection.deleteAnimation(i); //if this animation has begun (the animations' method returned 'true') then it is time to stop the animation from pending
