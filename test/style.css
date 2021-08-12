@@ -233,6 +233,8 @@ body {
 
 #welcome-container {
 	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 }
 
 .body-svg {
