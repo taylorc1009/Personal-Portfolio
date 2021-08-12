@@ -4,8 +4,7 @@ animator = {
 		animator.initialiseCardsAnimations();
 	},
 
-	getVectorAnimationDuration: (svg) => {
-		const isHeading = svg.classList.contains("heading-svg");
+	getVectorAnimationDuration: (svg, isHeading) => {
 		const delay = isHeading ? mathematics.heading_svg_dbl : mathematics.delay_between_letters;
 		const duration = isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter;
 		
@@ -44,10 +43,10 @@ animator = {
 
 				if (isVisible && i === svgs.length - 1) //if this is the final SVG class we're iterating but it's also a new class, we need to initialise it's animations as there won't be another iteration of the loop
 					//animator.determineVectorAnimationState(svgs[i], isVisible, isHeading, 0);
-					animator.animateVectorFill(`.${previousSVGClass}`, animator.getVectorAnimationDuration(svgs[i]), isHeading);
+					animator.animateVectorFill(`.${previousSVGClass}`, animator.getVectorAnimationDuration(svgs[i], isHeading), isHeading);
 			}
 
-			delay += animator.getVectorAnimationDuration(svgs[i]); //add the duration of this vector's stroke animation to the delay of animating the next vector's stroke
+			delay += animator.getVectorAnimationDuration(svgs[i], isHeading); //add the duration of this vector's stroke animation to the delay of animating the next vector's stroke
 			if (delay > totalAnimationDuration) //this is used to keep track of the highest delay recorded for this SVG class; the highest delay will be the flexbox row that takes the longest to animate (due to having more letters), and we then use this highest delay to delay each SVG in this class's vector fill animation: once every row's letter's stroke has been animated in
 				totalAnimationDuration = delay;
 		}
@@ -129,7 +128,7 @@ animator = {
 
 			if (mathematics.isOnScreen(svg)) //if the element is already on screen, this prevents the animation waiting for the user to scroll to it...
 				$(`#${cards[i].id}`).css({
-					'animation': `cards-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${animator.getVectorAnimationDuration(svg)}s`
+					'animation': `cards-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${animator.getVectorAnimationDuration(svg, false)}s`
 				});
 			else //... otherwise, append it to the list of animations pending a positive visibility (on screen) check
 				animationsCollection.animations.push({method: animator.cardsOnScrollEvent, args: [cards, svg]}); //adds this animate function to the list of pending animations, with its respective arguments
@@ -140,7 +139,7 @@ animator = {
 		if (mathematics.isOnScreen(svg)) {
 			for (let i = 0; i < cards.length; i++)
 				$(`#${cards[i].id}`).css({
-					'animation': `cards-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${animator.getVectorAnimationDuration(svg)}s`
+					'animation': `cards-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${animator.getVectorAnimationDuration(svg, false)}s`
 				});
 
 			return true;
@@ -152,7 +151,7 @@ animator = {
 		if (mathematics.isOnScreen(svg)){
 			//the "isHeading" parameter is false for both of these animations here because we will never animate the heading via a scroll listener
 			animator.animateVectorStroke(svg, delay, false);
-			animator.animateVectorFill(`.${svg.classList[1]}`, delay + animator.getVectorAnimationDuration(svg), false);
+			animator.animateVectorFill(`.${svg.classList[1]}`, delay + animator.getVectorAnimationDuration(svg, false), false);
 			
 			return true;
 		}
