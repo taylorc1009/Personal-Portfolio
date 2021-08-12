@@ -74,7 +74,7 @@ animator = {
 
 	determineVectorAnimationState: (svg, isVisible, isHeading, delay) => {
 		if (isVisible) { //if the SVG is already on screen, run the animation: preventing the animation waiting for the user to scroll to it...
-			animator.animateVectorStroke(svg, delay);
+			animator.animateVectorStroke(svg, delay, isHeading);
 			animator.animateVectorFill(`.${svg.classList[1]}`, delay + animator.getVectorAnimationDuration(svg), isHeading);
 		}
 		else { //... otherwise, either...
@@ -110,9 +110,8 @@ animator = {
 		}
 	},
 
-	animateVectorStroke: (svg, delay) => {
+	animateVectorStroke: (svg, delay, isHeading) => {
 		const vectors = svg.children;
-		const isHeading = svg.className === "heading-svg";
 
 		for (let i = 0; i < vectors.length; i++)
 			$(`#${vectors[i].id}`).css({
@@ -155,8 +154,11 @@ animator = {
 	
 	vectorOnScrollEvent: (svg, delay) => {
 		if (mathematics.isOnScreen(svg)){
-			animator.animateVectorStroke(svg, delay);
-			animator.animateVectorFill(`.${svg.classList[1]}`, delay + animator.getVectorAnimationDuration(svg), svg.className === "heading-svg");
+			const isHeading = svg.className === "heading-svg";
+
+			animator.animateVectorStroke(svg, delay, isHeading);
+			animator.animateVectorFill(`.${svg.classList[1]}`, delay + animator.getVectorAnimationDuration(svg), isHeading);
+			
 			return true;
 		}
 		//return false; //shouldn't be needed as, at this point, the value returned will be 'undefined' which is the equivalent of 'false'
