@@ -15,7 +15,7 @@ animator = {
 		const svgs = document.getElementsByClassName("text-as-svg");
 		let delay = 0, currentFlexRow = 0, totalAnimationDuration = 0; //these are used to reset the delay of animating the next SVG when it's in the next flexbox row or another SVG class; "totalAnimationDuration" is used to delay the vector fill animation for each SVG (in the same class) until all SVG stroke animations (in that class) are finished
 		let previousSVGClass = svgs[0].classList[1]; //used to record the previous SVG being initialised in the loop; the previous SVG is recorded as once each SVG in the same class is initialised, we need to give them all the same time delay on their fill animations so the can all fade in at the same time
-		var introPrevented = false; //this is used to prevent the "initialiseHeadingAnimation" function from triggering if the heading animation is prevented
+		var introPrevented = false; //this is used to prevent the "initialiseSubheadingAnimation" function from triggering if the heading animation is prevented
 
 		for (let i = 0; i < svgs.length; i++) {	
 			//these are used to determine whether or not to skip or pause animations if the elements are off-screen
@@ -37,7 +37,7 @@ animator = {
 				animator.animateVectorFill(`.${previousSVGClass}`, totalAnimationDuration, isHeading);
 
 				if (previousSVGClass === "heading-svg" && !introPrevented) //if the previous SVG class is the heading SVG class, we also want to animate in the subheadings ("SOFTWARE ENGINEER" and the SVG icon) in with the "totalAnimationDuration" as the delay as well
-					animator.initialiseHeadingAnimation(true, totalAnimationDuration);
+					animator.initialiseSubheadingAnimation(true, totalAnimationDuration);
 
 				previousSVGClass = svgs[i].classList[1];
 
@@ -58,7 +58,7 @@ animator = {
 			//animator.animateVectorFill(`.${svg.classList[1]}`, delay + animator.getVectorAnimationDuration(svg), isHeading);
 		else { //... otherwise, either...
 			if (isHeading) //make the heading's subheading elements visible; "SOFTWARE ENGINEER" and the SVG icon
-				animator.initialiseHeadingAnimation(isVisible, undefined);
+				animator.initialiseSubheadingAnimation(isVisible, undefined);
 			else //append it to the list of animations pending a positive visibility ("isOnScreen") check
 				animationsCollection.animations.push({method: animator.vectorOnScrollEvent, args: [svg, delay]}); //adds the animate SVG stroke function to the list of pending animations, with its respective arguments (being the SVG to be animated)
 		}
@@ -80,7 +80,7 @@ animator = {
 		});
 	},
 
-	initialiseHeadingAnimation: (isVisible, delay) => {
+	initialiseSubheadingAnimation: (isVisible, delay) => {
 		if(isVisible) { //checks whether the heading is out of sight or not...
 			//... if it isn't, animate all the heading elements...
 			$('#heading-text').css({
