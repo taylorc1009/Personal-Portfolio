@@ -231,11 +231,15 @@ body {
 	}
 }
 
+#welcome-container {
+	display: flex;
+}
+
 .body-svg {
-	display: block;
+	/*display: block;
 	margin: auto;
 	width: 55vw;
-	min-width: 400px;
+	min-width: 400px;*/
   	/* height: 55vh; / * adjusts the font size with the page */
 }
 
