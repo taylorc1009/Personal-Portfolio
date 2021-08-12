@@ -1,33 +1,4 @@
-calculateFlexChildRow = (container, item) => {
-	let row = 0, previousHighestDistance = 0;
-
-	for (let child of container.children) {
-		var parentTop = container.getBoundingClientRect().top; //parent's top's distance from the top of the viewport
-		var currentChildTop = child.getBoundingClientRect().top; //child's top's distance from the top of the viewport
-
-		var childTopDistanceFromParentTop = Math.abs(parentTop - currentChildTop);
-
-		if (childTopDistanceFromParentTop > previousHighestDistance) {
-			row++;
-			previousHighestDistance = childTopDistanceFromParentTop;
-		}
-		if (child === item)
-			break;
-	}
-
-	return row;
-}
-
 animator = {
-	//there's different animation durations for text vectors in the page body as we don't want the user to have to wait long for them to finish every time
-	//the heading animation lasts longer and, as you can see, it's parameters begin with "heading_svg_"
-	delay_between_letters: 0.1, //delay between the beginning of 1 letter stroke animation and the next letters' beginning
-	duration_per_letter: 1.5, //duration it takes to animate 1 full letters' stroke
-	fade_in_duration: 0.25, //duration of the SVG fill fade in effect
-	heading_svg_dbl: 0.2,
-	heading_svg_dpl: 2,
-	heading_svg_fid: 0.5,
-
 	initialiseAnimations: () => {
 		animator.initialiseVectorAnimations();
 		animator.initialiseCardsAnimations();
@@ -35,8 +6,8 @@ animator = {
 
 	getVectorAnimationDuration: (svg) => { //delay, delay_between_letters, duration_per_letter) => {
 		const isHeading = svg.className === "heading-svg";
-		const delay = isHeading ? animator.heading_svg_dbl : animator.delay_between_letters;
-		const duration = isHeading ? animator.heading_svg_dpl : animator.duration_per_letter;
+		const delay = isHeading ? mathematics.heading_svg_dbl : mathematics.delay_between_letters;
+		const duration = isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter;
 		return (delay * svg.childElementCount) + duration;
 	},
 
@@ -51,7 +22,7 @@ animator = {
 	
 			//these are used to determine whether or not to skip or pause animations if the elements are off-screen
 			var isHeading = svgs[i].classList.contains("heading-svg"); //the heading is animated differently; the duration is longer to give it a nicer effect
-			var isVisible = animator.isOnScreen(svgs[i]); //if a vector is not currently within the user's viewport, this is used to pause the animation until the user scrolls to the vector
+			var isVisible = mathematics.isOnScreen(svgs[i]); //if a vector is not currently within the user's viewport, this is used to pause the animation until the user scrolls to the vector
 			var preventIntro = isHeading && !isVisible; //the intro animation should be prevented if it's off screen: it didn't seem necessary to have to run the slow heading animation if the user refreshes the page half way down and scrolls to the top
 			if (preventIntro)
 				introPrevented = true;
@@ -69,7 +40,7 @@ animator = {
 			});
 
 			//if the current SVG belongs to a new SVG class or it's in a new row within a flexbox, reset it's stroke animation delay to zero seconds
-			if (!svgs[i].classList.contains(previousSVGClass) || calculateFlexChildRow(svgs[i].parentElement, svgs[i]) > currentFlexRow)
+			if (!svgs[i].classList.contains(previousSVGClass) || mathematics.calculateFlexChildRow(svgs[i].parentElement, svgs[i]) > currentFlexRow)
 				delay = 0;
 
 			animator.determineVectorAnimationState(svgs[i], isVisible, isHeading, delay);
@@ -145,14 +116,13 @@ animator = {
 
 		for (let i = 0; i < vectors.length; i++)
 			$(`#${vectors[i].id}`).css({
-				'animation': `vector-stroke-animation ${isHeading ? animator.heading_svg_dpl : animator.duration_per_letter}s ease forwards ${delay + (isHeading ? animator.heading_svg_dbl : animator.delay_between_letters) * i}s`
+				'animation': `vector-stroke-animation ${isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter}s ease forwards ${delay + (isHeading ? mathematics.heading_svg_dbl : mathematics.delay_between_letters) * i}s`
 			});
 	},
 
 	animateVectorFill: (identifier, delay, isHeading) => {
-		console.log(identifier)
 		$(`${identifier}`).css({
-			'animation': `vector-fill-animation ${isHeading ? animator.heading_svg_fid : animator.fade_in_duration}s ease forwards ${delay}s`
+			'animation': `vector-fill-animation ${isHeading ? mathematics.heading_svg_fid : mathematics.fade_in_duration}s ease forwards ${delay}s`
 		});
 	},
 
@@ -162,9 +132,9 @@ animator = {
 		for (let i = 0; i < cards.length; i++) {
 			const svg = cards[i].parentElement.getElementsByClassName("text-as-svg")[0];
 
-			if (animator.isOnScreen(svg)) //if the element is already on screen, this prevents the animation waiting for the user to scroll to it...
+			if (mathematics.isOnScreen(svg)) //if the element is already on screen, this prevents the animation waiting for the user to scroll to it...
 				$(`#${cards[i].id}`).css({
-					'animation': `cards-reveal-animation ${animator.fade_in_duration}s ease forwards ${animator.getVectorAnimationDuration(svg)}s`
+					'animation': `cards-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${animator.getVectorAnimationDuration(svg)}s`
 				});
 			else //... otherwise, append it to the list of animations pending a positive visibility (on screen) check
 				animationsCollection.animations.push({method: animator.cardsOnScrollEvent, args: [cards, svg]}); //adds this animate function to the list of pending animations, with its respective arguments
@@ -172,10 +142,10 @@ animator = {
 	},
 
 	cardsOnScrollEvent: (cards, svg) => {
-		if (animator.isOnScreen(svg)) {
+		if (mathematics.isOnScreen(svg)) {
 			for (let i = 0; i < cards.length; i++)
 				$(`#${cards[i].id}`).css({
-					'animation': `cards-reveal-animation ${animator.fade_in_duration}s ease forwards ${animator.getVectorAnimationDuration(svg)}s`
+					'animation': `cards-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${animator.getVectorAnimationDuration(svg)}s`
 				});
 
 			return true;
@@ -184,18 +154,49 @@ animator = {
 	},
 	
 	vectorOnScrollEvent: (svg, delay) => {
-		if (animator.isOnScreen(svg)){
+		if (mathematics.isOnScreen(svg)){
 			animator.animateVectorStroke(svg, delay);
 			animator.animateVectorFill(`.${svg.classList[1]}`, delay + animator.getVectorAnimationDuration(svg), svg.className === "heading-svg");
 			return true;
 		}
 		//return false; //shouldn't be needed as, at this point, the value returned will be 'undefined' which is the equivalent of 'false'
 	},
-	
+}
+
+mathematics = {
+	//there's different animation durations for text vectors in the page body as we don't want the user to have to wait long for them to finish every time
+	//the heading animation lasts longer and, as you can see, it's parameters begin with "heading_svg_"
+	delay_between_letters: 0.1, //delay between the beginning of 1 letter stroke animation and the next letters' beginning
+	duration_per_letter: 1.5, //duration it takes to animate 1 full letters' stroke
+	fade_in_duration: 0.25, //duration of the SVG fill fade in effect
+	heading_svg_dbl: 0.2,
+	heading_svg_dpl: 2,
+	heading_svg_fid: 0.5,
+
 	isOnScreen: (elm) => { //used to determine if an element is on screen (credit - https://stackoverflow.com/a/5354536/11136104)
 		var rect = elm.getBoundingClientRect();
 		var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
 		return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+	},
+
+	calculateFlexChildRow: (container, item) => {
+		let row = 0, previousHighestDistance = 0;
+	
+		for (let child of container.children) {
+			var parentTop = container.getBoundingClientRect().top; //parent's top's distance from the top of the viewport
+			var currentChildTop = child.getBoundingClientRect().top; //child's top's distance from the top of the viewport
+	
+			var childTopDistanceFromParentTop = Math.abs(parentTop - currentChildTop);
+	
+			if (childTopDistanceFromParentTop > previousHighestDistance) {
+				row++;
+				previousHighestDistance = childTopDistanceFromParentTop;
+			}
+			if (child === item)
+				break;
+		}
+	
+		return row;
 	}
 }
 
