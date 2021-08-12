@@ -42,7 +42,7 @@ animator = {
 
 				previousSVGClass = svgs[i].classList[1];
 
-				if (i === svgs.length - 1) //if this is the final SVG class we're iterating but it's also a new class, we need to initialise it's animations as there won't be another iteration of the loop
+				if (isVisible && i === svgs.length - 1) //if this is the final SVG class we're iterating but it's also a new class, we need to initialise it's animations as there won't be another iteration of the loop
 					//animator.determineVectorAnimationState(svgs[i], isVisible, isHeading, 0);
 					animator.animateVectorFill(`.${previousSVGClass}`, animator.getVectorAnimationDuration(svgs[i]), isHeading);
 			}
