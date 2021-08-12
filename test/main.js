@@ -5,9 +5,10 @@ animator = {
 	},
 
 	getVectorAnimationDuration: (svg) => { //delay, delay_between_letters, duration_per_letter) => {
-		const isHeading = svg.className === "heading-svg";
+		const isHeading = svg.classList.contains("heading-svg");
 		const delay = isHeading ? mathematics.heading_svg_dbl : mathematics.delay_between_letters;
 		const duration = isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter;
+		
 		return (delay * svg.childElementCount) + duration;
 	},
 
@@ -15,14 +16,14 @@ animator = {
 		const svgs = document.getElementsByClassName("text-as-svg");
 		let delay = 0, currentFlexRow = 0, totalAnimationDuration = 0; //these are used to reset the delay of animating the next SVG when it's in the next flexbox row or another SVG class; "totalAnimationDuration" is used to delay the vector fill animation for each SVG (in the same class) until all SVG stroke animations (in that class) are finished
 		let previousSVGClass = svgs[0].classList[1]; //used to record the previous SVG being initialised in the loop; the previous SVG is recorded as once each SVG in the same class is initialised, we need to give them all the same time delay on their fill animations so the can all fade in at the same time
-		var introPrevented = false; //this is used to prevent the "initialiseHeadingAnimation" function from triggering (at the bottom of this function) if the heading animation is prevented
+		var introPrevented = false; //this is used to prevent the "initialiseHeadingAnimation" function from triggering if the heading animation is prevented
 
 		for (let i = 0; i < svgs.length; i++) {
 			const vectors = svgs[i].children; //document.querySelectorAll(`#${svgs[i].id} path`);
 	
 			//these are used to determine whether or not to skip or pause animations if the elements are off-screen
 			var isHeading = svgs[i].classList.contains("heading-svg"); //the heading is animated differently; the duration is longer to give it a nicer effect
-			var isVisible = mathematics.isOnScreen(svgs[i]); //if a vector is not currently within the user's viewport, this is used to pause the animation until the user scrolls to the vector
+			var isVisible = mathematics.isOnScreen(svgs[i].parentElement); //if a vector is not currently within the user's viewport, this is used to pause the animation until the user scrolls to the vector
 			var preventIntro = isHeading && !isVisible; //the intro animation should be prevented if it's off screen: it didn't seem necessary to have to run the slow heading animation if the user refreshes the page half way down and scrolls to the top
 			if (preventIntro)
 				introPrevented = true;
@@ -44,38 +45,30 @@ animator = {
 				delay = 0;
 
 			animator.determineVectorAnimationState(svgs[i], isVisible, isHeading, delay);
-			/*if (isVisible) //if the SVG is already on screen, run the animation: preventing the animation waiting for the user to scroll to it...
-				animator.animateVectorStroke(svgs[i], delay);
-			else { //... otherwise, either...
-				if (isHeading) //make the heading's subheading elements visible; "SOFTWARE ENGINEER" and the SVG icon
-					animator.initialiseHeadingAnimation(isVisible, undefined);
-				else //append it to the list of animations pending a positive visibility ("isOnScreen") check
-					animationsCollection.animations.push({method: animator.vectorOnScrollEvent, args: [svgs[i]]}); //adds the animate SVG stroke function to the list of pending animations, with its respective arguments (being the SVG to be animated)
-			}*/
 
-			delay += animator.getVectorAnimationDuration(svgs[i]); //add the duration of this vector's stroke animation to the delay of animating the next vector's stroke
-			if (i !== svgs.length - 1 && delay > totalAnimationDuration) //this is used to keep track of the highest delay recorded for this SVG class; the highest delay will be the flexbox row that takes the longest to animate (due to having more letters), and we then use this highest delay to delay each SVG in this class's vector fill animation: once every row's letter's stroke has been animated in
-				totalAnimationDuration = delay;
-			
 			if (!svgs[i].classList.contains(previousSVGClass)) { //if we're now iterating through a new SVG class, animate the previous class's vectors' fill
-				animator.animateVectorFill(`.${previousSVGClass}`, totalAnimationDuration, isHeading)
+				animator.animateVectorFill(`.${previousSVGClass}`, totalAnimationDuration, isHeading);
 
 				if (previousSVGClass === "heading-svg" && !introPrevented) //if the previous SVG class is the heading SVG class, we also want to animate in the subheadings ("SOFTWARE ENGINEER" and the SVG icon) in with the "totalAnimationDuration" as the delay as well
 					animator.initialiseHeadingAnimation(true, totalAnimationDuration);
 
-				//if (i === svgs.length - 1) //if this is the final SVG class we're iterating but it's also a new class, we need to initialise it's animations as there won't be another iteration of the loop
+				previousSVGClass = svgs[i].classList[1];
+
+				if (i === svgs.length - 1) //if this is the final SVG class we're iterating but it's also a new class, we need to initialise it's animations as there won't be another iteration of the loop
 					//animator.determineVectorAnimationState(svgs[i], isVisible, isHeading, 0);
-					//animator.animateVectorFill(`.${previousSVGClass}`, animator.getVectorAnimationDuration(svgs[i]), isHeading);
-				//else
-					previousSVGClass = svgs[i].classList[1];
+					animator.animateVectorFill(`.${previousSVGClass}`, animator.getVectorAnimationDuration(svgs[i]), isHeading);
 			}
+
+			delay += animator.getVectorAnimationDuration(svgs[i]); //add the duration of this vector's stroke animation to the delay of animating the next vector's stroke
+			if (delay > totalAnimationDuration) //this is used to keep track of the highest delay recorded for this SVG class; the highest delay will be the flexbox row that takes the longest to animate (due to having more letters), and we then use this highest delay to delay each SVG in this class's vector fill animation: once every row's letter's stroke has been animated in
+				totalAnimationDuration = delay;
 		}
 	},
 
 	determineVectorAnimationState: (svg, isVisible, isHeading, delay) => {
 		if (isVisible) { //if the SVG is already on screen, run the animation: preventing the animation waiting for the user to scroll to it...
 			animator.animateVectorStroke(svg, delay, isHeading);
-			animator.animateVectorFill(`.${svg.classList[1]}`, delay + animator.getVectorAnimationDuration(svg), isHeading);
+			//animator.animateVectorFill(`.${svg.classList[1]}`, delay + animator.getVectorAnimationDuration(svg), isHeading);
 		}
 		else { //... otherwise, either...
 			if (isHeading) //make the heading's subheading elements visible; "SOFTWARE ENGINEER" and the SVG icon
@@ -154,10 +147,9 @@ animator = {
 	
 	vectorOnScrollEvent: (svg, delay) => {
 		if (mathematics.isOnScreen(svg)){
-			const isHeading = svg.className === "heading-svg";
-
-			animator.animateVectorStroke(svg, delay, isHeading);
-			animator.animateVectorFill(`.${svg.classList[1]}`, delay + animator.getVectorAnimationDuration(svg), isHeading);
+			//the "isHeading" parameter is false for both of these animations here because we will never animate the heading via a scroll listener
+			animator.animateVectorStroke(svg, delay, false);
+			animator.animateVectorFill(`.${svg.classList[1]}`, delay + animator.getVectorAnimationDuration(svg), false);
 			
 			return true;
 		}
