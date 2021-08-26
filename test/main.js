@@ -3,7 +3,7 @@ animator = {
 
 	initialiseAnimations: () => {
 		animator.initialiseVectorAnimations();
-		animator.initialiseCardsAnimations();
+		//animator.initialiseCardsAnimations();
 	},
 
 	getVectorAnimationDuration: (svg, isHeading) => {
@@ -40,7 +40,7 @@ animator = {
 			if (!svgs[i].classList.contains(previousSVGClass) || i === svgs.length - 1) { //if we're now iterating through a new SVG class, animate the previous class's vectors' fill
 				if(wasVisible)
 					animator.animateVectorFill(`.${previousSVGClass}`, totalAnimationDuration, isHeading);
-				console.log(svgs[i].parentElement, wasVisible, totalAnimationDuration);
+				//console.log(svgs[i].parentElement, wasVisible, totalAnimationDuration);
 				if (previousSVGClass === "heading-svg" && !introPrevented) //if the previous SVG class is the heading SVG class, we also want to animate in the subheadings ("SOFTWARE ENGINEER" and the SVG icon) in with the "totalAnimationDuration" as the delay as well
 					animator.initialiseSubheadingAnimation(true, totalAnimationDuration);
 
@@ -64,10 +64,18 @@ animator = {
 		else { //... otherwise, either...
 			if (isHeading) //make the heading's subheading elements visible; "SOFTWARE ENGINEER" and the SVG icon
 				animator.initialiseSubheadingAnimation(isVisible, undefined);
-			else if(!animationsCollection.animations[svgClass]) {
-				animationsCollection.animations[svgClass] = {method: animator.vectorOnScrollEvent, args: [svg.parentElement, svgClass, [delay], totalAnimationDuration]};
-				console.log(animationsCollection.animations[svgClass])
-			}
+			else if(!animationsCollection.animations[svgClass])
+				animationsCollection.animations[svgClass] = {
+					method: animator.vectorOnScrollEvent,
+					args: [
+						svg.parentElement,
+						svgClass,
+						[delay],
+						totalAnimationDuration,
+						animator.getSVGContainerSiblingElements(svg.parentElement)
+					]
+				};
+				//console.log(animationsCollection.animations[svgClass])
 			else {
 				animationsCollection.animations[svgClass].args[2].push(delay);
 
@@ -81,6 +89,16 @@ animator = {
 					//animator.pendingFillDurations[svgClass] = totalAnimationDuration;
 			//}
 		}
+	},
+
+	getSVGContainerSiblingElements: (container) => { //returns the list of elements that are in the same container as an SVG container (so they can be animated in with the SVG fill animation)
+		var containerSiblingsAnimations = [];
+		
+		for (let sibling of container.parentElement.children)
+			if (sibling != container && sibling.classList.contains("card-container")) //in the future, there will be more than just "card-container" classes that accompany an SVG container, so this line and the next are subject to change
+			containerSiblingsAnimations.push({method: animator.animateCards, args: [sibling.children]});
+
+		return containerSiblingsAnimations;
 	},
 
 	hideVectorPaths: (svg, preventIntro) => {
@@ -139,22 +157,30 @@ animator = {
 		});
 	},
 
-	initialiseCardsAnimations: () => {
+	animateCards: (cards, delay) => {
+		console.log(cards, delay)
+		for (let i = 0; i < cards.length; i++)
+			$(`#${cards[i].id}`).css({
+				'animation': `cards-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${delay}s`
+			});
+	},
+
+	/*initialiseCardsAnimations: () => {
 		const cards = document.getElementsByClassName("card-container");
 	
 		for (let i = 0; i < cards.length; i++) {
-			const svg = cards[i].parentElement.getElementsByClassName("text-as-svg")[0];
+			const svgClassContainer = cards[i].parentElement.getElementsByClassName("text-as-svg")[0].parentElement;
 
-			if (mathematics.isOnScreen(svg)) //if the element is already on screen, this prevents the animation waiting for the user to scroll to it...
-				$(`#${cards[i].id}`).css({
-					'animation': `cards-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${animator.getVectorAnimationDuration(svg, false)}s`
-				});
+			//if (mathematics.isOnScreen(svgClassContainer)) //if the SVG's parent element is already on screen, this prevents the animation waiting for the user to scroll to the element...
+				//$(`#${cards[i].id}`).css({
+					//'animation': `cards-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${animator.getVectorAnimationDuration(svg, false)}s`
+				//});
 			//else //... otherwise, append it to the list of animations pending a positive visibility (on screen) check
 				//animationsCollection.animations.push({method: animator.cardsOnScrollEvent, args: [cards, svg]}); //adds this animate function to the list of pending animations, with its respective arguments
 		}
-	},
+	},*/
 
-	cardsOnScrollEvent: (cards, svg) => {
+	/*cardsOnScrollEvent: (cards, svg) => {
 		if (mathematics.isOnScreen(svg.parentElement)) { //if the SVG's container (parent) is on screen, that means the entire SVG group that this SVG belongs to is being animated in
 			for (let i = 0; i < cards.length; i++)
 				$(`#${cards[i].id}`).css({
@@ -164,17 +190,23 @@ animator = {
 			return true;
 		}
 		//return false; //shouldn't be needed as, at this point, the value returned will be 'undefined' which is the equivalent of 'false'
-	},
-	
-	vectorOnScrollEvent: (svgClassContainer, svgClass, delays, totalAnimationDuration) => {
-		//console.log(`running ${svgClass} ${mathematics.isOnScreen(svgClassContainer)}`);
+	},*/
+		
+	vectorOnScrollEvent: (svgClassContainer, svgClass, delays, totalAnimationDuration, containerSiblingsAnimations) => {
+		console.log(containerSiblingsAnimations);
 		if (mathematics.isOnScreen(svgClassContainer)){
 			//console.log(svg, animator.pendingFillDurations, svgClass);
+
 			//the "isHeading" parameter is false for both of these animations here because we will never animate the heading via a scroll listener
 			for (let i = 0; i < svgClassContainer.childElementCount; i++)
 				animator.animateVectorStroke(svgClassContainer.children[i], delays[i], false);
 
 			animator.animateVectorFill(`.${svgClass}`, totalAnimationDuration, false); //delay + animator.getVectorAnimationDuration(svg, false), false);
+
+			for (const animation of containerSiblingsAnimations) {
+				animation.args.push(totalAnimationDuration);
+				animation.method.apply(this, animation.args);
+			}
 			
 			return true;
 		}
