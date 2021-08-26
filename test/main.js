@@ -1,5 +1,5 @@
 animator = {
-	pendingFillDurations: {},
+	//pendingFillDurations: {},
 
 	initialiseAnimations: () => {
 		animator.initialiseVectorAnimations();
@@ -16,7 +16,7 @@ animator = {
 	initialiseVectorAnimations: () => {
 		const svgs = document.getElementsByClassName("text-as-svg");
 		let delay = 0, currentFlexRow = 0, totalAnimationDuration = 0; //these are used to reset the delay of animating the next SVG when it's in the next flexbox row or another SVG class; "totalAnimationDuration" is used to delay the vector fill animation for each SVG (in the same class) until all SVG stroke animations (in that class) are finished
-		let previousSVGClass = svgs[0].classList[1]; //used to record the previous SVG being initialised in the loop; the previous SVG is recorded as once each SVG in the same class is initialised, we need to give them all the same time delay on their fill animations so they can all fade in at the same time (which can only be done once we've gathered the duration of each vector's, in that class', animation)
+		let previousSVGClass = svgs[0].classList[1], currentSVGClass; //used to record the previous SVG being initialised in the loop; the previous SVG is recorded as once each SVG in the same class is initialised, we need to give them all the same time delay on their fill animations so they can all fade in at the same time (which can only be done once we've gathered the duration of each vector's, in that class', animation)
 		let introPrevented = false; //this is used to prevent the "initialiseSubheadingAnimation" function from triggering if the heading animation is prevented
 
 		for (let i = 0; i < svgs.length; i++) {	
@@ -27,6 +27,7 @@ animator = {
 			let preventIntro = isHeading && !isVisible; //the intro animation should be prevented if it's off screen: it didn't seem necessary to have to run the slow heading animation if the user refreshes the page half way down and scrolls to the top
 			if (preventIntro)
 				introPrevented = true;
+			currentSVGClass = svgs[i].classList[1];
 
 			animator.hideVectorPaths(svgs[i], preventIntro);
 
@@ -34,7 +35,7 @@ animator = {
 			if (!svgs[i].classList.contains(previousSVGClass) || mathematics.calculateFlexChildRow(svgs[i].parentElement, svgs[i]) > currentFlexRow)
 				delay = 0;
 
-			animator.determineVectorAnimationState(svgs[i], svgs[i].classList[1], isVisible, isHeading, delay, totalAnimationDuration);
+			animator.determineVectorAnimationState(svgs[i], currentSVGClass, isVisible, isHeading, delay, totalAnimationDuration);
 
 			if (!svgs[i].classList.contains(previousSVGClass) || i === svgs.length - 1) { //if we're now iterating through a new SVG class, animate the previous class's vectors' fill
 				if(wasVisible)
@@ -47,7 +48,7 @@ animator = {
 					//animator.determineVectorAnimationState(svgs[i], isVisible, isHeading, 0);
 					//animator.animateVectorFill(`.${svgs[i].classList[1]}`, animator.getVectorAnimationDuration(svgs[i], isHeading), isHeading);
 			
-				previousSVGClass = svgs[i].classList[1];
+				previousSVGClass = currentSVGClass;
 			}
 
 			delay += animator.getVectorAnimationDuration(svgs[i], isHeading); //add the duration of this vector's stroke animation to the delay of animating the next vector's stroke
@@ -63,12 +64,22 @@ animator = {
 		else { //... otherwise, either...
 			if (isHeading) //make the heading's subheading elements visible; "SOFTWARE ENGINEER" and the SVG icon
 				animator.initialiseSubheadingAnimation(isVisible, undefined);
-			else { //append it to the list of animations pending a positive visibility ("isOnScreen") check
-				animationsCollection.animations.push({method: animator.vectorOnScrollEvent, args: [svg, delay, svgClass]}); //adds the animate SVG stroke function to the list of pending animations, with its respective arguments (being the SVG to be animated)
-				
-				if(!animator.pendingFillDurations[svgClass] || totalAnimationDuration > animator.pendingFillDurations[svgClass])
-					animator.pendingFillDurations[svgClass] = totalAnimationDuration;
+			else if(!animationsCollection.animations[svgClass]) {
+				animationsCollection.animations[svgClass] = {method: animator.vectorOnScrollEvent, args: [svg.parentElement, svgClass, [delay], totalAnimationDuration]};
+				console.log(animationsCollection.animations[svgClass])
 			}
+			else {
+				animationsCollection.animations[svgClass].args[2].push(delay);
+
+				if(totalAnimationDuration > animationsCollection.animations[svgClass].args[3])
+					animationsCollection.animations[svgClass].args[3] = totalAnimationDuration;
+			}
+			//else { //append it to the list of animations pending a positive visibility ("isOnScreen") check
+				//animationsCollection.animations.push({method: animator.vectorOnScrollEvent, args: [svg, delay, svgClass]}); //adds the animate SVG stroke function to the list of pending animations, with its respective arguments (being the SVG to be animated)
+				
+				//if(!animator.pendingFillDurations[svgClass] || totalAnimationDuration > animator.pendingFillDurations[svgClass])
+					//animator.pendingFillDurations[svgClass] = totalAnimationDuration;
+			//}
 		}
 	},
 
@@ -138,8 +149,8 @@ animator = {
 				$(`#${cards[i].id}`).css({
 					'animation': `cards-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${animator.getVectorAnimationDuration(svg, false)}s`
 				});
-			else //... otherwise, append it to the list of animations pending a positive visibility (on screen) check
-				animationsCollection.animations.push({method: animator.cardsOnScrollEvent, args: [cards, svg]}); //adds this animate function to the list of pending animations, with its respective arguments
+			//else //... otherwise, append it to the list of animations pending a positive visibility (on screen) check
+				//animationsCollection.animations.push({method: animator.cardsOnScrollEvent, args: [cards, svg]}); //adds this animate function to the list of pending animations, with its respective arguments
 		}
 	},
 
@@ -155,13 +166,15 @@ animator = {
 		//return false; //shouldn't be needed as, at this point, the value returned will be 'undefined' which is the equivalent of 'false'
 	},
 	
-	vectorOnScrollEvent: (svg, delay, svgClass) => {
-		console.log(`running ${svg.id}`);
-		if (mathematics.isOnScreen(svg.parentElement)){
-			console.log(svg, animator.pendingFillDurations, svgClass);
+	vectorOnScrollEvent: (svgClassContainer, svgClass, delays, totalAnimationDuration) => {
+		//console.log(`running ${svgClass} ${mathematics.isOnScreen(svgClassContainer)}`);
+		if (mathematics.isOnScreen(svgClassContainer)){
+			//console.log(svg, animator.pendingFillDurations, svgClass);
 			//the "isHeading" parameter is false for both of these animations here because we will never animate the heading via a scroll listener
-			animator.animateVectorStroke(svg, delay, false);
-			animator.animateVectorFill(`.${svgClass}`, animator.pendingFillDurations[svgClass], false); //delay + animator.getVectorAnimationDuration(svg, false), false);
+			for (let i = 0; i < svgClassContainer.childElementCount; i++)
+				animator.animateVectorStroke(svgClassContainer.children[i], delays[i], false);
+
+			animator.animateVectorFill(`.${svgClass}`, totalAnimationDuration, false); //delay + animator.getVectorAnimationDuration(svg, false), false);
 			
 			return true;
 		}
@@ -207,17 +220,22 @@ mathematics = {
 }
 
 animationsCollection = { //contains a list of methods that begin animations when specific elements are scrolled down to
-	animations: [], //this is a list of methods which invoke pending animations
+	animations: {}, //this is a list of methods which invoke pending animations
 
-	deleteAnimation: (i) => { //we don't want the animation to run every time it's scrolled to so once it has ran, delete it
+	/*deleteAnimation: (i) => { //we don't want the animation to run every time it's scrolled to so once it has ran, delete it
 		const index = animationsCollection.animations[i];
 		if (index !== -1)
 			animationsCollection.animations.splice(index, 1);
+	}*/
+	deleteAnimation: (svgClass) => {
+		if(animationsCollection.animations.hasOwnProperty(svgClass))
+			delete animationsCollection.animations[svgClass];
 	}
 };
 
 window.onscroll = () => { //I tried to use the "scroll" event listener instead of this, but the listener would be deleted after the user's first scroll, rendering it useless for this purpose
-	for (let i = 0; i < animationsCollection.animations.length; i++)
-		if (animationsCollection.animations[i].method.apply(this, animationsCollection.animations[i].args)) //'.apply()' unpacks the list of arguments required for this animation
-			animationsCollection.deleteAnimation(i); //if this animation has begun (the animations' method returned 'true') then it is time to stop the animation from pending
+	//for (let i = 0; i < animationsCollection.animations.length; i++)
+	for(const [key, value] of Object.entries(animationsCollection.animations))
+		if (value.method.apply(this, value.args)) //'.apply()' unpacks the list of arguments required for this animation
+			animationsCollection.deleteAnimation(key); //if this animation has begun (the animations' method returned 'true') then it is time to stop the animation from pending
 }
