@@ -39,11 +39,18 @@ animator = {
 
 			if (!svgs[i].classList.contains(previousSVGClass) || i === svgs.length - 1) { //if we're now iterating through a new SVG class, animate the previous class's vectors' fill
 				if(wasVisible)
+					//console.log(totalAnimationDuration);
 					animator.animateVectorFill(`.${previousSVGClass}`, totalAnimationDuration, isHeading);
+
 				//console.log(svgs[i].parentElement, wasVisible, totalAnimationDuration);
 				if (previousSVGClass === "heading-svg" && !introPrevented) //if the previous SVG class is the heading SVG class, we also want to animate in the subheadings ("SOFTWARE ENGINEER" and the SVG icon) in with the "totalAnimationDuration" as the delay as well
 					animator.initialiseSubheadingAnimation(true, totalAnimationDuration);
 
+				if (isVisible)
+					for (const animation of animator.getSVGContainerSiblingElements(svgs[i].parentElement)) {
+						animation.args.push(totalAnimationDuration);
+						animation.method.apply(this, animation.args);
+					}
 				//if (isVisible && i === svgs.length - 1 && svgs[i].classList[1] !== previousSVGClass) //if this is the final SVG class we're iterating but it's also a new class, we need to initialise it's animations as there won't be another iteration of the loop
 					//animator.determineVectorAnimationState(svgs[i], isVisible, isHeading, 0);
 					//animator.animateVectorFill(`.${svgs[i].classList[1]}`, animator.getVectorAnimationDuration(svgs[i], isHeading), isHeading);
@@ -96,7 +103,7 @@ animator = {
 		
 		for (let sibling of container.parentElement.children)
 			if (sibling != container && sibling.classList.contains("card-container")) //in the future, there will be more than just "card-container" classes that accompany an SVG container, so this line and the next are subject to change
-			containerSiblingsAnimations.push({method: animator.animateCards, args: [sibling.children]});
+				containerSiblingsAnimations.push({method: animator.animateCards, args: [sibling]});
 
 		return containerSiblingsAnimations;
 	},
@@ -157,10 +164,11 @@ animator = {
 		});
 	},
 
-	animateCards: (cards, delay) => {
-		console.log(cards, delay)
-		for (let i = 0; i < cards.length; i++)
-			$(`#${cards[i].id}`).css({
+	animateCards: (cardsContainer, delay) => {
+		//console.trace();
+		//console.log(cardsContainer, delay);
+		//for (let i = 0; i < cards.length; i++)
+			$(cardsContainer).css({
 				'animation': `cards-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${delay}s`
 			});
 	},
@@ -193,7 +201,7 @@ animator = {
 	},*/
 		
 	vectorOnScrollEvent: (svgClassContainer, svgClass, delays, totalAnimationDuration, containerSiblingsAnimations) => {
-		console.log(containerSiblingsAnimations);
+		//console.log(containerSiblingsAnimations, totalAnimationDuration);
 		if (mathematics.isOnScreen(svgClassContainer)){
 			//console.log(svg, animator.pendingFillDurations, svgClass);
 
