@@ -33,13 +33,20 @@ animator = {
 
 			//if the current SVG belongs to a new SVG class or it's in a new row within a flexbox, reset it's stroke animation delay to zero seconds
 			if (!svgs[i].classList.contains(previousSVGClass) || mathematics.calculateFlexChildRow(svgs[i].parentElement, svgs[i]) > currentFlexRow)
+				//console.log("delay = 0");
 				delay = 0;
+			if(i === svgs.length - 1) { //this is used to delay the vector fill animation of the final SVG class: you can see it's the same as the code at the bottom of this loop, but for the final SVG, the code at the bottom isn't executed until after the final class's vector fill animation has already begun; so we need to update "totalAnimationDuration" of the final SVG class here before the fill animation starts
+				let finalFillDelay = delay + animator.getVectorAnimationDuration(svgs[i], isHeading); //add the duration of this vector's stroke animation to the delay of animating the next vector's stroke
+				//console.log(`delay += ${delay} (totalAnimationDuration = ${totalAnimationDuration})`);
+				if (finalFillDelay > totalAnimationDuration) //this is used to keep track of the highest delay recorded for this SVG class; the highest delay will be the flexbox row that takes the longest to animate (due to having more letters), and we then use this highest delay to delay each SVG in this class's vector fill animation: once every row's letter's stroke has been animated in
+					totalAnimationDuration = finalFillDelay;
+			}
 
 			animator.determineVectorAnimationState(svgs[i], currentSVGClass, isVisible, isHeading, delay, totalAnimationDuration);
 
 			if (!svgs[i].classList.contains(previousSVGClass) || i === svgs.length - 1) { //if we're now iterating through a new SVG class, animate the previous class's vectors' fill
-				if(wasVisible)
-					//console.log(totalAnimationDuration);
+				if(wasVisible) //only occurs when we're done initialising a vector class: once we have the duration of every letter's stroke animation and if the vector is on screen (if it's off screen, there's an onScroll event that will animate the fill instead), we need to use the duration to set the delay of which to start the vector fill animation
+					//console.log(svgs[i], totalAnimationDuration, isHeading);
 					animator.animateVectorFill(`.${previousSVGClass}`, totalAnimationDuration, isHeading);
 
 				//console.log(svgs[i].parentElement, wasVisible, totalAnimationDuration);
@@ -56,10 +63,13 @@ animator = {
 					//animator.animateVectorFill(`.${svgs[i].classList[1]}`, animator.getVectorAnimationDuration(svgs[i], isHeading), isHeading);
 			
 				previousSVGClass = currentSVGClass;
+				totalAnimationDuration = 0;
 			}
 
-			delay += animator.getVectorAnimationDuration(svgs[i], isHeading); //add the duration of this vector's stroke animation to the delay of animating the next vector's stroke
-			if (delay > totalAnimationDuration) //this is used to keep track of the highest delay recorded for this SVG class; the highest delay will be the flexbox row that takes the longest to animate (due to having more letters), and we then use this highest delay to delay each SVG in this class's vector fill animation: once every row's letter's stroke has been animated in
+			//this code is the same as the code in the "if(i === svgs.length -1)"; it's more efficient having these lines duplicated as moving them to a separate function creates more lines (as JavaScript can neither pass by reference nor return more than one value from a function)
+			delay += animator.getVectorAnimationDuration(svgs[i], isHeading);
+			//console.log(`delay += ${delay}`);
+			if (delay > totalAnimationDuration)
 				totalAnimationDuration = delay;
 		}
 	},
@@ -159,6 +169,8 @@ animator = {
 	},
 
 	animateVectorFill: (identifier, delay, isHeading) => {
+		//console.trace();
+		//console.log(identifier, delay);
 		$(`${identifier}`).css({
 			'animation': `vector-fill-animation ${isHeading ? mathematics.heading_svg_fid : mathematics.fade_in_duration}s ease forwards ${delay}s`
 		});
