@@ -8,9 +8,9 @@ animator = {
 
 	getVectorAnimationDuration: (svg, isHeading) => {
 		const delay = isHeading ? mathematics.heading_svg_dbl : mathematics.delay_between_letters;
-		const duration = isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter;
+		//const duration = isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter;
 		
-		return (delay * svg.childElementCount) + duration;
+		return svg.childElementCount * delay; //(delay * svg.childElementCount) + duration;
 	},
 
 	initialiseVectorAnimations: () => {
@@ -32,9 +32,11 @@ animator = {
 			animator.hideVectorPaths(svgs[i], preventIntro);
 
 			//if the current SVG belongs to a new SVG class or it's in a new row within a flexbox, reset it's stroke animation delay to zero seconds
-			if (!svgs[i].classList.contains(previousSVGClass) || mathematics.calculateFlexChildRow(svgs[i].parentElement, svgs[i]) > currentFlexRow)
+			if (!svgs[i].classList.contains(previousSVGClass)
+				|| mathematics.calculateFlexChildRow(svgs[i].parentElement, svgs[i]) > currentFlexRow)
 				//console.log("delay = 0");
 				delay = 0;
+
 			if(i === svgs.length - 1) { //this is used to delay the vector fill animation of the final SVG class: you can see it's the same as the code at the bottom of this loop, but for the final SVG, the code at the bottom isn't executed until after the final class's vector fill animation has already begun; so we need to update "totalAnimationDuration" of the final SVG class here before the fill animation starts
 				let finalFillDelay = delay + animator.getVectorAnimationDuration(svgs[i], isHeading); //add the duration of this vector's stroke animation to the delay of animating the next vector's stroke
 				//console.log(`delay += ${delay} (totalAnimationDuration = ${totalAnimationDuration})`);
@@ -42,20 +44,29 @@ animator = {
 					totalAnimationDuration = finalFillDelay;
 			}
 
-			animator.determineVectorAnimationState(svgs[i], currentSVGClass, isVisible, isHeading, delay, totalAnimationDuration);
+			animator.determineVectorAnimationState(
+				svgs[i], currentSVGClass, isVisible, isHeading, delay,
+				totalAnimationDuration + (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter)
+			);
 
 			if (!svgs[i].classList.contains(previousSVGClass) || i === svgs.length - 1) { //if we're now iterating through a new SVG class, animate the previous class's vectors' fill
 				if(wasVisible) //only occurs when we're done initialising a vector class: once we have the duration of every letter's stroke animation and if the vector is on screen (if it's off screen, there's an onScroll event that will animate the fill instead), we need to use the duration to set the delay of which to start the vector fill animation
 					//console.log(svgs[i], totalAnimationDuration, isHeading);
-					animator.animateVectorFill(`.${previousSVGClass}`, totalAnimationDuration, isHeading);
+					animator.animateVectorFill(
+						`.${previousSVGClass}`,
+						totalAnimationDuration + (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter),
+						isHeading
+					);
 
 				//console.log(svgs[i].parentElement, wasVisible, totalAnimationDuration);
 				if (previousSVGClass === "heading-svg" && !introPrevented) //if the previous SVG class is the heading SVG class, we also want to animate in the subheadings ("SOFTWARE ENGINEER" and the SVG icon) in with the "totalAnimationDuration" as the delay as well
-					animator.initialiseSubheadingAnimation(true, totalAnimationDuration);
+					animator.initialiseSubheadingAnimation(true,
+						totalAnimationDuration + (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter)
+					);
 
 				if (isVisible)
 					for (const animation of animator.getSVGContainerSiblingElements(svgs[i].parentElement)) {
-						animation.args.push(totalAnimationDuration);
+						animation.args.push(totalAnimationDuration + (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter));
 						animation.method.apply(this, animation.args);
 					}
 				//if (isVisible && i === svgs.length - 1 && svgs[i].classList[1] !== previousSVGClass) //if this is the final SVG class we're iterating but it's also a new class, we need to initialise it's animations as there won't be another iteration of the loop
