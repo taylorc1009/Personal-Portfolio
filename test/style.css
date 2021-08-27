@@ -209,6 +209,13 @@ body {
 	}
 }
 
+#welcome-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0 10px;
+}
+
 @media screen and (max-width: 684px) {
 	#heading-svg-1 {
 		width: 64vw;
@@ -231,11 +238,22 @@ body {
 	}
 }
 
-#welcome-container {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	gap: 0 10px;
+@media screen and (max-width: 457px) {
+	#welcome-container svg:nth-child(1) {
+		width: 217.4px;
+	}
+
+	#welcome-container svg:nth-child(2) {
+		width: 47.1px;
+	}
+
+	#welcome-container svg:nth-child(3) {
+		width: 75.4px;
+	}
+
+	#welcome-container svg:nth-child(4) {
+		width: 300px;
+	}
 }
 
 .body-svg {
