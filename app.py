@@ -38,7 +38,7 @@ def customized_response_handler(access_token, identity):
 
 @app.route("/")
 def home():
-	return render_template("home.html")
+	return render_template("index.html")
 
 api.add_resource(UserRegister, '/register')
 
