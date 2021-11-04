@@ -1,0 +1,355 @@
+:root {
+	--color-transparent: 255, 255, 255, 0;
+	--color-soft-white: 255, 255, 255, 0.3;
+	--color-hard-white: 255, 255, 255, 0.6;
+	--color-pure-white: 255, 255, 255, 1;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+	/* background-color: rgb(40, 40, 40); */
+	background-image: linear-gradient(to right, rgb(20, 20, 30), rgb(20, 20, 55));
+}
+
+#page-grid {
+	padding: 0;
+	margin: 0;
+	display: grid;
+	grid-template-columns: auto;
+	grid-row-gap: 20vw;
+}
+
+#heading {
+	height: 40vw;
+	width: inherit;
+	position: relative;
+	background-image: linear-gradient(to right, rgb(171, 0, 255), rgb(255, 128, 0)); /* blue to cyan: rgb(0, 112, 255), rgb(2, 211, 248) */
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	clip-path: polygon(0 0, 100% 0, 100% 60%, 0 100%);
+}
+
+#heading-container {
+	/*transform: translateY(50%);*/
+	padding: 5vw 20px;
+}
+
+#heading-items-list {
+	list-style: none;
+	padding-inline-start: 0;
+
+	display: inline-flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	justify-content: space-around;
+
+	margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+/*.heading-svg {
+	/* width: 52vw; / adjusts the size with the page (viewport width) /
+
+	/*padding-left: 20px;/
+  	/*top: 30%;
+	transform: translateY(-50%);/
+
+	/*animation: vector-fill-animation 0.5s ease forwards 4.4s;/
+}*/
+
+#heading-svg-1 {
+	width: 536px;
+	
+}
+
+#heading-svg-2 {
+	width: 747px;
+}
+
+@keyframes vector-stroke-animation {
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+@keyframes vector-fill-animation {
+	/*from {
+		fill: rgba(var(--color-transparent));
+	}*/
+	to {
+		fill: rgba(var(--color-pure-white));;
+	}
+}
+
+#heading-item-1 {
+	display: inline-flex;
+	justify-content: space-evenly;
+}
+
+#heading-item-2 {
+	display: inline-flex;
+	justify-content: flex-start;
+	gap: 10px;
+}
+
+#heading-text {
+	/*width: auto;
+  	height: 50vw;*/ /* adjusts the font size with the page */
+	/*margin-right: 5px;*/
+	margin-top: 10px;
+	margin-bottom: 0;
+	font-size: 65px;
+	font-family: 'Varela Round', serif;
+	/*padding-left: 20px;
+  	position: absolute;*/
+	
+	font-weight: bold;
+	color: rgba(var(--color-transparent));
+
+	/*animation: glide-reveal-animation 1s ease forwards 4.4s var(--start) var(--end);*/
+
+}
+@keyframes text-reveal-animation {
+	from {
+		color: rgba(var(--color-transparent));
+		margin-top: 10px;
+		margin-bottom: 0;
+	}
+	to {
+		color: rgba(var(--color-pure-white));
+		margin-top: 0;
+		margin-bottom: 10px;
+	}
+}
+
+#heading-icon {
+	/* display: inline-block; */
+  	width: 65px;
+	height: auto;
+	/*margin-left: 5px;*/
+	margin-top: 10px;
+	margin-bottom: 0;
+
+	/*padding-right: 20px;
+	transform: translateY(140%);
+	float: right;*/
+
+	fill-opacity: 0;
+	/* animation: vector-reveal-animation 0.5s ease forwards 4.4s; */
+}
+@keyframes vector-reveal-animation {
+	from {
+		fill-opacity: 0;
+		margin-top: 10px;
+		margin-bottom: 0;
+	}
+	to {
+		fill-opacity: 1;
+		margin-top: 0;
+		margin-bottom: 10px;
+	}
+}
+
+@media screen and (min-width: 1283px) and (max-width: 1624px) {
+	#heading-svg-1 {
+		width: 33vw;
+	}
+	
+	#heading-svg-2 {
+		width: 46vw;
+	}
+
+	#heading-text {
+		font-size: 4vw;
+	}
+
+	#heading-icon {
+		width: 4vw;
+	}
+}
+
+@media screen and (max-width: 1282px) {
+	#heading {
+		clip-path: none;
+		height: fit-content;
+	}
+
+	#heading-container {
+		display: table; /* allows centre-ing of lists to work */
+		margin: 0 auto;
+	}
+
+	#heading-item-1 {
+		flex-direction: column;
+    	align-items: center;
+	}
+
+	#heading-item-2 {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	#heading-text {
+		text-align: center;
+		font-size: 50px;
+	}
+
+	#heading-icon {
+		width: 50px;
+	}
+
+	#heading-svg-1 {
+		width: 422px;
+		
+	}
+
+	#heading-svg-2 {
+		width: 593px;
+	}
+}
+
+#welcome-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0 10px;
+}
+
+@media screen and (max-width: 684px) {
+	#heading-svg-1 {
+		width: 64vw;
+	}
+
+	#heading-svg-2 {
+		width: 90vw;
+	}
+
+	#heading-text {
+		font-size: 7.3vw;
+	}
+
+	#heading-icon {
+		width: 7.3vw;
+	}
+
+	#heading-item-2 {
+		gap: 1.4vw;
+	}
+}
+
+@media screen and (max-width: 457px) {
+	#welcome-container svg:nth-child(1) {
+		width: 217.4px;
+	}
+
+	#welcome-container svg:nth-child(2) {
+		width: 47.1px;
+	}
+
+	#welcome-container svg:nth-child(3) {
+		width: 75.4px;
+	}
+
+	#welcome-container svg:nth-child(4) {
+		width: 300px;
+	}
+}
+
+.body-svg {
+	/*display: block;
+	margin: auto;
+	width: 55vw;
+	min-width: 400px;*/
+  	/* height: 55vh; / * adjusts the font size with the page */
+}
+
+.card-container {
+	display: table;   /* allows centre-ing of lists to work */
+	margin: 0 auto;
+	opacity: 0;
+}
+.card-list {
+	list-style: none;
+	padding-inline-start: 0;
+
+	display: inline-flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+.body-card {
+	display: inline;
+	overflow: hidden;
+
+	width: auto;
+	height: auto;
+	min-width: 150px;
+	min-height: 350px;
+	max-width: 300px;
+	max-height: 500px;
+	margin: 20px;
+
+	background-image: linear-gradient(to right top, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.35));
+	border-radius: 15px;
+	box-shadow: 0 0 10px rgba(var(--color-soft-white));
+	backdrop-filter: blur(5px);
+}
+.body-card > .card-title {
+	font-size: 20pt;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: rgba(var(--color-pure-white));
+}
+.body-card > .card-text {
+	font-size: 12pt;
+	text-align: left;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.body-card p {
+	color: rgba(var(--color-pure-white))
+}
+.body-card > :first-child {
+	padding-top: 10px;
+}
+.body-card * {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.body-card > :last-child {
+	padding-bottom: 10px;
+}
+@keyframes cards-reveal-animation {
+	from {
+		opacity: 0;
+		transform: translateY(1%);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0%);
+	}
+}
+
+/*.body-card {
+	background-color: rgba(var(--color-soft-white));
+	border-radius: 15px;
+	box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+	backdrop-filter: blur(5px);
+}
+.body-card * {
+	padding: 10px;
+}
+.body-card p {
+	color: rgba(var(--color-pure-white))
+}*/
+/* this allows us to only pad only the element edges at the edge of the card, rather than between every element as well */
+/*.body-card:first-child {
+	padding-top: 10px;
+}
+.body-card > section {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.body-card:last-child {
+	padding-bottom: 10px;
+}*/
