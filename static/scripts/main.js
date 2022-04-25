@@ -111,8 +111,9 @@ animator = {
 
 			$(`#${paths[j].id}`).css({
 				'stroke-dasharray': `${pathLength}`,
-				'stroke-dashoffset': `${preventIntro ? 0 : pathLength}`
-			})
+				'stroke-dashoffset': `${preventIntro ? 0 : pathLength}`,
+				'stroke-opacity': '1'
+			});
 		}
 		$(`#${svg.id}`).css({
 			'fill': `${preventIntro ? 'rgba(var(--color-pure-white))' : 'rgba(var(--color-transparent))'}`

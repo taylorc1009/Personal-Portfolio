@@ -20,6 +20,10 @@ body {
 	grid-row-gap: 20vw;
 }
 
+.text-as-svg > path { /* hide all SVGs' paths until the animations begin */
+	stroke-opacity: 0;
+}
+
 #heading {
 	height: 40vw;
 	width: inherit;
@@ -300,11 +304,13 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 	font-weight: bold;
 	color: rgba(var(--color-pure-white));
+	font-family: 'Varela Round', serif;
 }
 .body-card > .card-text {
 	font-size: 12pt;
 	text-align: left;
 	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Varela Round', serif;
 }
 .body-card p {
 	color: rgba(var(--color-pure-white))
