@@ -20,6 +20,10 @@ body {
 	grid-row-gap: 20vw;
 }
 
+.text-as-svg > path { /* hide all SVGs' paths until the animations begin */
+	stroke-opacity: 0;
+}
+
 #heading {
 	height: 40vw;
 	width: inherit;
