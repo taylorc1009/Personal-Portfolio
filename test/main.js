@@ -97,8 +97,8 @@ animator = {
 		var containerSiblingsAnimations = [];
 		
 		for (let sibling of container.parentElement.children)
-			if (sibling != container && sibling.classList.contains("card-container")) //in the future, there will be more than just "card-container" classes that accompany an SVG container, so this line and the next are subject to change
-				containerSiblingsAnimations.push({method: animator.animateCards, args: [sibling]});
+			if (sibling != container) //in the future, there will be more than just "card-container" classes that accompany an SVG container, so this line and the next are subject to change
+				containerSiblingsAnimations.push({method: animator.animateSiblings, args: [sibling]});
 
 		return containerSiblingsAnimations;
 	},
@@ -160,9 +160,9 @@ animator = {
 		});
 	},
 
-	animateCards: (cardsContainer, delay) => {
+	animateSiblings: (cardsContainer, delay) => {
 		$(cardsContainer).css({
-			'animation': `cards-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${delay}s`
+			'animation': `svg-sibling-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${delay}s`
 		});
 	},
 		
