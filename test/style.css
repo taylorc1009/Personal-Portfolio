@@ -375,6 +375,7 @@ body {
 }
 
 #bitmoji {
+	cursor: pointer;
 	width: 300px;
 	height: auto;
 	float: right;

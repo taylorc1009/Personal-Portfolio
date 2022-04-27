@@ -236,3 +236,10 @@ window.onscroll = () => { //I tried to use the "scroll" event listener instead o
 		if (value.method.apply(this, value.args)) //'.apply()' unpacks the list of arguments required for this animation
 			animationsCollection.deleteAnimation(key); //if this animation has begun (the animations' method returned 'true') then it is time to stop the animation from pending
 }
+
+miscellaneous = {
+	copyrightNotice: () => {
+		if (window.confirm('Bitmoji avatars are copyright (c) protected by the Bitmoji organisation. The owners have deemed it legal to reuse their artwork for non-commercial purposes. Would you like to view this information in their guidelines?')) 
+			window.location.href='https://www.bitmoji.com/bitmoji_brand_guidelines.pdf#page=4';
+	}
+}
