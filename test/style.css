@@ -73,12 +73,11 @@ body {
 }*/
 
 #heading-svg-1 {
-	width: 536px;
-	
+	width: 30vw;/*536px;*/
 }
 
 #heading-svg-2 {
-	width: 747px;
+	width: 43vw;/*747px;*/
 }
 
 @keyframes vector-stroke-animation {
@@ -112,7 +111,7 @@ body {
 	/*margin-right: 5px;*/
 	margin-top: 10px;
 	margin-bottom: 0;
-	font-size: 65px;
+	font-size: 3vw;/*65px;*/
 	font-family: 'Varela Round', serif;
 	/*padding-left: 20px;
   	position: absolute;*/
@@ -138,7 +137,7 @@ body {
 
 #heading-icon {
 	/* display: inline-block; */
-  	width: 65px;
+  	width: 3vw;/*65px;*/
 	height: auto;
 	/*margin-left: 5px;*/
 	margin-top: 10px;
@@ -164,7 +163,7 @@ body {
 	}
 }
 
-@media screen and (min-width: 1283px) and (max-width: 1624px) {
+@media screen and (min-width: 1283px) and (max-width: 2048px) {
 	#heading-svg-1 {
 		width: 33vw;
 	}
