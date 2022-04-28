@@ -97,8 +97,8 @@ animator = {
 		var containerSiblingsAnimations = [];
 		
 		for (let sibling of container.parentElement.children)
-			if (sibling != container && sibling.classList.contains("card-container")) //in the future, there will be more than just "card-container" classes that accompany an SVG container, so this line and the next are subject to change
-				containerSiblingsAnimations.push({method: animator.animateCards, args: [sibling]});
+			if (sibling != container) //in the future, there will be more than just "card-container" classes that accompany an SVG container, so this line and the next are subject to change
+				containerSiblingsAnimations.push({method: animator.animateSiblings, args: [sibling]});
 
 		return containerSiblingsAnimations;
 	},
@@ -160,9 +160,9 @@ animator = {
 		});
 	},
 
-	animateCards: (cardsContainer, delay) => {
+	animateSiblings: (cardsContainer, delay) => {
 		$(cardsContainer).css({
-			'animation': `cards-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${delay}s`
+			'animation': `svg-sibling-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${delay}s`
 		});
 	},
 		
@@ -235,4 +235,11 @@ window.onscroll = () => { //I tried to use the "scroll" event listener instead o
 	for(const [key, value] of Object.entries(animationsCollection.animations))
 		if (value.method.apply(this, value.args)) //'.apply()' unpacks the list of arguments required for this animation
 			animationsCollection.deleteAnimation(key); //if this animation has begun (the animations' method returned 'true') then it is time to stop the animation from pending
+}
+
+miscellaneous = {
+	copyrightNotice: () => {
+		if (window.confirm('Bitmoji avatars are copyright (c) protected by the Bitmoji organisation. The owners have deemed it legal to reuse their artwork for non-commercial purposes. Would you like to view this information in their guidelines?')) 
+			window.location.href='https://www.bitmoji.com/bitmoji_brand_guidelines.pdf#page=4';
+	}
 }
