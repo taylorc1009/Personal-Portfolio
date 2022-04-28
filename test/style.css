@@ -191,6 +191,7 @@ body {
 	#heading-container {
 		display: table; /* allows centre-ing of lists to work */
 		margin: 0 auto;
+		padding: 5vw 0;
 	}
 
 	#heading-item-1 {
