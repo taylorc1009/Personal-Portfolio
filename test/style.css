@@ -295,12 +295,8 @@ body {
 	display: inline;
 	overflow: hidden;
 
-	width: auto;
-	height: auto;
-	min-width: 150px;
-	min-height: 350px;
-	max-width: 300px;
-	max-height: 500px;
+	width: 300px;
+	height: 500px;
 	margin: 20px;
 
 	background-image: linear-gradient(to right top, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.35));
@@ -308,29 +304,48 @@ body {
 	box-shadow: 0 0 10px rgba(var(--color-soft-white));
 	backdrop-filter: blur(5px);
 }
-.body-card > .card-title {
+.body-card-grid {
+	display: grid;
+	grid-template-columns: auto auto;
+}
+.body-card-heading {
+	width: inherit;
+	display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+.body-card-heading > .card-title {
 	font-size: 20pt;
 	text-align: center;
 	font-weight: bold;
 	color: rgba(var(--color-pure-white));
 	font-family: 'Varela Round', serif;
+	margin-block-start: 0;
+	margin-block-end: 0;
+	width: 70%;
 }
-.body-card > .card-text {
+.body-card-heading > img {
+	width: 30%;
+}
+.to-circle-img {
+	clip-path: circle();
+}
+.body-card-grid > .card-text {
 	font-size: 12pt;
 	text-align: left;
 	font-family: 'Varela Round', serif;
+	grid-column-start: 1;
+    grid-column-end: 2;
+	color: rgba(var(--color-pure-white));
 }
-.body-card p {
-	color: rgba(var(--color-pure-white))
-}
-.body-card > :first-child {
+.body-card-grid > :first-child {
 	padding-top: 10px;
 }
-.body-card * {
+.body-card-grid > * {
 	padding-left: 10px;
 	padding-right: 10px;
 }
-.body-card > :last-child {
+.body-card-grid > :last-child {
 	padding-bottom: 10px;
 }
 @keyframes svg-sibling-reveal-animation {
@@ -392,7 +407,7 @@ body {
 	/*opacity: 0;*/
 }
 
-#about-me-paragraph {
+.about-me-paragraph {
 	hyphens: auto;
 }
 
