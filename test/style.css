@@ -222,7 +222,7 @@ body {
 	}
 }
 
-#welcome-container {
+.body-svg-container {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
