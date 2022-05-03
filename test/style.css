@@ -267,6 +267,14 @@ body {
 	#welcome-container svg:nth-child(4) {
 		width: 300px;
 	}
+
+	#employment-container svg:nth-child(1) {
+		width: 209.4px;
+	}
+
+	#employment-container svg:nth-child(2) {
+		width: 302.2px;
+	}
 }
 
 .body-grid-item > *:not(:last-child) {
