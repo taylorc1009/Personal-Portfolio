@@ -16,7 +16,6 @@ body {
 	padding: 0;
 	margin: 0;
 	display: grid;
-	grid-template-columns: auto;
 	grid-row-gap: 20vw;
 }
 
@@ -30,18 +29,18 @@ body {
 
 #heading {
 	height: 40vw;
-	width: inherit;
-	position: relative;
-	background-image: linear-gradient(to right, rgb(171, 0, 255), rgb(255, 128, 0));
+	background-image: linear-gradient(to right, #ca254d, #ff614b, #fc7f56, #ffb75e);;
 	/* blue to cyan: rgb(0, 112, 255), rgb(2, 211, 248) */
 	/* linear-gradient(to right, rgb(249 63 63), rgb(255 140 24), rgb(255 217 78)) */
 	/* linear-gradient(to right, #7e1c67, #ad2275, #d73679, #d7505f, #de7963, #df9d72, #b79d73) */
 	/* linear-gradient(to right, #ad2275, #e55767, #f98c74, #f1aa7b, #d5b580) */
 	/* linear-gradient(to right, #7e1c67, #e55767, #f98c74, #f1aa7b, #d5b580) */
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
+	/* linear-gradient(to right,#a14e7a, #b1506f, #f15676, #f8596f, #f9726e, #fa7a6f, #ffa46e, #eacc6d) */
+	/* linear-gradient(to right, #d72b54, #fd5b44, #fc7f56) */
+	/* linear-gradient(to right, #d72b54, #ff614b, #fc7f56, #ffb75e) */
+	/* linear-gradient(to right, #9f2569, #ca254d, #ff614b, #fc7f56, #ffb75e); */
 	clip-path: polygon(0 0, 100% 0, 100% 60%, 0 100%);
+	z-index: -1;
 }
 
 #heading-container {
@@ -182,15 +181,24 @@ body {
 }
 
 @media screen and (max-width: 1282px) {
+	#page-grid {
+		grid-template-rows: 90vh;
+	}
+
 	#heading {
-		clip-path: none;
-		height: fit-content;
+		/* clip-path: none;
+		height: fit-content; */
+		clip-path: circle(70.7% at 50% 25%);
+		height: auto;
+		text-align: center;
 	}
 
 	#heading-container {
-		display: table; /* allows centre-ing of lists to work */
-		margin: 0 auto;
-		padding: 5vw 0;
+		position: relative;
+		top: 40%;
+		-webkit-transform: translateY(-60%);
+		-ms-transform: translateY(-60%);
+		transform: translateY(-60%);
 	}
 
 	#heading-item-1 {
@@ -222,7 +230,7 @@ body {
 	}
 }
 
-#welcome-container {
+.body-svg-container {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -267,6 +275,14 @@ body {
 	#welcome-container svg:nth-child(4) {
 		width: 300px;
 	}
+
+	#employment-container svg:nth-child(1) {
+		width: 209.4px;
+	}
+
+	#employment-container svg:nth-child(2) {
+		width: 302.2px;
+	}
 }
 
 .body-grid-item > *:not(:last-child) {
@@ -302,12 +318,16 @@ body {
 .body-card-grid {
 	display: grid;
 	grid-template-columns: auto auto;
+	grid-template-rows: 100px;
+	row-gap: 2px;
+	height: 100%;
 }
 .body-card-heading {
 	width: inherit;
 	display: flex;
     flex-wrap: nowrap;
     align-items: center;
+	cursor: pointer;
 }
 .body-card-heading > .card-title {
 	font-size: 20pt;
@@ -325,23 +345,90 @@ body {
 .to-circle-img {
 	clip-path: circle();
 }
-.body-card-grid > .card-text {
+.body-card-body {
+	grid-column-start: 1;
+    grid-column-end: 2;
+	overflow-y: auto;
+	padding-right: 4px;
+
+	mask-image: linear-gradient(
+		to bottom,
+		transparent,
+		black 32px,
+		black calc(100% - 32px),
+		transparent
+	), linear-gradient(black, black);
+	mask-size: calc(100% - 8px) 100%, 8px 100%;
+    mask-position: 0 0, 100% 0;
+    mask-repeat: no-repeat, no-repeat;
+
+    -webkit-mask-image: linear-gradient(
+		to bottom,
+		transparent,
+		black 32px,
+		black calc(100% - 32px),
+		transparent
+	), linear-gradient(black, black);
+	-webkit-mask-size: calc(100% - 6px) 100%, 6px 100%;
+    -webkit-mask-position: 0 0, 100% 0;
+    -webkit-mask-repeat: no-repeat, no-repeat;
+}
+.body-card-body::-webkit-scrollbar {
+	display: block;
+    width: 6px;
+	right: 50px
+}
+.body-card-body::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 9999px;
+}
+.body-card-body::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+.body-card-body::-webkit-scrollbar-track-piece:start {
+	background: transparent;
+	margin-top: 32px;
+}
+.body-card-body::-webkit-scrollbar-track-piece:end {
+	background: transparent;
+	margin-bottom: 32px;
+}
+.body-card-body::-webkit-scrollbar-track-piece {
+	margin-left: 10px;
+}
+.card-text {
 	font-size: 12pt;
 	text-align: left;
 	font-family: 'Varela Round', serif;
-	grid-column-start: 1;
-    grid-column-end: 2;
 	color: rgba(var(--color-pure-white));
 }
+.card-text > a {
+	color: #1c8ade;
+	font-weight: bolder;
+	text-decoration: none;
+}
+.card-text > a:hover {
+	color: #1d9af9;
+	font-weight: bolder;
+	text-decoration: underline;
+}
+.body-card-body > :first-child {
+	margin-block-start: 0;
+	margin-top: 32px;
+}
+.body-card-body > :last-child {
+	margin-block-end: 0;
+	margin-bottom: 32px;
+}
 .body-card-grid > :first-child {
-	padding-top: 10px;
+	margin-top: 10px;
 }
 .body-card-grid > * {
-	padding-left: 10px;
-	padding-right: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
 }
 .body-card-grid > :last-child {
-	padding-bottom: 10px;
+	margin-bottom: 10px;
 }
 @keyframes svg-sibling-reveal-animation {
 	from {
