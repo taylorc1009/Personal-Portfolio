@@ -10,7 +10,7 @@ from resources.user import UserRegister
 from datetime import timedelta
 from db import db
 
-api_necessary = True # this is only used when I don't want the API to run in deployment, for example: during design periods an early stages
+api_necessary = False # this is only used when I don't want the API to run in deployment, for example: during design periods an early stages
 
 app = Flask(__name__)
 app.secret_key = 'example-key'
