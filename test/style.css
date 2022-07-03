@@ -199,6 +199,7 @@ body {
 		-webkit-transform: translateY(-60%);
 		-ms-transform: translateY(-60%);
 		transform: translateY(-60%);
+		padding: 0;
 	}
 
 	#heading-item-1 {
