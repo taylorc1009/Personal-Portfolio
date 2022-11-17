@@ -575,6 +575,17 @@ body {
 	width: 80px;
 }
 
+@media screen and (max-width: 472px) {
+	.experience-item-grid {
+		grid-template-columns: 60px auto;
+		column-gap: 10px;
+	}
+
+	.experience-item-grid > :first-child {
+		width: 60px;
+	}
+}
+
 .experience-item-body-grid {
 	display: grid;
 	grid-template-columns: 20px auto;
