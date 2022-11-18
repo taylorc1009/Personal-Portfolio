@@ -87,7 +87,6 @@ animator = {
 					]
 				};
 			else {
-				console.log(totalAnimationDuration, svgClass)
 				animationsCollection.animations[svgClass].args[2].push(delay);
 				if(totalAnimationDuration > animationsCollection.animations[svgClass].args[3])
 					animationsCollection.animations[svgClass].args[3] = totalAnimationDuration;

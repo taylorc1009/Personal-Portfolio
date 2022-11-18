@@ -19,6 +19,17 @@ body {
 	grid-row-gap: 20vw;
 }
 
+a {
+	color: #1c8ade;
+	font-weight: bolder;
+	text-decoration: none;
+}
+a:hover {
+	color: #1d9af9;
+	font-weight: bolder;
+	text-decoration: underline;
+}
+
 .text-as-svg {
 	padding: 0 5px;
 }
@@ -403,16 +414,6 @@ body {
 	font-family: 'Varela Round', serif;
 	color: rgba(var(--color-pure-white));
 }
-.card-text > a {
-	color: #1c8ade;
-	font-weight: bolder;
-	text-decoration: none;
-}
-.card-text > a:hover {
-	color: #1d9af9;
-	font-weight: bolder;
-	text-decoration: underline;
-}
 .body-card-body > :first-child {
 	margin-block-start: 0;
 	margin-top: 32px;
@@ -510,7 +511,7 @@ body {
 	}
 }
 
-#experience-list {
+.experience-list {
 	list-style-type: none;
 	margin-block-start: 0;
 	margin-block-end: 0;
