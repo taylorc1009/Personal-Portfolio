@@ -25,7 +25,7 @@ animator = {
 
 				nextFlexRow = mathematics.calculateFlexChildRow(SVG);
 				if(nextFlexRow > currentFlexRow) {
-					totalAnimationDuration = (totalAnimationDuration - animationDuration) + current_dpl;
+					totalAnimationDuration += current_dpl;
 					delay = 0;
 					currentFlexRow = nextFlexRow;
 				}
@@ -40,7 +40,7 @@ animator = {
 					Math.max(delay + animationDuration + current_dpl, totalAnimationDuration)
 				);
 
-				if(SVGs.length > 1) {//} && i < SVGs.length - 1 && mathematics.calculateFlexChildRow(SVGs[i + 1]) == currentFlexRow) {
+				if(SVGs.length > 1) {
 					delay += animationDuration;
 					if(delay > totalAnimationDuration) {
 						totalAnimationDuration = delay;
