@@ -225,20 +225,20 @@ a:hover {
 
 	#heading-text {
 		text-align: center;
-		font-size: 50px;
+		font-size: 6.04vw;
 	}
 
 	#heading-icon {
-		width: 50px;
+		width: 6.04vw;
 	}
 
 	#heading-svg-1 {
-		width: 422px;
+		width: 50vw;
 		
 	}
 
 	#heading-svg-2 {
-		width: 593px;
+		width: 71.66vw;
 	}
 }
 
@@ -249,7 +249,7 @@ a:hover {
 	/* gap: 0 10px; */
 }
 
-@media screen and (max-width: 684px) {
+@media screen and (max-width: 782px) {
 	#heading-svg-1 {
 		width: 64vw;
 	}
