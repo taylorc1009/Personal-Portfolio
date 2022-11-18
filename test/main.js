@@ -1,5 +1,5 @@
 animator = {
-	getNextVectorAnimationDelay: (svg, isHeading) => {
+	getCurrentVectorAnimationDuration: (svg, isHeading) => {
 		return (isHeading ? mathematics.heading_svg_dbl : mathematics.delay_between_letters) * (svg.childElementCount);
 	},
 
@@ -12,36 +12,40 @@ animator = {
 		}, {});
 
 		for(let [SVGGroup, SVGs] of Object.entries(SVGGroups)) {
-			let currentFlexRow = 0, isVisible = false, isHeading = SVGGroup === "heading-svg", delay = 0, totalAnimationDuration = SVGs.length === 1 ? (animator.getNextVectorAnimationDelay(SVGs[0], isHeading) + (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter)) : 0;
+			let currentFlexRow = 0,
+				isVisible = mathematics.isOnScreen(SVGs[0].parentElement),
+				isHeading = SVGGroup === "heading-svg",
+				delay = 0,
+				animationDuration = 0,
+				current_dpl = (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter),
+				totalAnimationDuration = SVGs.length === 1 ? (animator.getCurrentVectorAnimationDuration(SVGs[0], isHeading) + (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter)) : 0;
 
 			for(let [i, SVG] of SVGs.entries()) {
-				if(mathematics.isOnScreen(SVG.parentElement) && !isVisible)
-					isVisible = true;
-
 				animator.hideVectorPaths(SVG, isHeading && !isVisible);
 
 				nextFlexRow = mathematics.calculateFlexChildRow(SVG);
 				if(nextFlexRow > currentFlexRow) {
+					totalAnimationDuration = (totalAnimationDuration - animationDuration) + current_dpl;
 					delay = 0;
 					currentFlexRow = nextFlexRow;
 				}
 
+				animationDuration = animator.getCurrentVectorAnimationDuration(SVG, isHeading)
 				animator.determineVectorAnimationState(
 					SVG,
 					SVGGroup,
 					isVisible,
 					isHeading,
 					delay,
-					totalAnimationDuration
+					Math.max(delay + animationDuration + current_dpl, totalAnimationDuration)
 				);
 
-				if(SVGs.length > 1) {
-					delay += animator.getNextVectorAnimationDelay(SVG, isHeading);
-					// TODO: fix "totalAnimationDuration" calculation when SVG is off-screen: right now, it's being calculated in "animator.determineVectorAnimationState" and using the duration calculated for the first SVG child path, not the sum of all paths' duration
-					if (delay > totalAnimationDuration) {
-						totalAnimationDuration = delay
+				if(SVGs.length > 1) {//} && i < SVGs.length - 1 && mathematics.calculateFlexChildRow(SVGs[i + 1]) == currentFlexRow) {
+					delay += animationDuration;
+					if(delay > totalAnimationDuration) {
+						totalAnimationDuration = delay;
 						if(i === SVGs.length - 1)
-							totalAnimationDuration += (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter);
+							totalAnimationDuration += current_dpl;
 					}
 				}
 			}
@@ -83,19 +87,19 @@ animator = {
 					]
 				};
 			else {
+				console.log(totalAnimationDuration, svgClass)
 				animationsCollection.animations[svgClass].args[2].push(delay);
-
 				if(totalAnimationDuration > animationsCollection.animations[svgClass].args[3])
 					animationsCollection.animations[svgClass].args[3] = totalAnimationDuration;
 			}
 		}
 	},
 
-	getSVGsParentsChildren: (container) => { //returns the list of elements that are in the same container as an SVG container (so they can be animated in with the SVG fill animation)
+	getSVGsParentsChildren: (SVGContainer) => { //returns the list of elements that are in the same container as an SVG container (so they can be animated in with the SVG fill animation)
 		var containerSiblingsAnimations = [];
 		
-		for (let sibling of container.parentElement.children)
-			if (sibling != container) //in the future, there will be more than just "card-container" classes that accompany an SVG container, so this line and the next are subject to change
+		for (let sibling of SVGContainer.parentElement.children)
+			if (sibling != SVGContainer)
 				containerSiblingsAnimations.push({method: animator.animateSiblings, args: [sibling]});
 
 		return containerSiblingsAnimations;
