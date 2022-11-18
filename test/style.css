@@ -301,7 +301,7 @@ body {
 
 	display: inline-flex;
 	flex-wrap: wrap;
-	justify-content: space-around;
+	justify-content: center;
 }
 .body-card {
 	display: inline;
