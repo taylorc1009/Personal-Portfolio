@@ -1,69 +1,71 @@
 animator = {
-	getVectorAnimationDuration: (svg, isHeading) => {
-		const delay = isHeading ? mathematics.heading_svg_dbl : mathematics.delay_between_letters;
-		return svg.childElementCount * delay;
+	getCurrentVectorAnimationDuration: (svg, isHeading) => {
+		return (isHeading ? mathematics.heading_svg_dbl : mathematics.delay_between_letters) * (svg.childElementCount);
 	},
 
 	initialiseVectorAnimations: () => {
-		const svgs = document.getElementsByClassName("text-as-svg");
-		let delay = 0, currentFlexRow = 0, totalAnimationDuration = 0; //these are used to reset the delay of animating the next SVG when it's in the next flexbox row or another SVG class; "totalAnimationDuration" is used to delay the vector fill animation for each SVG (in the same class) until all SVG stroke animations (in that class) are finished
-		let previousSVGClass = svgs[0].classList[1], currentSVGClass; //used to record the previous SVG being initialised in the loop; the previous SVG is recorded as once each SVG in the same class is initialised, we need to give them all the same time delay on their fill animations so they can all fade in at the same time (which can only be done once we've gathered the duration of each vector's, in that class', animation)
-		let introPrevented = false; //this is used to prevent the "initialiseSubheadingAnimation" function from triggering if the heading animation is prevented
+		const SVGGroups = Array.from(document.getElementsByClassName("text-as-svg")).reduce((groups, svg) => {
+			const group = (groups[svg.classList[1]] || []);
+			group.push(svg);
+			groups[svg.classList[1]] = group;
+			return groups;
+		}, {});
 
-		for (let i = 0; i < svgs.length; i++) {	
-			//these are used to determine whether or not to skip or pause animations if the elements are off-screen
-			let isHeading = svgs[i].classList.contains("heading-svg"); //the heading is animated differently; the duration is longer to give it a nicer effect
-			var isVisible, wasVisible = isVisible //"wasVisible" is used to determine (at the end of this function) if the previous vector class was visible to the user: 
-			isVisible = mathematics.isOnScreen(svgs[i].parentElement); //if a vector is not currently within the user's viewport, isVisible is used to pause the animation until the user scrolls to the vector
-			let preventIntro = isHeading && !isVisible; //the intro animation should be prevented if it's off screen: it didn't seem necessary to have to run the slow heading animation if the user refreshes the page half way down and scrolls to the top
-			if (preventIntro)
-				introPrevented = true;
-			currentSVGClass = svgs[i].classList[1];
+		for(let [SVGGroup, SVGs] of Object.entries(SVGGroups)) {
+			let currentFlexRow = 0,
+				isVisible = mathematics.isOnScreen(SVGs[0].parentElement),
+				isHeading = SVGGroup === "heading-svg",
+				delay = 0,
+				animationDuration = 0,
+				current_dpl = (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter),
+				totalAnimationDuration = SVGs.length === 1 ? (animator.getCurrentVectorAnimationDuration(SVGs[0], isHeading) + (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter)) : 0;
 
-			animator.hideVectorPaths(svgs[i], preventIntro);
+			for(let [i, SVG] of SVGs.entries()) {
+				animator.hideVectorPaths(SVG, isHeading && !isVisible);
 
-			//if the current SVG belongs to a new SVG class or it's in a new row within a flexbox, reset it's stroke animation delay to zero seconds
-			if (!svgs[i].classList.contains(previousSVGClass) || mathematics.calculateFlexChildRow(svgs[i].parentElement, svgs[i]) > currentFlexRow)
-				delay = 0;
+				nextFlexRow = mathematics.calculateFlexChildRow(SVG);
+				if(nextFlexRow > currentFlexRow) {
+					totalAnimationDuration += current_dpl;
+					delay = 0;
+					currentFlexRow = nextFlexRow;
+				}
 
-			if(i === svgs.length - 1) { //this is used to delay the vector fill animation of the final SVG class: you can see it's the same as the code at the bottom of this loop, but for the final SVG, the code at the bottom isn't executed until after the final class's vector fill animation has already begun; so we need to update "totalAnimationDuration" of the final SVG class here before the fill animation starts
-				let finalFillDelay = delay + animator.getVectorAnimationDuration(svgs[i], isHeading); //add the duration of this vector's stroke animation to the delay of animating the next vector's stroke
-				if (finalFillDelay > totalAnimationDuration) //this is used to keep track of the highest delay recorded for this SVG class; the highest delay will be the flexbox row that takes the longest to animate (due to having more letters), and we then use this highest delay to delay each SVG in this class's vector fill animation: once every row's letter's stroke has been animated in
-					totalAnimationDuration = finalFillDelay;
-			}
+				animationDuration = animator.getCurrentVectorAnimationDuration(SVG, isHeading)
+				animator.determineVectorAnimationState(
+					SVG,
+					SVGGroup,
+					isVisible,
+					isHeading,
+					delay,
+					Math.max(delay + animationDuration + current_dpl, totalAnimationDuration)
+				);
 
-			animator.determineVectorAnimationState(
-				svgs[i], currentSVGClass, isVisible, isHeading, delay,
-				totalAnimationDuration + (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter)
-			);
-
-			if (!svgs[i].classList.contains(previousSVGClass) || i === svgs.length - 1) { //if we're now iterating through a new SVG class, animate the previous class's vectors' fill
-				if(wasVisible) //only occurs when we're done initialising a vector class: once we have the duration of every letter's stroke animation and if the vector is on screen (if it's off screen, there's an onScroll event that will animate the fill instead), we need to use the duration to set the delay of which to start the vector fill animation
-					animator.animateVectorFill(
-						`.${previousSVGClass}`,
-						totalAnimationDuration + (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter),
-						isHeading
-					);
-
-				if (previousSVGClass === "heading-svg" && !introPrevented) //if the previous SVG class is the heading SVG class, we also want to animate in the subheadings ("SOFTWARE ENGINEER" and the SVG icon) in with the "totalAnimationDuration" as the delay as well
-					animator.initialiseSubheadingAnimation(true,
-						totalAnimationDuration + (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter)
-					);
-
-				if (isVisible)
-					for (const animation of animator.getSVGContainerSiblingElements(svgs[i].parentElement)) {
-						animation.args.push(totalAnimationDuration + (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter));
-						animation.method.apply(this, animation.args);
+				if(SVGs.length > 1) {
+					delay += animationDuration;
+					if(delay > totalAnimationDuration) {
+						totalAnimationDuration = delay;
+						if(i === SVGs.length - 1)
+							totalAnimationDuration += current_dpl;
 					}
-
-				previousSVGClass = currentSVGClass;
-				totalAnimationDuration = 0;
+				}
 			}
 
-			//this code is the same as the code in the "if(i === svgs.length -1)"; it's more efficient having these lines duplicated as moving them to a separate function creates more lines (as JavaScript can neither pass by reference nor return more than one value from a function)
-			delay += animator.getVectorAnimationDuration(svgs[i], isHeading);
-			if (delay > totalAnimationDuration)
-				totalAnimationDuration = delay;
+			if (isVisible) {
+				for (const animation of animator.getSVGsParentsChildren(SVGs[0].parentElement)) {
+					animation.args.push(totalAnimationDuration);
+					animation.method.apply(this, animation.args);
+				}
+				animator.animateVectorFill(
+					`.${SVGGroup}`,
+					totalAnimationDuration,
+					isHeading
+				);
+				if (isHeading)
+					animator.initialiseSubheadingAnimation(
+						true,
+						totalAnimationDuration
+					);
+			}
 		}
 	},
 
@@ -81,23 +83,22 @@ animator = {
 						svgClass,
 						[delay],
 						totalAnimationDuration,
-						animator.getSVGContainerSiblingElements(svg.parentElement)
+						animator.getSVGsParentsChildren(svg.parentElement)
 					]
 				};
 			else {
 				animationsCollection.animations[svgClass].args[2].push(delay);
-
 				if(totalAnimationDuration > animationsCollection.animations[svgClass].args[3])
 					animationsCollection.animations[svgClass].args[3] = totalAnimationDuration;
 			}
 		}
 	},
 
-	getSVGContainerSiblingElements: (container) => { //returns the list of elements that are in the same container as an SVG container (so they can be animated in with the SVG fill animation)
+	getSVGsParentsChildren: (SVGContainer) => { //returns the list of elements that are in the same container as an SVG container (so they can be animated in with the SVG fill animation)
 		var containerSiblingsAnimations = [];
 		
-		for (let sibling of container.parentElement.children)
-			if (sibling != container) //in the future, there will be more than just "card-container" classes that accompany an SVG container, so this line and the next are subject to change
+		for (let sibling of SVGContainer.parentElement.children)
+			if (sibling != SVGContainer)
 				containerSiblingsAnimations.push({method: animator.animateSiblings, args: [sibling]});
 
 		return containerSiblingsAnimations;
@@ -160,8 +161,8 @@ animator = {
 		});
 	},
 
-	animateSiblings: (cardsContainer, delay) => {
-		$(cardsContainer).css({
+	animateSiblings: (siblingElement, delay) => {
+		$(siblingElement).css({
 			'animation': `svg-sibling-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${delay}s`
 		});
 	},
@@ -196,16 +197,15 @@ mathematics = {
 	heading_svg_fid: 0.5,
 
 	isOnScreen: (elm) => { //used to determine if an element is on screen (credit - https://stackoverflow.com/a/5354536/11136104)
-		var rect = elm.getBoundingClientRect();
-		var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
-		return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+		let rect = elm.getBoundingClientRect();
+		return !(rect.bottom < 0 || rect.top - Math.max(document.documentElement.clientHeight, window.innerHeight) >= 0);
 	},
 
-	calculateFlexChildRow: (container, item) => {
+	calculateFlexChildRow: (item) => {
 		let row = 0, previousHighestDistance = 0;
 	
-		for (let child of container.children) {
-			var parentTop = container.getBoundingClientRect().top; //parent's top's distance from the top of the viewport
+		for (let child of item.parentElement.children) {
+			var parentTop = item.parentElement.getBoundingClientRect().top; //parent's top's distance from the top of the viewport
 			var currentChildTop = child.getBoundingClientRect().top; //child's top's distance from the top of the viewport
 	
 			var childTopDistanceFromParentTop = Math.abs(parentTop - currentChildTop);
@@ -239,7 +239,7 @@ window.onscroll = () => { //I tried to use the "scroll" event listener instead o
 
 miscellaneous = {
 	copyrightNotice: () => {
-		if (window.confirm('Bitmoji avatars are copyright Ⓒ protected by the Bitmoji organisation. The owners have deemed it legal to reuse their artwork for non-commercial purposes. Would you like to view this information in their guidelines?')) 
-			window.location.href='https://www.bitmoji.com/bitmoji_brand_guidelines.pdf#page=4';
+		if (window.confirm('Bitmoji avatars are copyright Ⓒ protected by the Bitmoji organization. The owners have deemed it legal to reuse their artwork for non-commercial purposes. Would you like to view this information in their guidelines?')) 
+			window.open('https://www.bitmoji.com/bitmoji_brand_guidelines.pdf#page=4', '_blank').focus();
 	}
 }
