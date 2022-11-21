@@ -20,6 +20,16 @@ animator = {
 				current_dpl = (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter),
 				totalAnimationDuration = SVGs.length === 1 ? (animator.getCurrentVectorAnimationDuration(SVGs[0], isHeading) + (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter)) : 0;
 
+			if (isHeading) {
+				wavesSVG = document.getElementById("waves");
+				for (let [i, wave] of Array.from(wavesSVG.children).entries()) {
+					let duration = 20 + Math.random() * 70;
+					$(`#${wave.id}`).css({
+						'animation': `${i % 2 ? 'wave-animation' : 'wave-animation-reverse'} ${duration}s infinite ease-in-out`
+					});
+				}
+			}
+
 			for(let [i, SVG] of SVGs.entries()) {
 				animator.hideVectorPaths(SVG, isHeading && !isVisible);
 
