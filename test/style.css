@@ -31,7 +31,7 @@ a:hover {
 }
 
 .text-as-svg {
-	padding: 0 5px;
+	margin: 0 5px;
 }
 
 .text-as-svg > path { /* hide all SVGs' paths until the animations begin */
@@ -271,29 +271,33 @@ a:hover {
 	}
 }
 
-@media screen and (max-width: 457px) {
+@media screen and (max-width: 474px) {
 	#welcome-container svg:nth-child(1) {
-		width: 217.4px;
+		width: 63.291139240506329113924050632911vw;
 	}
 
 	#welcome-container svg:nth-child(2) {
-		width: 47.1px;
+		width: 13.713080168776371308016877637131vw;
 	}
 
 	#welcome-container svg:nth-child(3) {
-		width: 75.4px;
+		width: 21.940928270042194092827004219409vw;
 	}
 
 	#welcome-container svg:nth-child(4) {
-		width: 300px;
+		width: 87.341772151898734177215189873418vw;
 	}
 
-	#employment-container svg:nth-child(1) {
-		width: 209.4px;
+	#experience-container svg:nth-child(1) {
+		width: 63.291139240506329113924050632911vw;
 	}
 
-	#employment-container svg:nth-child(2) {
-		width: 302.2px;
+	#experience-container svg:nth-child(2) {
+		width: 74.050632911392405063291139240506vw;
+	}
+
+	#certifications-container svg:nth-child(1) {
+		width: 94.514767932489451476793248945148vw;
 	}
 }
 
