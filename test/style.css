@@ -39,6 +39,7 @@ a:hover {
 }
 
 #heading {
+	min-height: 100vh;
 	display: grid;
 
 	/* height: 40vw;
@@ -241,11 +242,7 @@ a:hover {
 }
 
 @media screen and (max-width: 1282px) {
-	#page-grid {
-		grid-template-rows: 90vh;
-	}
-
-	/* #heading {
+	/*#heading {
 		/* clip-path: none;
 		height: fit-content; * /
 		clip-path: circle(70.7% at 50% 25%);
