@@ -24,7 +24,7 @@ animator = {
 				wavesSVG = document.getElementById("waves");
 				for (let [i, wave] of Array.from(wavesSVG.children).entries()) {
 					$(`#${wave.id}`).css({
-						'animation': `${i % 2 ? 'wave-animation' : 'wave-animation-reverse'} ${20 + (i + 1) * 3}s infinite ease-in-out`
+						'animation': `${i % 2 ? 'wave-animation' : 'wave-animation-reverse'} ${20 + (i + 1) * 5}s infinite ease-in-out`
 					});
 				}
 			}
