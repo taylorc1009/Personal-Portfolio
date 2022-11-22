@@ -12,52 +12,57 @@ animator = {
 		}, {});
 
 		for(let [SVGGroup, SVGs] of Object.entries(SVGGroups)) {
-			let currentFlexRow = 0,
+			let //! currentFlexRow = 0,
 				isVisible = mathematics.isOnScreen(SVGs[0].parentElement),
 				isHeading = SVGGroup === "heading-svg",
 				delay = 0,
-				animationDuration = 0,
+				//! animationDuration = 0,
 				current_dpl = (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter),
-				totalAnimationDuration = SVGs.length === 1 ? (animator.getCurrentVectorAnimationDuration(SVGs[0], isHeading) + (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter)) : 0;
+				totalAnimationDuration = SVGs.length === 1 ? animator.getCurrentVectorAnimationDuration(SVGs[0], isHeading) + current_dpl : current_dpl;
 
 			if (isHeading) {
 				wavesSVG = document.getElementById("waves");
 				for (let [i, wave] of Array.from(wavesSVG.children).entries()) {
-					let duration = 20 + Math.random() * 70;
 					$(`#${wave.id}`).css({
-						'animation': `${i % 2 ? 'wave-animation' : 'wave-animation-reverse'} ${duration}s infinite ease-in-out`
+						'animation': `${i % 2 ? 'wave-animation' : 'wave-animation-reverse'} ${20 + (i + 1) * 5}s infinite ease-in-out`
 					});
 				}
 			}
 
-			for(let [i, SVG] of SVGs.entries()) {
+			for(let SVG of SVGs) {
 				animator.hideVectorPaths(SVG, isHeading && !isVisible);
 
-				nextFlexRow = mathematics.calculateFlexChildRow(SVG);
+				//! uncomment this and blocks marked "!" to enable multi-line starts in text SVG animations
+				/* nextFlexRow = mathematics.calculateFlexChildRow(SVG);
 				if(nextFlexRow > currentFlexRow) {
-					totalAnimationDuration += current_dpl;
 					delay = 0;
 					currentFlexRow = nextFlexRow;
-				}
+				}*/
 
-				animationDuration = animator.getCurrentVectorAnimationDuration(SVG, isHeading)
+				animationDuration = animator.getCurrentVectorAnimationDuration(SVG, isHeading);
+				if(SVGs.length > 1) //! disable this code block when enabling multi-line animations
+					totalAnimationDuration += animationDuration;
 				animator.determineVectorAnimationState(
 					SVG,
 					SVGGroup,
 					isVisible,
 					isHeading,
 					delay,
-					Math.max(delay + animationDuration + current_dpl, totalAnimationDuration)
+					//! Math.max(delay + animationDuration + current_dpl, totalAnimationDuration)
+					totalAnimationDuration //! disable this when enabling multi-line animations
 				);
-
-				if(SVGs.length > 1) {
+				if(SVGs.length > 1) //! disable this code block when enabling multi-line animations
 					delay += animationDuration;
-					if(delay > totalAnimationDuration) {
-						totalAnimationDuration = delay;
+
+				//!
+				/*if(SVGs.length > 1) {
+					delay += animationDuration;
+					if(delay + current_dpl > totalAnimationDuration) {
+						totalAnimationDuration = delay + current_dpl;
 						if(i === SVGs.length - 1)
 							totalAnimationDuration += current_dpl;
 					}
-				}
+				}*/
 			}
 
 			if (isVisible) {
