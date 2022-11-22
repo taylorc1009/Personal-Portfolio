@@ -23,14 +23,13 @@ animator = {
 			if (isHeading) {
 				wavesSVG = document.getElementById("waves");
 				for (let [i, wave] of Array.from(wavesSVG.children).entries()) {
-					let duration = 20 + Math.random() * 70;
 					$(`#${wave.id}`).css({
-						'animation': `${i % 2 ? 'wave-animation' : 'wave-animation-reverse'} ${duration}s infinite ease-in-out`
+						'animation': `${i % 2 ? 'wave-animation' : 'wave-animation-reverse'} ${20 + (i + 1) * 3}s infinite ease-in-out`
 					});
 				}
 			}
 
-			for(let [i, SVG] of SVGs.entries()) {
+			for(let SVG of SVGs) {
 				animator.hideVectorPaths(SVG, isHeading && !isVisible);
 
 				//! uncomment this and blocks marked "!" to enable multi-line starts in text SVG animations
