@@ -16,7 +16,7 @@ body {
 	padding: 0;
 	margin: 0;
 	display: grid;
-	grid-row-gap: 20vw;
+	row-gap: 300px;
 }
 
 a {
@@ -515,6 +515,10 @@ a:hover {
 @media screen and (max-width: 970px) {
 	#about-me {
 		margin: 0 25px;
+	}
+
+	#page-grid {
+		row-gap: 200px;
 	}
 }
 
