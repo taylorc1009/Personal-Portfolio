@@ -173,8 +173,7 @@ a:hover {
     fill: rgba(var(--color-pure-white));
 }*/
 
-@media screen and (max-width: 1282px) {
-
+@media screen and (orientation: portrait) and (max-width: 1282px) {
 	#heading-container {
 		margin: auto auto;
 	}
@@ -185,15 +184,48 @@ a:hover {
 
 	#heading-icon {
 		width: 6.452941176470588235294117647059vw;
+		height: auto;
 	}
 
 	#heading-svg-1 {
 		width: 64.537815126050420168067226890756vw;
+		height: auto;
 		
 	}
 
 	#heading-svg-2 {
 		width: 92.503361344537815126050420168067vw;
+		height: auto;
+	}
+}
+
+@media screen and (orientation: landscape) and (max-height: 784px) {
+	#heading-items-list {
+		align-items: center;
+	}
+
+	#heading-container {
+		margin: auto auto;
+	}
+
+	#heading-text {
+		font-size: 9.794642857142857142857142857143vh;
+	}
+
+	#heading-icon {
+		height: 7.609693877551020408163265306122vh;
+		width: auto;
+	}
+
+	#heading-svg-1 {
+		height: 38.87372448979591836734693877551vh;
+		width: auto;
+		
+	}
+
+	#heading-svg-2 {
+		height: 38.87372448979591836734693877551vh;
+		width: auto;
 	}
 }
 
