@@ -139,24 +139,14 @@ animator = {
 	initialiseSubheadingAnimation: (isVisible, delay) => {
 		if(isVisible) { //checks whether the heading is out of sight or not...
 			//... if it isn't, animate all the heading elements...
-			$('#heading-text').css({
-				'animation': `text-reveal-animation 1s ease forwards ${delay}s`
-			});
-			$('#heading-icon').css({
-				'animation': `vector-reveal-animation 1s ease forwards ${delay}s`
+			$('#heading-item-2').css({
+				'animation': `subheading-reveal-animation 1s ease forwards ${delay}s`
 			});
 		}
 		else { //... if it is out of sight, I don't want the animation to waste resources and I also don't want it to happen when it's scrolled to by the user, so just prevent it
 			//we therefore need to skip the animations of the other subheading elements as well and make them visible
-			$('#heading-text').css({
-				'color': 'rgba(var(--color-pure-white))',
-				'margin-top': 0,
-				'margin-bottom': '10px'
-			});
-			$('#heading-icon').css({
-				'fill-opacity': 1,
-				'margin-top': 0,
-				'margin-bottom': '10px'
+			$('#heading-item-2').css({
+				'opacity': 1,
 			});
 		}
 	},
