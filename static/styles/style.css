@@ -472,6 +472,17 @@ a:hover {
 	color: rgba(var(--color-pure-white));
 }
 
+.experience-item-heading {
+	display: contents;
+	grid-column-start: 1;
+	grid-column-end: 2;
+}
+
+.experience-item-image {
+	width: 80px;
+	cursor: pointer;
+}
+
 .experience-item-title {
 	font-size: 20pt;
 	margin: auto 0;
@@ -513,10 +524,19 @@ a:hover {
 	display: grid;
 	grid-template-columns: 80px auto;
 	column-gap: 20px;
+	row-gap: 10px;
 }
 
 .experience-item-grid > :first-child {
 	width: 80px;
+}
+
+.experience-item-body-grid {
+	display: grid;
+	grid-template-columns: 20px auto;
+	grid-template-rows: auto auto;
+	column-gap: 5px;
+	grid-column-start: 2;
 }
 
 @media screen and (max-width: 472px) {
@@ -525,16 +545,15 @@ a:hover {
 		column-gap: 10px;
 	}
 
-	.experience-item-grid > :first-child {
+	.experience-item-image {
 		width: 60px;
 	}
-}
 
-.experience-item-body-grid {
-	display: grid;
-	grid-template-columns: 20px auto;
-	grid-template-rows: auto auto;
-	column-gap: 5px;
+	.experience-item-body-grid {
+		display: contents;
+		grid-column-start: 1;
+		grid-column-end: 2;
+	}
 }
 
 .dot {
