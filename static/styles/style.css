@@ -501,11 +501,10 @@ a:hover {
 }
 
 .experience-item-body-container {
-    margin-top: 8px;
-    margin-bottom: 40px;
+    margin: auto 0;
 }
 
-.experience-item-body-container > p:not(:last-of-type) {
+.experience-item-grid > .experience-item-body-container:last-of-type {
 	margin-bottom: 8px;
 }
 
@@ -527,16 +526,25 @@ a:hover {
 	row-gap: 10px;
 }
 
-.experience-item-grid > :first-child {
-	width: 80px;
-}
-
 .experience-item-body-grid {
 	display: grid;
 	grid-template-columns: 20px auto;
 	grid-template-rows: auto auto;
 	column-gap: 5px;
 	grid-column-start: 2;
+}
+
+.experience-item-body-grid > .experience-item-body-container:not(:last-of-type) {
+	margin-bottom: 40px;
+}
+
+#additional-experience {
+	grid-row-start: 2;
+	grid-column-start: 2;
+}
+
+.experience-item-body-container > p:not(:last-of-type), #additional-experience > p:not(:last-of-type) {
+	margin-bottom: 10px;
 }
 
 @media screen and (max-width: 472px) {
@@ -574,9 +582,7 @@ a:hover {
 }
 
 .experience-list-separator {
-	margin-left: 20px;
-	margin-right: 20px;
-	margin-bottom: 40px;
+	margin: 40px 20px;
 	height: 4px;
 	background-color: white;
 	border-radius: 50px;
