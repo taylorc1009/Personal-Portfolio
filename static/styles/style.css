@@ -213,8 +213,8 @@ a:hover {
 	}
 }
 
-@media screen and (orientation: landscape) and (max-height: 784px) {
-	/* TODO: fix dynamic heights causing widths to overflow the page size */
+/* @media screen and (orientation: landscape) and (max-height: 784px) {
+	/* TODO: fix dynamic heights causing widths to overflow the page size *
 
 	#heading-text {
 		font-size: 9.794642857142857142857142857143vh;
@@ -234,7 +234,7 @@ a:hover {
 		height: 38.87372448979591836734693877551vh;
 		width: auto;
 	}
-}
+} */
 
 .body-svg-container {
 	display: flex;
