@@ -112,20 +112,20 @@
 					<p class="about-me-paragraph body-paragraph">I am graduate student from the Greater Edinburgh area, with a First Class Bachelor's (with Honours) Degree in Software Engineering from Edinburgh Napier University. I have been coding since I was 15 years old (2015).</p>
 					<p class="about-me-paragraph body-paragraph">During my time practicing software engineering, I have developed personal projects (such as this), multiple university coursework assignments, and contributed to group projects.</p>
 					<p class="about-me-paragraph body-paragraph">Other notable university experience includes a group project that I contributed to during my third year of university, where me and the team developed the ground work of an interactive learning environment for the charity Street Soccer Scotland. Also, in fourth year, I participated in running a weekly programming surgeries session dedicated to tutoring students in lower year groups with coding/debugging.</p>
-					<p class="about-me-paragraph body-paragraph">Here are significant projects I have made contributions to:</p>
+					<p class="about-me-paragraph body-paragraph">Here are some personal favorites of the projects I have made:</p>
 				</div>
 				<div id="cards-1" class="card-container">
 					<ul class="card-list">
 						<li class="body-card">
 							<div class="body-card-grid">
-								<div class="body-card-heading" onclick="window.open('https://github.com/taylorc1009/Street_Soccer_PITCH', '_blank').focus()">
-									<h1 class="card-title">Street Soccer PITCH</h1>
-									<img src="{{ url_for('static', filename='street_soccer_pitch.svg') }}"/>
+								<div class="body-card-heading" onclick="window.open('https://github.com/taylorc1009/Connect-Four', '_blank').focus()">
+									<h1 class="card-title">Connect 4</h1>
+									<img src="{{ url_for('static', filename='connect_4.svg') }}"/>
 								</div>
 								<div class="body-card-body">
-									<p class="card-text">In my third year at Edinburgh Napier University, I participated in a group project consisting of myself and three others. The project was assigned by the charity <a target="_blank" href="https://streetsoccerscotland.org/">Street Soccer Scotland</a>.</p>
-									<p class="card-text">The project's main objective was to develop the ground work of a new interactive learning environment that Street Soccer Scotland would use to expand into different countries and train coaches around the world. <a target="_blank" href="https://streetsoccerpitch.herokuapp.com/">Here's my live backup</a> of our work.</p>
-									<p class="card-text">Our work was then carried on by another team of developers who were provided the base of the website that we had developed. Although, they rewrote the Python API in PHP Laravel and continued the work.</p>
+									<p class="card-text">This project was originally a coursework laid out by Edinburgh Napier University, but was cancelled when the Coronavirus pandemic began, before we even began. I decided to continue with the project anyway.</p>
+									<p class="card-text">We were asked to develop a standard Connect 4 board game in C, that was playable within the command line. To get full marks, it had to include modifiable board dimensions, the ability to undo/redo moves, and the ability to save/load games.</p>
+									<p class="card-text">After implementing all of this, I took a step further by implementing AI for users to play against. The <a target="_blank" href="https://en.wikipedia.org/wiki/Minimax">Minimax Algorithm</a> with <a target="_blank" href="https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning">Alpha-Beta Pruning</a> was implemented to achieve this. Minimax is a <a target="_blank" href="https://en.wikipedia.org/wiki/Decision_tree">decision-tree</a>-based algorithm, and the Alpha-Beta heuristic allows the execution time of Minimax to be reduced by cancelling decision branches that can only yield a result worse than the current-best decision.</p>
 								</div>
 							</div>
 						</li>
@@ -138,7 +138,7 @@
 								<div class="body-card-body">
 									<p class="card-text">For my Honours Project, I researched the Capacitated Vehicle Routing Problem with Time Windows (CVRPTW).</p>
 									<p class="card-text">The problem is an <a target="_blank" href="https://en.wikipedia.org/wiki/NP-hardness">NP-Hard</a> combinatorial optimisation problem. Mathematically, it is thought to be unsolvable as it is not always possible to find the best solution brute force search because the search space is too large. However, the best solution can be approximated in a feasible amount of time using AI.</p>
-									<p class="card-text">The AI meta-heuristic I used is known as a Genetic Algorithm. During the project, I experimented with two existing algorithms and wrote my own based on my findings. The algorithm I wrote (FIGA) proved better than the other two.</p>
+									<p class="card-text">The AI meta-heuristic I used is known as a <a target="_blank" href="https://en.wikipedia.org/wiki/Genetic_algorithm">Genetic Algorithm</a>. During the project, I experimented with two existing algorithms and wrote my own based on my findings. The algorithm I wrote (FIGA) proved better than the other two.</p>
 								</div>
 							</div>
 						</li>
@@ -195,12 +195,22 @@
 								<div class="experience-item-body-grid">
 									<div class="dot"></div>
 									<div>
-										<h2 class="experience-item-subtitle experience-item-text-globals">IT Help Desk</h2>
-										<h3 class="experience-item-duration experience-item-text-globals">Sep 2021 - Present</h3>
+										<h2 class="experience-item-subtitle experience-item-text-globals">Service Desk Analyst</h2>
+										<h3 class="experience-item-duration experience-item-text-globals">December 2022 - Present</h3>
 									</div>
 									<div class="vertical-line"></div>
 									<div class="experience-item-body-container">
-										<p class="experience-item-body-text">I provided IT support to both students and staff on-campus. I also had to maintain some of the hardware for the university, primarily PCs in the campus' computing centre for students.</p>
+										<p class="experience-item-body-text">Technically a promotion from the following "IT Help Desk" role, although not officially a promotion. It is the university's first line of contact to staff and students for IT related issues.</p>
+										<p class="experience-item-body-text">The following Help Desk listed is managed by people in this role, and is capable of less complex work. This role is more complex as it plays a more active part in supporting the university, in relation to staff members, other departments, and more sensitive software/data.</p>
+									</div>
+									<div class="dot"></div>
+									<div>
+										<h2 class="experience-item-subtitle experience-item-text-globals">IT Help Desk</h2>
+										<h3 class="experience-item-duration experience-item-text-globals">Sep 2021 - December 2022</h3>
+									</div>
+									<div class="vertical-line"></div>
+									<div class="experience-item-body-container">
+										<p class="experience-item-body-text">I provided IT support to students, and sometimes staff, on-campus. I also had to maintain some of the hardware for the university; exclusively PCs and peripherals (monitors, projectors, etc) in the campus' student's computing centre because this is where the desk is located.</p>
 									</div>
 									<div class="dot"></div>
 									<div>
@@ -209,7 +219,8 @@
 									</div>
 									<div class="vertical-line"></div>
 									<div class="experience-item-body-container">
-										<p class="experience-item-body-text">I co-ran Weekly Programming Surgeries sessions, aimed at helping fellow students in lower year groups learn and debug code.</p>
+										<p class="experience-item-body-text">I co-ran weekly Programming Surgeries sessions, aimed at helping fellow students in lower year groups learn and debug code. The issues students came with often related to coursework they were given, so we therefore had to figure out how to help them learn and not write code for them.</p>
+										<p class="experience-item-body-text">Sometimes students approached with issues that I had never faced (regarding libraries/languages/concepts I'd never seen). In this case, it was a great learning opportunity that also challenged my problem solving skills; due to having to help students learn while learning myself.</p>
 									</div>
 									<div class="dot"></div>
 									<div>
@@ -218,7 +229,8 @@
 									</div>
 									<div></div><!-- <div class="vertical-line"></div> -->
 									<div class="experience-item-body-container">
-										<p class="experience-item-body-text">Street Soccer PITCH group project discussed from before. I worked as part of a <a target="_blank" href="https://p3.express/">P3.express</a> agile development team.</p>
+										<p class="experience-item-body-text">In my third year at Edinburgh Napier University, I participated in a group project consisting of myself and three others. The project was assigned by the charity <a target="_blank" href="https://streetsoccerscotland.org/">Street Soccer Scotland</a>, and we worked as part of a <a target="_blank" href="https://p3.express/">P3.express</a> agile development team.</p>
+										<p class="experience-item-body-text">The objective was to develop the ground work of a new interactive learning environment that Street Soccer Scotland would use to expand into different countries and train coaches around the world. Our work was then carried on by another team of developers who were provided the base of the website that we had developed.</p>
 									</div>
 								</div>
 							</div>
@@ -239,7 +251,7 @@
 									<div></div><!-- <div class="vertical-line"></div> -->
 									<div class="experience-item-body-container">
 										<p class="experience-item-body-text">Buzz is start-up company, aspiring to build a very interesting social media and chat app that aims to simplify planning social events with friends.</p>
-										<p class="experience-item-body-text">During my time with Buzz, I worked on a few of their projects: mobile app (Flutter), back-end API (Django), and their AWS and Docker deployment.</p>
+										<p class="experience-item-body-text">During my time with Buzz, I worked on a few of their projects: mobile app (Flutter), back-end API (Django), and their AWS and Docker deployment. I also got experience developing some interesting features, such as the live chat, authentication, mobile app UI/UX, and much more!</p>
 									</div>
 								</div>
 							</div>
