@@ -295,6 +295,10 @@ a:hover {
 	#certifications-container svg:nth-child(1) {
 		width: 94.514767932489451476793248945148vw;
 	}
+
+	#aspirations-container svg:nth-child(1) {
+		width: 90.084388185654008438818565400844vw;
+	}
 }
 
 .body-grid-item > *:not(:last-child) {
