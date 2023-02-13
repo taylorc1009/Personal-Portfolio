@@ -551,6 +551,7 @@ a:hover {
 	margin-block-start: 0;
 	margin-block-end: 0;
     /* margin-inline-start: 7px; */
+	hyphens: auto;
 }
 
 .experience-item-grid {
