@@ -55,9 +55,6 @@ a:hover {
 }
 
 @keyframes wave-animation {
-	0% {
-		transform: translateX(0%);
-	}
 	50% {
 		transform: translateX(-20%);
 	}
@@ -67,9 +64,6 @@ a:hover {
 }
 
 @keyframes wave-animation-reverse {
-	0% {
-		transform: translateX(-20%);
-	}
 	50% {
 		transform: translateX(0%);
 	}
