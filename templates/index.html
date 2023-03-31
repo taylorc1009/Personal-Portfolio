@@ -10,9 +10,10 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
 		<style>
-			:root {
-				--bitmoji-url: url("{{ url_for('static', filename='bitmoji.svg') }}");
-			}
+			:root { --bitmoji-url: url("{{ url_for('static', filename='bitmoji.svg') }}"); }
+			@font-face { font-family: FiraCodeiScript-Regular; src: url("{{ url_for('static', filename='styles/FiraCodeiScript-Regular.ttf') }}"); }
+			@font-face { font-family: FiraCodeiScript-Bold; src: url("{{ url_for('static', filename='styles/FiraCodeiScript-Bold.ttf') }}"); }
+			@font-face { font-family: FiraCodeiScript-Italic; src: url("{{ url_for('static', filename='styles/FiraCodeiScript-Italic.ttf') }}"); }
 		</style>
 	</head>
 
@@ -193,7 +194,7 @@
 									<h1 class="experience-item-title experience-item-text-globals">Edinburgh Napier University</h1>
 								</div>
 								<div class="experience-item-body-grid">
-									<div class="dot"></div>
+									<div class="dot experience-dot"></div>
 									<div>
 										<h2 class="experience-item-subtitle experience-item-text-globals">Service Desk Analyst</h2>
 										<h3 class="experience-item-duration experience-item-text-globals">December 2022 - Present</h3>
@@ -203,7 +204,7 @@
 										<p class="experience-item-body-text">Technically a promotion from the following IT Help Desk role, although not officially a promotion. It is the university's first line of contact for staff, students, and third parties with issues related to Napier's IT.</p>
 										<p class="experience-item-body-text">The following Help Desk listed is managed by people in this role, and is capable of less complex work. This role is more complex as it plays a more active part in supporting the university, in relation to staff members, other departments, and more sensitive software/data.</p>
 									</div>
-									<div class="dot"></div>
+									<div class="dot experience-dot"></div>
 									<div>
 										<h2 class="experience-item-subtitle experience-item-text-globals">IT Help Desk</h2>
 										<h3 class="experience-item-duration experience-item-text-globals">Sep 2021 - December 2022</h3>
@@ -212,7 +213,7 @@
 									<div class="experience-item-body-container">
 										<p class="experience-item-body-text">I provided IT support to students, and sometimes staff, on-campus. I also had to maintain some of the hardware for the university; exclusively PCs and peripherals (monitors, projectors, etc) in the campus' student's computing centre because this is where the desk is located.</p>
 									</div>
-									<div class="dot"></div>
+									<div class="dot experience-dot"></div>
 									<div>
 										<h2 class="experience-item-subtitle experience-item-text-globals">Student Tutoring</h2>
 										<h3 class="experience-item-duration experience-item-text-globals">Sep 2021 - Apr 2022</h3>
@@ -222,7 +223,7 @@
 										<p class="experience-item-body-text">I co-ran weekly Programming Surgeries sessions, aimed at helping fellow students in lower year groups learn and debug code. The issues students came with often related to coursework they were given, so we therefore had to figure out how to help them learn and not write code for them.</p>
 										<p class="experience-item-body-text">Sometimes students approached with issues that I had never faced (regarding libraries, languages, and concepts I'd never seen). In this case, it was a great learning opportunity that also challenged my problem solving skills; due to having to help students learn while learning myself.</p>
 									</div>
-									<div class="dot"></div>
+									<div class="dot experience-dot"></div>
 									<div>
 										<h2 class="experience-item-subtitle experience-item-text-globals">Software Engineer</h2>
 										<h3 class="experience-item-duration experience-item-text-globals">Jan 2021 - May 2021</h3>
@@ -243,7 +244,7 @@
 									<h1 class="experience-item-title experience-item-text-globals">Buzz</h1>
 								</div>
 								<div class="experience-item-body-grid">
-									<div class="dot"></div>
+									<div class="dot experience-dot"></div>
 									<div>
 										<h2 class="experience-item-subtitle experience-item-text-globals">Software Engineer</h2>
 										<h3 class="experience-item-duration experience-item-text-globals">Feb 2022 - Jul 2022</h3>
@@ -300,7 +301,7 @@
 									<h1 class="experience-item-title experience-item-text-globals">Udemy</h1>
 								</div>
 								<div class="experience-item-body-grid">
-									<div class="dot"></div>
+									<div class="dot experience-dot"></div>
 									<div>
 										<h2 class="experience-item-subtitle experience-item-text-globals">REST APIs with Flask and Python</h2>
 										<h3 class="experience-item-duration experience-item-text-globals">Jun 2021 • <a target="_blank" href="https://www.udemy.com/certificate/UC-f66879d8-2b5b-4b43-907b-49a1d07dfac4/">UC-f66879d8-2b5b-4b43-907b-49a1d07dfac4</a></h3>
@@ -309,7 +310,7 @@
 									<div class="experience-item-body-container">
 										<p class="experience-item-body-text">The course taught me how to develop a back-end API in Python Flask that could receive and respond to HTTP requests. It covered user authentication, Model-View-Controller architectures, and Object Relational Mappers with Flask SQLAlchemy.</p>
 									</div>
-									<div class="dot"></div>
+									<div class="dot experience-dot"></div>
 									<div>
 										<h2 class="experience-item-subtitle experience-item-text-globals">GitHub Ultimate: Master Git and GitHub - Beginner to Expert</h2>
 										<h3 class="experience-item-duration experience-item-text-globals">Jul 2021 • <a target="_blank" href="https://www.udemy.com/certificate/UC-fcc823e2-2262-42fe-aa48-ac905fb40b0a/">UC-fcc823e2-2262-42fe-aa48-ac905fb40b0a</a></h3>
@@ -341,7 +342,34 @@
 						<!-- s --><path id="SVG3-78" d="M398.04 79.192C395.032 79.192 392.792 78.2 391.32 76.216C389.912 74.232 388.76 71.48 387.864 67.96C386.712 69.112 385.912 69.688 385.464 69.688C385.144 69.688 384.984 69.432 384.984 68.92C384.984 68.536 385.144 68.184 385.464 67.864C385.464 67.864 386.264 66.872 387.864 64.888C389.528 62.904 392.312 60.12 396.216 56.536L408.312 45.208C409.976 43.608 411.288 42.392 412.248 41.56C413.272 40.728 414.008 40.312 414.456 40.312C416.504 40.312 417.528 41.08 417.528 42.616C417.528 43.384 417.112 44.28 416.28 45.304C415.64 46.072 415.16 46.68 414.84 47.128C414.584 47.512 414.424 47.736 414.36 47.8C413.208 49.784 412.152 53.336 411.192 58.456C410.488 62.232 409.88 65.336 409.368 67.768C408.856 70.2 408.44 71.96 408.12 73.048C410.808 72.984 413.464 72.152 416.088 70.552C418.712 68.952 421.528 66.328 424.536 62.68C424.664 62.552 424.856 62.36 425.112 62.104C425.368 61.848 425.624 61.72 425.88 61.72C426.264 61.72 426.456 61.88 426.456 62.2C426.456 62.52 426.36 62.84 426.168 63.16C425.976 63.48 425.784 63.768 425.592 64.024C423.608 66.392 421.752 68.344 420.024 69.88C418.296 71.352 416.472 72.536 414.552 73.432C412.632 74.264 410.36 74.968 407.736 75.544L404.664 77.56C403.832 78.136 402.84 78.552 401.688 78.808C400.536 79.064 399.32 79.192 398.04 79.192ZM399.192 74.296C400.664 74.296 401.88 73.944 402.84 73.24C403.544 72.856 404.216 71.8 404.856 70.072C405.56 68.28 406.232 66.072 406.872 63.448C407.384 61.208 407.768 59.032 408.024 56.92C408.344 54.744 408.632 52.664 408.888 50.68L409.272 47.416C407.8 48.504 405.944 50.072 403.704 52.12C401.464 54.168 399.256 56.312 397.08 58.552C394.904 60.792 393.496 62.456 392.856 63.544C392.216 64.568 391.864 65.336 391.8 65.848C391.544 68.408 392.152 70.456 393.624 71.992C395.16 73.528 397.016 74.296 399.192 74.296Z" stroke="white" stroke-width="1"/>
 					</svg>						
 				</div>
-				<p style="color: orange; font-family: 'Varela Round', serif; font-weight: bold; text-align: center;">//TODO: have hopes and dreams... (but seriously, this is yet to be implemented)</p>
+				<div id="ide-background">
+					<div id="ide-window-top">
+						<div id="ide-window-controllers">
+							<span class="dot ide-dot" style="background-color: #00CA4E;"></span>
+							<span class="dot ide-dot" style="background-color: #FFBD44;"></span>
+							<span class="dot ide-dot" style="background-color: #FF605C"></span>
+						</div>
+					</div>
+					<div id="ide-editor">
+						<ul id="ide-line-numbers">
+							<li>1</li>
+							<li>2</li>
+							<li>3</li>
+							<li>4</li>
+							<li>5</li>
+							<li>6</li>
+							<li>7</li>
+						</ul>
+						<div id="ide-code">
+							<span class="ide-code-keyword">#include </span><span class="ide-code-string">&lt;iostream&gt;</span><br/>
+							<br/>
+							<span class="ide-code-keyword">int </span><span class="ide-code-function">main&lpar;</span><span class="ide-code-keyword">int </span><span class="ide-code-parameter">argc</span><span class="ide-code-standard">, </span><span class="ide-code-keyword">char</span><span class="ide-code-operator">** </span><span class="ide-code-parameter">argv</span><span class="ide-code-function">&rpar; &lbrace;</span><br/>
+							<span class="ide-code-standard">&emsp;std::cout </span><span class="ide-code-operator">&lt;&lt; </span><span class="ide-code-string">"Prepare to run some really bad code!"</span><span class="ide-code-standard">;</span><br/>
+							<span class="ide-code-function">&rbrace;</span>
+						</div>
+					</div>
+					<!-- TODO: what will the code be? Previous idea: my current idea is to write Java's main function and have the System.out.print say "I like to type a lot of words, so I use Java!" then, below this, have a comment saying "I'm joking; I actually don't like Java" -->
+				</div>
 			</div>
 		</div>
 	</body>
