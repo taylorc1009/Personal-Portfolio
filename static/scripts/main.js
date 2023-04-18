@@ -20,19 +20,13 @@ animator = {
 				current_dpl = (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter),
 				totalAnimationDuration = SVGs.length === 1 ? animator.getCurrentVectorAnimationDuration(SVGs[0], isHeading) + current_dpl : current_dpl;
 
-			if (isHeading) {
-				wavesSVG = document.getElementById("waves");
-				for (let [i, wave] of Array.from(wavesSVG.children).entries()) {
-					$(`#${wave.id}`).css({
-						'animation': `${i % 2 ? 'wave-animation' : 'wave-animation-reverse'} ${60 + (i + 1) * 3}s infinite ease-in-out`
-					});
-				}
-			}
+			if (isHeading)
+				animator.animateHeadingWaves();
 
 			for(let SVG of SVGs) {
 				animator.hideVectorPaths(SVG, isHeading && !isVisible);
 
-				//! uncomment this and blocks marked "!" to enable multi-line starts in text SVG animations
+				//! uncomment this and lines/blocks marked "!" to enable multi-line starts in text SVG animations
 				/* nextFlexRow = mathematics.calculateFlexChildRow(SVG);
 				if(nextFlexRow > currentFlexRow) {
 					delay = 0;
@@ -49,7 +43,7 @@ animator = {
 					isHeading,
 					delay,
 					//! Math.max(delay + animationDuration + current_dpl, totalAnimationDuration)
-					totalAnimationDuration //! disable this when enabling multi-line animations
+					totalAnimationDuration //! disable this when enabling multi-line animations (i.e. when enabling the commented-out line above this one)
 				);
 				if(SVGs.length > 1) //! disable this code block when enabling multi-line animations
 					delay += animationDuration;
@@ -65,22 +59,8 @@ animator = {
 				}*/
 			}
 
-			if (isVisible) {
-				for (const animation of animator.getSVGsParentsChildren(SVGs[0].parentElement)) {
-					animation.args.push(totalAnimationDuration);
-					animation.method.apply(this, animation.args);
-				}
-				animator.animateVectorFill(
-					`.${SVGGroup}`,
-					totalAnimationDuration,
-					isHeading
-				);
-				if (isHeading)
-					animator.initialiseSubheadingAnimation(
-						true,
-						totalAnimationDuration
-					);
-			}
+			if (isVisible)
+				animator.postVectorStrokeAnimEvents(SVGs, SVGGroup, totalAnimationDuration, isHeading);
 		}
 	},
 
@@ -151,6 +131,15 @@ animator = {
 		}
 	},
 
+	animateHeadingWaves: () => {
+		wavesSVG = document.getElementById("waves");
+		for (let [i, wave] of Array.from(wavesSVG.children).entries()) {
+			$(`#${wave.id}`).css({
+				'animation': `${i % 2 ? 'wave-animation' : 'wave-animation-reverse'} ${60 + (i + 1) * 3}s infinite ease-in-out`
+			});
+		}
+	},
+
 	animateVectorStroke: (svg, delay, isHeading) => {
 		const vectors = svg.children;
 
@@ -158,6 +147,27 @@ animator = {
 			$(`#${vectors[i].id}`).css({
 				'animation': `vector-stroke-animation ${isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter}s ease forwards ${delay + (isHeading ? mathematics.heading_svg_dbl : mathematics.delay_between_letters) * i}s`
 			});
+	},
+
+	postVectorStrokeAnimEffects: (SVGs, SVGGroup, totalAnimationDuration, isHeading) => {
+		//* here, add any effects that should begin after a vector's stroke animation has finished
+
+		for (const animation of animator.getSVGsParentsChildren(SVGs[0].parentElement)) {
+			animation.args.push(totalAnimationDuration);
+			animation.method.apply(this, animation.args);
+		}
+
+		animator.animateVectorFill(
+			`.${SVGGroup}`,
+			totalAnimationDuration,
+			isHeading
+		);
+
+		if (isHeading)
+			animator.initialiseSubheadingAnimation(
+				true,
+				totalAnimationDuration
+			);
 	},
 
 	animateVectorFill: (identifier, delay, isHeading) => {
