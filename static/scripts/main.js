@@ -149,7 +149,7 @@ animator = {
 			});
 	},
 
-	postVectorStrokeAnimEffects: (SVGs, SVGGroup, totalAnimationDuration, isHeading) => {
+	postVectorStrokeAnimEvents: (SVGs, SVGGroup, totalAnimationDuration, isHeading) => {
 		//* here, add any effects that should begin after a vector's stroke animation has finished
 
 		for (const animation of animator.getSVGsParentsChildren(SVGs[0].parentElement)) {
