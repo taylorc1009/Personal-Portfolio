@@ -149,7 +149,7 @@ animator = {
 			});
 	},
 
-	postVectorStrokeAnimEvents: (SVGs, SVGGroup, totalAnimationDuration, isHeading) => {
+	postVectorStrokeAnimEvents: async (SVGs, SVGGroup, totalAnimationDuration, isHeading) => {
 		//* here, add any effects that should begin after a vector's stroke animation has finished
 
 		for (const animation of animator.getSVGsParentsChildren(SVGs[0].parentElement)) {
@@ -168,6 +168,9 @@ animator = {
 				true,
 				totalAnimationDuration
 			);
+
+		if (SVGGroup === "aspirations-svg")
+			await animator.animateIDE(totalAnimationDuration);
 	},
 
 	animateVectorFill: (identifier, delay, isHeading) => {
@@ -181,7 +184,39 @@ animator = {
 			'animation': `svg-sibling-reveal-animation ${mathematics.fade_in_duration}s ease forwards ${delay}s`
 		});
 	},
-		
+
+	animateIDE: async (SVGAnimationDuration) => {
+		await mathematics.sleep(SVGAnimationDuration * 1000);
+
+		const stringsAndHighlights = [
+			["ide-code-keyword", "#include "], ["ide-code-string", "<iostream>"], [null, "\n"],
+			[null, "\n"],
+			["ide-code-keyword", "int "], ["ide-code-function", "main("], ["ide-code-keyword", "int "], ["ide-code-parameter", "argc"], ["ide-code-standard", ", "], ["ide-code-keyword", "char"], ["ide-code-operator", "** "], ["ide-code-parameter", "argv"], ["ide-code-function", ") {"], [null, "\n"],
+			["ide-code-standard", "\tstd::cout "], ["ide-code-operator", "<< "], ["ide-code-string", "\"Prepare to run some really bad code!\""], ["ide-code-standard", ";"], [null, "\n"],
+			["ide-code-function", "}"]
+		];
+
+		const ideCode = document.getElementById("ide-code"),
+			  ideLineNumbers = document.getElementById("ide-line-numbers");
+
+		miscellaneous.createElement({type: "li", innerText: "1", parent: ideLineNumbers});
+		let lines = 1;
+		for ([className, string] of stringsAndHighlights) {
+			if (className && string !== "\n") {
+				let element = miscellaneous.createElement({type: "span", className: className, parent: ideCode});
+
+				for (let c = 0; c < string.length; c++) {
+					element.innerText += string[c];
+					await mathematics.sleep(mathematics.ide_code_dbl);
+				}
+			}
+			else {
+				miscellaneous.createElement({type: "br", parent: ideCode});
+				miscellaneous.createElement({type: "li", innerText: (++lines).toString(), parent: ideLineNumbers});
+			}
+		}
+	},
+
 	vectorOnScrollEvent: (svgClassContainer, svgClass, delays, totalAnimationDuration, containerSiblingsAnimations) => {
 		if (mathematics.isOnScreen(svgClassContainer)){
 			//the "isHeading" parameter is false for both of these animations here because we will never animate the heading via a scroll listener
@@ -204,12 +239,13 @@ animator = {
 mathematics = {
 	//there's different animation durations for text vectors in the page body as we don't want the user to have to wait long for them to finish every time
 	//the heading animation lasts longer and, as you can see, it's parameters begin with "heading_svg_"
-	delay_between_letters: 0.1, //delay between the beginning of 1 letter stroke animation and the next letters' beginning
-	duration_per_letter: 1.5, //duration it takes to animate 1 full letters' stroke
-	fade_in_duration: 0.25, //duration of the SVG fill fade in effect
+	delay_between_letters: 0.1, //delay (s) between the beginning of 1 letter stroke animation and the next letters' beginning
+	duration_per_letter: 1.5, //duration (s) of one full letters' stroke animation
+	fade_in_duration: 0.25, //duration (s) of the SVG fill's fade in effect
 	heading_svg_dbl: 0.2,
 	heading_svg_dpl: 2,
 	heading_svg_fid: 0.5,
+	ide_code_dbl: 65, //delay (ms) between adding the next letter to the IDE code
 
 	isOnScreen: (elm) => { //used to determine if an element is on screen (credit - https://stackoverflow.com/a/5354536/11136104)
 		let rect = elm.getBoundingClientRect();
@@ -234,6 +270,10 @@ mathematics = {
 		}
 	
 		return row;
+	},
+
+	sleep: (ms) => {
+		return new Promise(resolve => setTimeout(resolve, ms));
 	}
 }
 
@@ -256,5 +296,18 @@ miscellaneous = {
 	copyrightNotice: () => {
 		if (window.confirm('Bitmoji avatars are copyright Ⓒ protected by the Bitmoji organization. The owners have deemed it legal to reuse their artwork for non-commercial purposes. Would you like to view this information in their guidelines?')) 
 			window.open('https://www.bitmoji.com/bitmoji_brand_guidelines.pdf#page=4', '_blank').focus();
+	},
+
+	createElement: ({type, className=null, innerText=null, parent=null}={}) => {
+		let element = document.createElement(type);
+
+		if (className)
+			element.className = className;
+		if (innerText)
+			element.innerText = innerText;
+		if (parent)
+			parent.appendChild(element);
+
+		return element;
 	}
 }

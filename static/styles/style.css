@@ -635,6 +635,7 @@ a:hover {
 	max-width: 400px;
 	min-height: 400px;
 	margin: 10px;
+	opacity: 0;
 }
 
 #ide-window-top {
@@ -656,7 +657,7 @@ a:hover {
 
 #ide-editor {
 	display: grid;
-	grid-template-columns: 20px auto;
+	grid-template-columns: 25px auto;
 }
 
 #ide-line-numbers {
