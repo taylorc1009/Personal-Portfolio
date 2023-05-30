@@ -1,22 +1,25 @@
 animator = {
-	getCurrentVectorAnimationDuration: (svg, isHeading) => {
-		return (isHeading ? mathematics.heading_svg_dbl : mathematics.delay_between_letters) * (svg.childElementCount);
-	},
-
-	initialiseVectorAnimations: () => {
-		const SVGGroups = Array.from(document.getElementsByClassName("text-as-svg")).reduce((groups, svg) => {
-			const group = (groups[svg.classList[1]] || []);
-			group.push(svg);
-			groups[svg.classList[1]] = group;
+	getAllTextSVGs: () => {
+		return Array.from(document.getElementsByClassName("text-as-svg")).reduce((groups, SVG) => {
+			const group = (groups[SVG.classList[1]] || []);
+			group.push(SVG);
+			groups[SVG.classList[1]] = group;
 			return groups;
 		}, {});
+	},
 
-		for(let [SVGGroup, SVGs] of Object.entries(SVGGroups)) {
-			let //! currentFlexRow = 0,
+	getCurrentVectorAnimationDuration: (SVG, isHeading) => {
+		return (isHeading ? mathematics.heading_svg_dbl : mathematics.delay_between_letters) * (SVG.childElementCount);
+	},
+
+	/* //! this edition of the initialiseVectorAnimations function contains the multi-line animation trigger; the other edition will only animate one line of a responsive vector at a time
+	initialiseVectorAnimations: () => {
+		for(let [SVGClass, SVGs] of Object.entries(animator.getAllTextSVGs())) {
+			let currentFlexRow = 0,
 				isVisible = mathematics.isOnScreen(SVGs[0].parentElement),
-				isHeading = SVGGroup === "heading-svg",
+				isHeading = SVGClass === "heading-svg",
 				delay = 0,
-				//! animationDuration = 0,
+				animationDuration = 0,
 				current_dpl = (isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter),
 				totalAnimationDuration = SVGs.length === 1 ? animator.getCurrentVectorAnimationDuration(SVGs[0], isHeading) + current_dpl : current_dpl;
 
@@ -26,122 +29,138 @@ animator = {
 			for(let SVG of SVGs) {
 				animator.hideVectorPaths(SVG, isHeading && !isVisible);
 
-				//! uncomment this and lines/blocks marked "!" to enable multi-line starts in text SVG animations
-				/* nextFlexRow = mathematics.calculateFlexChildRow(SVG);
+				nextFlexRow = mathematics.calculateRowOfItemInFlex(SVG);
 				if(nextFlexRow > currentFlexRow) {
 					delay = 0;
 					currentFlexRow = nextFlexRow;
-				}*/
+				}
 
 				animationDuration = animator.getCurrentVectorAnimationDuration(SVG, isHeading);
-				if(SVGs.length > 1) //! disable this code block when enabling multi-line animations
-					totalAnimationDuration += animationDuration;
 				animator.determineVectorAnimationState(
 					SVG,
-					SVGGroup,
+					SVGClass,
 					isVisible,
 					isHeading,
 					delay,
-					//! Math.max(delay + animationDuration + current_dpl, totalAnimationDuration)
-					totalAnimationDuration //! disable this when enabling multi-line animations (i.e. when enabling the commented-out line above this one)
+					Math.max(delay + animationDuration + current_dpl, totalAnimationDuration)
 				);
-				if(SVGs.length > 1) //! disable this code block when enabling multi-line animations
-					delay += animationDuration;
 
-				//!
-				/*if(SVGs.length > 1) {
+				if(SVGs.length > 1) {
 					delay += animationDuration;
 					if(delay + current_dpl > totalAnimationDuration) {
 						totalAnimationDuration = delay + current_dpl;
 						if(i === SVGs.length - 1)
 							totalAnimationDuration += current_dpl;
 					}
-				}*/
+				}
+			}
+		}
+	},*/
+
+	initialiseVectorAnimations: () => {
+		animator.animateHeadingWaves();
+
+		for(const [SVGClass, SVGs] of Object.entries(animator.getAllTextSVGs())) {
+			let isVisible = mathematics.isOnScreen(SVGs[0].parentElement),
+				isHeading = SVGClass === "heading-svg",
+				delay = 0,
+				current_dpl = isHeading ? mathematics.heading_svg_dpl : mathematics.duration_per_letter,
+				totalAnimationDuration = SVGs.length === 1 ? animator.getCurrentVectorAnimationDuration(SVGs[0], isHeading) + current_dpl : current_dpl;
+
+			for(const SVG of SVGs) {
+				animator.hideVectorPaths(SVG, isHeading && !isVisible);
+
+				animationDuration = animator.getCurrentVectorAnimationDuration(SVG, isHeading);
+				if(SVGs.length > 1) {
+					delay += animationDuration;
+					totalAnimationDuration += animationDuration;
+				}
+
+				animator.determineVectorAnimationState(SVG, SVGClass, isVisible, isHeading, delay, totalAnimationDuration);
 			}
 
 			if (isVisible)
-				animator.postVectorStrokeAnimEvents(SVGs, SVGGroup, totalAnimationDuration, isHeading);
+				animator.postVectorStrokeAnimEvents(SVGs, SVGClass, totalAnimationDuration, isHeading);
 		}
 	},
 
-	determineVectorAnimationState: (svg, svgClass, isVisible, isHeading, delay, totalAnimationDuration) => {
+	determineVectorAnimationState: (SVG, SVGClass, isVisible, isHeading, delay, totalAnimationDuration) => {
 		if (isVisible) //if the SVG is already on screen, run the animation: preventing the animation waiting for the user to scroll to it...
-			animator.animateVectorStroke(svg, delay, isHeading);
+			animator.animateVectorStroke(SVG, delay, isHeading);
 		else { //... otherwise, either...
 			if (isHeading) //make the heading's subheading elements visible; "SOFTWARE ENGINEER" and the SVG icon
-				animator.initialiseSubheadingAnimation(isVisible, undefined);
-			else if(!animationsCollection.animations[svgClass])
-				animationsCollection.animations[svgClass] = {
-					method: animator.vectorOnScrollEvent,
+				animator.initialiseSubheadingAnimation(false, undefined);
+			else if(!animationsCollection.animations[SVGClass]) //if the SVG's animation is not currently pending (i.e. waiting for the SVG to be on-screen)...
+				animationsCollection.animations[SVGClass] = { //... add it to the list of pending animations with the necessary arguments and set the scroll handler as the response to the now-on-screen trigger
+					method: animator.vectorOnScrollHandler,
 					args: [
-						svg.parentElement,
-						svgClass,
+						SVG.parentElement,
+						SVGClass,
 						[delay],
 						totalAnimationDuration,
-						animator.getSVGsParentsChildren(svg.parentElement)
+						animator.getSVGsParentsChildren(SVG.parentElement)
 					]
 				};
-			else {
-				animationsCollection.animations[svgClass].args[2].push(delay);
-				if(totalAnimationDuration > animationsCollection.animations[svgClass].args[3])
-					animationsCollection.animations[svgClass].args[3] = totalAnimationDuration;
+			else { //... otherwise, we need to list the duration of the animation for the current word in the text SVG group, so we can stagger the start of the animation for the next word (thanks to the "else if" above, this won't happen for SVG groups with only one word)
+				animationsCollection.animations[SVGClass].args[2].push(delay);
+				/* //! this "if" is for when using the multi-line animation trigger in initialiseVectorAnimations
+				if(totalAnimationDuration > animationsCollection.animations[SVGClass].args[3])*/
+				animationsCollection.animations[SVGClass].args[3] = totalAnimationDuration;
 			}
 		}
 	},
 
-	getSVGsParentsChildren: (SVGContainer) => { //returns the list of elements that are in the same container as an SVG container (so they can be animated in with the SVG fill animation)
-		var containerSiblingsAnimations = [];
-		
-		for (let sibling of SVGContainer.parentElement.children)
+	getSVGsParentsChildren: (SVGContainer) => { //returns the list of elements that are in the same container as a text SVG's container (so they can be animated in at the same time as the SVG fill animation)
+		let containerSiblingsAnimations = [];
+
+		for (const sibling of SVGContainer.parentElement.children)
 			if (sibling != SVGContainer)
 				containerSiblingsAnimations.push({method: animator.animateSiblings, args: [sibling]});
 
 		return containerSiblingsAnimations;
 	},
 
-	hideVectorPaths: (svg, preventIntro) => {
-		const paths = svg.children;
+	hideVectorPaths: (SVG, preventIntro) => {
+		const paths = SVG.children;
 
-		for (let j = 0; j < paths.length; j++) {
-			var pathLength = paths[j].getTotalLength(); //gets the length of the SVG path's stroke
+		for (const path of paths) {
+			const pathLength = path.getTotalLength(); //gets the length of the SVG path's stroke
 
-			$(`#${paths[j].id}`).css({
+			$(`#${path.id}`).css({
 				'stroke-dasharray': `${pathLength}`,
 				'stroke-dashoffset': `${preventIntro ? 0 : pathLength}`,
 				'stroke-opacity': '1'
 			});
 		}
-		$(`#${svg.id}`).css({
+
+		$(`#${SVG.id}`).css({
 			'fill': `${preventIntro ? 'rgba(var(--color-pure-white))' : 'rgba(var(--color-transparent))'}`
 		});
 	},
 
 	initialiseSubheadingAnimation: (isVisible, delay) => {
-		if(isVisible) { //checks whether the heading is out of sight or not...
+		if(isVisible) //checks whether the heading is out of sight or not...
 			//... if it isn't, animate all the heading elements...
 			$('#heading-item-2').css({
 				'animation': `subheading-reveal-animation 1s ease forwards ${delay}s`
 			});
-		}
-		else { //... if it is out of sight, I don't want the animation to waste resources and I also don't want it to happen when it's scrolled to by the user, so just prevent it
+		else //... if it is out of sight, I don't want the animation to waste resources and I also don't want it to happen when it's scrolled to by the user, so just prevent it
 			//we therefore need to skip the animations of the other subheading elements as well and make them visible
 			$('#heading-item-2').css({
 				'opacity': 1,
 			});
-		}
 	},
 
 	animateHeadingWaves: () => {
 		wavesSVG = document.getElementById("waves");
-		for (let [i, wave] of Array.from(wavesSVG.children).entries()) {
+		for (let [i, wave] of Array.from(wavesSVG.children).entries())
 			$(`#${wave.id}`).css({
 				'animation': `${i % 2 ? 'wave-animation' : 'wave-animation-reverse'} ${60 + (i + 1) * 3}s infinite ease-in-out`
 			});
-		}
 	},
 
-	animateVectorStroke: (svg, delay, isHeading) => {
-		const vectors = svg.children;
+	animateVectorStroke: (SVG, delay, isHeading) => {
+		const vectors = SVG.children;
 
 		for (let i = 0; i < vectors.length; i++)
 			$(`#${vectors[i].id}`).css({
@@ -149,8 +168,8 @@ animator = {
 			});
 	},
 
-	postVectorStrokeAnimEvents: async (SVGs, SVGGroup, totalAnimationDuration, isHeading) => {
-		//* here, add any effects that should begin after a vector's stroke animation has finished
+	postVectorStrokeAnimEvents: async (SVGs, SVGClass, totalAnimationDuration, isHeading) => {
+		//TODO: here, add any effects that should begin after a vector's stroke animation has finished
 
 		for (const animation of animator.getSVGsParentsChildren(SVGs[0].parentElement)) {
 			animation.args.push(totalAnimationDuration);
@@ -158,7 +177,7 @@ animator = {
 		}
 
 		animator.animateVectorFill(
-			`.${SVGGroup}`,
+			`.${SVGClass}`,
 			totalAnimationDuration,
 			isHeading
 		);
@@ -169,7 +188,7 @@ animator = {
 				totalAnimationDuration
 			);
 
-		if (SVGGroup === "aspirations-svg")
+		if (SVGClass === "aspirations-svg")
 			await animator.animateIDE(totalAnimationDuration);
 	},
 
@@ -188,17 +207,17 @@ animator = {
 	animateIDE: async (SVGAnimationDuration) => {
 		await mathematics.sleep(SVGAnimationDuration * 1000);
 
-		const stringsAndHighlights = [
-			["ide-code-keyword", "#include "], ["ide-code-string", "<iostream>"], [null, "\n"],
-			[null, "\n"],
-			["ide-code-keyword", "int "], ["ide-code-function", "main("], ["ide-code-keyword", "int "], ["ide-code-parameter", "argc"], ["ide-code-standard", ", "], ["ide-code-keyword", "char"], ["ide-code-operator", "** "], ["ide-code-parameter", "argv"], ["ide-code-function", ") {"], [null, "\n"],
-			["ide-code-standard", "\tstd::cout "], ["ide-code-operator", "<< "], ["ide-code-string", "\"Prepare to run some really bad code!\""], ["ide-code-standard", ";"], [null, "\n"],
-			["ide-code-function", "}"]
-		];
-
 		const ideCode = document.getElementById("ide-code"),
-			  ideLineNumbers = document.getElementById("ide-line-numbers");
+			  ideLineNumbers = document.getElementById("ide-line-numbers"),
+			  stringsAndHighlights = [ //Nx2 matrix structure: first value is the CSS class which entails the syntax highlighting of the string, second is the string/code (null/"\n" indicates a new line)
+				  ["ide-code-keyword", "#include "], ["ide-code-string", "<iostream>"], [null, "\n"],
+				  [null, "\n"],
+				  ["ide-code-keyword", "int "], ["ide-code-function", "main("], ["ide-code-keyword", "int "], ["ide-code-parameter", "argc"], ["ide-code-standard", ", "], ["ide-code-keyword", "char"], ["ide-code-operator", "** "], ["ide-code-parameter", "argv"], ["ide-code-function", ") {"], [null, "\n"],
+				  ["ide-code-standard", "\tstd::cout "], ["ide-code-operator", "<< "], ["ide-code-string", "\"Prepare to run some really bad code!\""], ["ide-code-standard", ";"], [null, "\n"],
+				  ["ide-code-function", "}"]
+			  ];
 
+		//add the first line number - the loop will start on this line and only ever add new line numbers when there's a new line in stringsAndHighlights
 		miscellaneous.createElement({type: "li", innerText: "1", parent: ideLineNumbers});
 		let lines = 1;
 		for ([className, string] of stringsAndHighlights) {
@@ -217,13 +236,13 @@ animator = {
 		}
 	},
 
-	vectorOnScrollEvent: (svgClassContainer, svgClass, delays, totalAnimationDuration, containerSiblingsAnimations) => {
-		if (mathematics.isOnScreen(svgClassContainer)){
+	vectorOnScrollHandler: (SVGClassContainer, SVGClass, delays, totalAnimationDuration, containerSiblingsAnimations) => {
+		if (mathematics.isOnScreen(SVGClassContainer)) {
 			//the "isHeading" parameter is false for both of these animations here because we will never animate the heading via a scroll listener
-			for (let i = 0; i < svgClassContainer.childElementCount; i++)
-				animator.animateVectorStroke(svgClassContainer.children[i], delays[i], false);
+			for (let i = 0; i < SVGClassContainer.childElementCount; i++)
+				animator.animateVectorStroke(SVGClassContainer.children[i], delays[i], false);
 
-			animator.animateVectorFill(`.${svgClass}`, totalAnimationDuration, false);
+			animator.animateVectorFill(`.${SVGClass}`, totalAnimationDuration, false);
 
 			for (const animation of containerSiblingsAnimations) {
 				animation.args.push(totalAnimationDuration);
@@ -252,25 +271,25 @@ mathematics = {
 		return !(rect.bottom < 0 || rect.top - Math.max(document.documentElement.clientHeight, window.innerHeight) >= 0);
 	},
 
-	calculateFlexChildRow: (item) => {
+	/*calculateRowOfItemInFlex: (item) => {
 		let row = 0, previousHighestDistance = 0;
 	
 		for (let child of item.parentElement.children) {
-			var parentTop = item.parentElement.getBoundingClientRect().top; //parent's top's distance from the top of the viewport
-			var currentChildTop = child.getBoundingClientRect().top; //child's top's distance from the top of the viewport
-	
-			var childTopDistanceFromParentTop = Math.abs(parentTop - currentChildTop);
+			let parentTop = item.parentElement.getBoundingClientRect().top, //parent's top's distance from the top of the viewport
+				currentChildTop = child.getBoundingClientRect().top, //child's top's distance from the top of the viewport
+				childTopDistanceFromParentTop = Math.abs(parentTop - currentChildTop);
 	
 			if (childTopDistanceFromParentTop > previousHighestDistance) {
 				row++;
 				previousHighestDistance = childTopDistanceFromParentTop;
 			}
+
 			if (child === item)
 				break;
 		}
 	
 		return row;
-	},
+	},*/
 
 	sleep: (ms) => {
 		return new Promise(resolve => setTimeout(resolve, ms));
@@ -280,9 +299,9 @@ mathematics = {
 animationsCollection = { //contains a list of methods that begin animations when specific elements are scrolled down to
 	animations: {}, //this is a list of methods which invoke pending animations
 
-	deleteAnimation: (svgClass) => {
-		if(animationsCollection.animations.hasOwnProperty(svgClass))
-			delete animationsCollection.animations[svgClass];
+	deleteAnimation: (SVGClass) => {
+		if(animationsCollection.animations.hasOwnProperty(SVGClass))
+			delete animationsCollection.animations[SVGClass];
 	}
 };
 
