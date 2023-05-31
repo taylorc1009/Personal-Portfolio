@@ -36,7 +36,7 @@ animator = {
 				}
 
 				animationDuration = animator.getCurrentVectorAnimationDuration(SVG, isHeading);
-				animator.determineVectorAnimationState(
+				animator.updatePendingAnimations(
 					SVG,
 					SVGClass,
 					isVisible,
@@ -71,42 +71,42 @@ animator = {
 				animator.hideVectorPaths(SVG, isHeading && !isVisible);
 
 				animationDuration = animator.getCurrentVectorAnimationDuration(SVG, isHeading);
-				if(SVGs.length > 1) {
-					delay += animationDuration;
+				if (SVGs.length > 1) //this must happen before "updatePendingAnimations" so that we get the correct delay for the fill's fade-in animation
 					totalAnimationDuration += animationDuration;
-				}
 
-				animator.determineVectorAnimationState(SVG, SVGClass, isVisible, isHeading, delay, totalAnimationDuration);
+				if (isVisible) //if the SVG is already on screen, run the animation: preventing the animation waiting for the user to scroll to it...
+					animator.animateVectorsStrokes(SVG, delay, isHeading);
+				else if (!isHeading)
+					animator.updatePendingAnimations(SVG, SVGClass, delay, totalAnimationDuration);
+
+				if(SVGs.length > 1) //this must happen after "animateVectorsStrokes" so that we begin applying the stroke animation delay (between words) after the animations begin, not before
+					delay += animationDuration;
 			}
 
 			if (isVisible)
-				animator.postVectorStrokeAnimEvents(SVGs, SVGClass, totalAnimationDuration, isHeading);
+				animator.postVectorStrokeAnimEvents(SVGs, SVGClass, totalAnimationDuration, isHeading); //any animations that should occur after the SVG's stoke animations (e.g. the fill animation)
+			else if (isHeading)
+				animator.initialiseSubheadingAnimation(false, undefined); //make the heading's subheading elements visible; "SOFTWARE ENGINEER" and the SVG icon
 		}
 	},
 
-	determineVectorAnimationState: (SVG, SVGClass, isVisible, isHeading, delay, totalAnimationDuration) => {
-		if (isVisible) //if the SVG is already on screen, run the animation: preventing the animation waiting for the user to scroll to it...
-			animator.animateVectorStroke(SVG, delay, isHeading);
-		else { //... otherwise, either...
-			if (isHeading) //make the heading's subheading elements visible; "SOFTWARE ENGINEER" and the SVG icon
-				animator.initialiseSubheadingAnimation(false, undefined);
-			else if(!animationsCollection.animations[SVGClass]) //if the SVG's animation is not currently pending (i.e. waiting for the SVG to be on-screen)...
-				animationsCollection.animations[SVGClass] = { //... add it to the list of pending animations with the necessary arguments and set the scroll handler as the response to the now-on-screen trigger
-					method: animator.vectorOnScrollHandler,
-					args: [
-						SVG.parentElement,
-						SVGClass,
-						[delay],
-						totalAnimationDuration,
-						animator.getSVGsParentsChildren(SVG.parentElement)
-					]
-				};
-			else { //... otherwise, we need to list the duration of the animation for the current word in the text SVG group, so we can stagger the start of the animation for the next word (thanks to the "else if" above, this won't happen for SVG groups with only one word)
-				animationsCollection.animations[SVGClass].args[2].push(delay);
-				/* //! this "if" is for when using the multi-line animation trigger in initialiseVectorAnimations
-				if(totalAnimationDuration > animationsCollection.animations[SVGClass].args[3])*/
-				animationsCollection.animations[SVGClass].args[3] = totalAnimationDuration;
-			}
+	updatePendingAnimations: (SVG, SVGClass, delay, totalAnimationDuration) => {
+		if(!animationsCollection.animations[SVGClass]) //if the SVG's animation is not currently pending (i.e. waiting for the SVG to be on-screen)...
+			animationsCollection.animations[SVGClass] = { //... add it to the list of pending animations with the necessary arguments and set the scroll handler as the response to the now-on-screen trigger
+				method: animator.vectorOnScrollHandler,
+				args: [
+					SVG.parentElement,
+					SVGClass,
+					[delay],
+					totalAnimationDuration,
+					animator.getSVGsParentsChildren(SVG.parentElement)
+				]
+			};
+		else { //... otherwise, we need to list the duration of the animation for the current word in the text SVG group, so we can stagger the start of the animation for the next word (thanks to the "else if" above, this won't happen for SVG groups with only one word)
+			animationsCollection.animations[SVGClass].args[2].push(delay);
+			/* //! this "if" is for when using the multi-line animation trigger in initialiseVectorAnimations
+			if(totalAnimationDuration > animationsCollection.animations[SVGClass].args[3])*/
+			animationsCollection.animations[SVGClass].args[3] = totalAnimationDuration;
 		}
 	},
 
@@ -159,7 +159,7 @@ animator = {
 			});
 	},
 
-	animateVectorStroke: (SVG, delay, isHeading) => {
+	animateVectorsStrokes: (SVG, delay, isHeading) => {
 		const vectors = SVG.children;
 
 		for (let i = 0; i < vectors.length; i++)
@@ -240,7 +240,7 @@ animator = {
 		if (mathematics.isOnScreen(SVGClassContainer)) {
 			//the "isHeading" parameter is false for both of these animations here because we will never animate the heading via a scroll listener
 			for (let i = 0; i < SVGClassContainer.childElementCount; i++)
-				animator.animateVectorStroke(SVGClassContainer.children[i], delays[i], false);
+				animator.animateVectorsStrokes(SVGClassContainer.children[i], delays[i], false);
 
 			animator.animateVectorFill(`.${SVGClass}`, totalAnimationDuration, false);
 
