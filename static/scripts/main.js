@@ -74,7 +74,7 @@ animator = {
 				if (SVGs.length > 1) //this must happen before "updatePendingAnimations" so that we get the correct delay for the fill's fade-in animation
 					totalAnimationDuration += animationDuration;
 
-				if (isVisible) //if the SVG is already on screen, run the animation: preventing the animation waiting for the user to scroll to it...
+				if (isVisible) //if the SVG is already on screen, run the animation; preventing the animation waiting for the user to scroll to it...
 					animations.animateVectorsStrokes(SVG, delay, isHeading);
 				else if (!isHeading)
 					animator.updatePendingAnimations(SVG, SVGClass, delay, totalAnimationDuration);
@@ -98,9 +98,7 @@ animator = {
 					SVG.parentElement,
 					SVGClass,
 					[delay],
-					totalAnimationDuration,
-					animator.getSVGsSiblingsAnimations(SVG.parentElement) //acquire the list of animations that need to be applied to the SVGs sibling elements, after the SVG's stroke animation finishes (such as the fade-in)
-				]
+					totalAnimationDuration]
 			};
 		else { //... otherwise, we need to list the duration of the animation for the current word in the text SVG group, so we can stagger the start of the animation for the next word (thanks to the "else if" above, this won't happen for SVG groups with only one word)
 			pendingAnimations.queue[SVGClass].args[2].push(delay);
@@ -110,7 +108,7 @@ animator = {
 		}
 	},
 
-	getSVGsSiblingsAnimations: (SVGContainer) => { //returns the list of elements that are in the same container as a text SVG's container (so their animations can begin at the same time as the SVG fill animation)
+	getSVGsSiblingsToFadeIn: (SVGContainer) => { //returns the list of elements that are in the same container as a text SVG's container (so they can fade in at the same time as the SVG fill animation)
 		let SVGSiblingsAnimations = [];
 
 		for (const sibling of SVGContainer.parentElement.children)
@@ -123,7 +121,7 @@ animator = {
 	postVectorStrokeAnimEvents: (SVGs, SVGClass, totalAnimationDuration) => {
 		animations.animateVectorFill(SVGClass, totalAnimationDuration);
 
-		for (const animation of animator.getSVGsSiblingsAnimations(SVGs[0].parentElement)) {
+		for (const animation of animator.getSVGsSiblingsToFadeIn(SVGs[0].parentElement)) {
 			animation.args.push(totalAnimationDuration);
 			animation.method.apply(this, animation.args);
 		}
