@@ -157,13 +157,22 @@ animations = {
 		["keyword", "void "], ["function", "fizzBuzz("], ["keyword", "int "], ["parameter", "n"], ["function", ")"], ["standard", ";"], [null, "\n"],
 		[null, "\n"],
 		["keyword", "int "], ["function", "main("], ["keyword", "int "], ["parameter", "argc"], ["standard", ", "], ["keyword", "char"], ["operator", "** "], ["parameter", "argv"], ["function", ") {"], [null, "\n"],
-		["standard", "\tstd::cout "], ["operator", "<< "], ["string", "\"Prepare to run some really bad code!\""], ["standard", ";"], [null, "\n"],
+		["standard", "\tstd::cout "], ["operator", "<< "], ["string", "\"Prepare to run my really bad code!\""], ["standard", ";"], [null, "\n"],
 		["function", "\tfizzBuzz("], ["variable", "100"], ["function", ")"], ["standard", ";"], [null, "\n"],
 		["function", "}"], [null, "\n"],
 		[null, "\n"],
 		["keyword", "void "], ["function", "fizzBuzz("], ["keyword", "int "], ["parameter", "n"], ["function", ") {"], [null, "\n"],
 		["keyword", "\tfor "], ["function", "("], ["keyword", "int "], ["variable", "i "], ["operator", "= "], ["variable", "1"], ["standard", "; "], ["variable", "i "], ["operator", "<= "], ["parameter", "n"], ["standard", "; "], ["variable", "i"], ["operator", "++"], ["function", ") {"], [null, "\n"],
-		["standard", "\t\tstd::"], ["keyword", "string"]
+		["standard", "\t\tstd::"], ["keyword", "string "], ["variable", "output "], ["operator", "= "], ["string", "\"\""], ["standard", ";"], [null, "\n"],
+		[null, "\n"],
+		["keyword", "\t\tif "], ["function", "("], ["operator", "!"], ["function", "("], ["variable", "i "], ["operator", "% "], ["variable ", "3"], ["function", "))"], [null, "\n"],
+		["variable", "\t\t\t output "], ["operator", "+= "], ["string", "Fizz"], ["standard", ";"], [null, "\n"],
+		["keyword", "\t\tif "], ["function", "("], ["operator", "!"], ["function", "("], ["variable", "i "], ["operator", "% "], ["variable ", "5"], ["function", "))"], [null, "\n"],
+		["variable", "\t\t\t output "], ["operator", "+= "], ["string", "Buzz"], ["standard", ";"], [null, "\n"],
+		[null, "\n"],
+		["standard", "\t\tstd::cout "], ["operator", "<< "], ["variable", "output "], ["operator", "<< "], ["standard", "std::endl;"], [null, "\n"],
+		["function", "\t}"], [null, "\n"],
+		["function", "}"]
 	],
 
 	animateVectorFill: (SVGClass, delay) => {
@@ -283,7 +292,7 @@ mathematics = {
 	heading_svg_dbl: 0.2,
 	heading_svg_dpl: 2,
 	heading_svg_fid: 0.5,
-	ide_code_dbl: 65, //delay (ms) between adding the next letter to the IDE code
+	ide_code_dbl: 60, //delay (ms) between adding the next letter to the IDE code
 
 	isOnScreen: (elm) => { //used to determine if an element is on screen (credit - https://stackoverflow.com/a/5354536/11136104)
 		const rect = elm.getBoundingClientRect();
