@@ -710,26 +710,38 @@ a:hover {
 }
 
 .ide-code-keyword {
-	font-family: FiraCodeiScript-Bold;
-	color: #b047d0;
+	font-family: FiraCodeiScript-Regular;
+	color: #d256ff;
 }
 
 .ide-code-string {
 	font-family: FiraCodeiScript-Italic;
-	color: #44da5b;
+	color: #a6fa7f;
 }
 
 .ide-code-function {
 	font-family: FiraCodeiScript-Regular;
-	color: #eeba34;
+	color: #ffbb00;
 }
 
 .ide-code-parameter {
 	font-family: FiraCodeiScript-Italic;
-	color: #ef3939;
+	color: #ff3460;
 }
 
 .ide-code-operator {
 	font-family: FiraCodeiScript-Regular;
-	color: #39c4e0;
+	color: #4dcacf;
+}
+
+@keyframes ide-text-cursor-animation {
+	0% {
+		border-right: 2px solid white;
+	}
+	50% {
+		border-right: none;
+	}
+	100% {
+		border-right: 2px solid white;
+	}
 }

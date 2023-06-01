@@ -227,21 +227,35 @@ animations = {
 
 		//add the first line number - the loop will start on this line and only ever add new line numbers when there's a new line in stringsAndHighlights
 		miscellaneous.createElement({type: "li", innerText: "1", parent: ideLineNumbers});
-		let lines = 1;
-		for ([className, string] of stringsAndHighlights) {
+		let element,
+			lines = 1;
+		for (const [i, [className, string]] of stringsAndHighlights.entries()) {
 			if (className && string !== "\n") {
-				let element = miscellaneous.createElement({type: "span", className: className, parent: ideCode});
+				element = miscellaneous.createElement({type: "span", className: className, parent: ideCode});
 
-				for (let c = 0; c < string.length; c++) {
-					element.textContent += string[c];
+				$(element).css({ //gives the effect of having a text cursor
+					'border-right': '2px solid white'
+				});
+
+				for (const char of string) {
+					element.textContent += char;
 					await mathematics.sleep(mathematics.ide_code_dbl);
 				}
+
+				if (i < stringsAndHighlights.length) //don't remove the cursor effect from the last element as this is given an idle cursor animation once all strings have been outputted
+					$(element).css({ //removes the text cursor effect from "element" after the HTML element has been fully populated by the "string" variable, ready for the next element to have the cursor
+						'border-right': 'none'
+					});
 			}
 			else {
 				miscellaneous.createElement({type: "br", parent: ideCode});
 				miscellaneous.createElement({type: "li", innerText: (++lines).toString(), parent: ideLineNumbers});
 			}
 		}
+
+		$(element).css({ //applies the idle text cursor animation
+			'animation': `ide-text-cursor-animation 2s infinite`
+		});
 	},
 }
 
@@ -266,7 +280,7 @@ mathematics = {
 	ide_code_dbl: 65, //delay (ms) between adding the next letter to the IDE code
 
 	isOnScreen: (elm) => { //used to determine if an element is on screen (credit - https://stackoverflow.com/a/5354536/11136104)
-		let rect = elm.getBoundingClientRect();
+		const rect = elm.getBoundingClientRect();
 		return !(rect.bottom < 0 || rect.top - Math.max(document.documentElement.clientHeight, window.innerHeight) >= 0);
 	},
 
