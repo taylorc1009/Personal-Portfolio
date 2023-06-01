@@ -221,7 +221,7 @@ animations = {
 				  ["ide-code-keyword", "#include "], ["ide-code-string", "<iostream>"], [null, "\n"],
 				  [null, "\n"],
 				  ["ide-code-keyword", "int "], ["ide-code-function", "main("], ["ide-code-keyword", "int "], ["ide-code-parameter", "argc"], ["ide-code-standard", ", "], ["ide-code-keyword", "char"], ["ide-code-operator", "** "], ["ide-code-parameter", "argv"], ["ide-code-function", ") {"], [null, "\n"],
-				  ["ide-code-standard", "\tstd::cout "], ["ide-code-operator", "<< "], ["ide-code-string", "\"Prepare to run some really bad code!\""], ["ide-code-standard", ";"], [null, "\n"],
+				  ["ide-code-standard", "\u00a0\u00a0\u00a0\u00a0std::cout "], ["ide-code-operator", "<< "], ["ide-code-string", "\"Prepare to run some really bad code!\""], ["ide-code-standard", ";"], [null, "\n"],
 				  ["ide-code-function", "}"]
 			  ];
 
@@ -233,7 +233,7 @@ animations = {
 				let element = miscellaneous.createElement({type: "span", className: className, parent: ideCode});
 
 				for (let c = 0; c < string.length; c++) {
-					element.innerText += string[c];
+					element.textContent += string[c];
 					await mathematics.sleep(mathematics.ide_code_dbl);
 				}
 			}
