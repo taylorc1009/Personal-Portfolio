@@ -678,8 +678,7 @@ a:hover {
 	margin-block-start: 0;
 	margin-block-end: 0;
 	padding-inline-start: 0;
-	margin: 0 auto;
-	padding-bottom: 14px;
+	margin: 0 auto 14px auto;
 	width: 100%;
     border-right: 1px solid #3d444e;
 }
