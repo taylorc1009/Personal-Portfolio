@@ -153,6 +153,7 @@ animator = {
 animations = {
 	ideStringsAndHighlights: [ //Nx2 matrix structure: first value is the CSS class which entails the syntax highlighting of the string, second is the string/code (null/"\n" indicates a new line)
 		["keyword", "#include "], ["string", "<iostream>"], [null, "\n"],
+		["keyword", "#include "], ["string", "<string>"], [null, "\n"],
 		[null, "\n"],
 		["keyword", "void "], ["function", "fizzBuzz("], ["keyword", "int "], ["parameter", "n"], ["function", ")"], ["standard", ";"], [null, "\n"],
 		[null, "\n"],
@@ -163,14 +164,14 @@ animations = {
 		[null, "\n"],
 		["keyword", "void "], ["function", "fizzBuzz("], ["keyword", "int "], ["parameter", "n"], ["function", ") {"], [null, "\n"],
 		["keyword", "\tfor "], ["function", "("], ["keyword", "int "], ["variable", "i "], ["operator", "= "], ["variable", "1"], ["standard", "; "], ["variable", "i "], ["operator", "<= "], ["parameter", "n"], ["standard", "; "], ["variable", "i"], ["operator", "++"], ["function", ") {"], [null, "\n"],
-		["standard", "\t\tstd::"], ["keyword", "string "], ["variable", "output "], ["operator", "= "], ["string", "\"\""], ["standard", ";"], [null, "\n"],
+		["standard", "\t\tstd::"], ["keyword", "string "], ["variable", "out "], ["operator", "= "], ["string", "\"\""], ["standard", ";"], [null, "\n"],
 		[null, "\n"],
 		["keyword", "\t\tif "], ["function", "("], ["operator", "!"], ["function", "("], ["variable", "i "], ["operator", "% "], ["variable ", "3"], ["function", "))"], [null, "\n"],
-		["variable", "\t\t\t output "], ["operator", "+= "], ["string", "Fizz"], ["standard", ";"], [null, "\n"],
+		["variable", "\t\t\tout "], ["operator", "+= "], ["string", "Fizz"], ["standard", ";"], [null, "\n"],
 		["keyword", "\t\tif "], ["function", "("], ["operator", "!"], ["function", "("], ["variable", "i "], ["operator", "% "], ["variable ", "5"], ["function", "))"], [null, "\n"],
-		["variable", "\t\t\t output "], ["operator", "+= "], ["string", "Buzz"], ["standard", ";"], [null, "\n"],
+		["variable", "\t\t\tout "], ["operator", "+= "], ["string", "Buzz"], ["standard", ";"], [null, "\n"],
 		[null, "\n"],
-		["standard", "\t\tstd::cout "], ["operator", "<< "], ["variable", "output "], ["operator", "<< "], ["standard", "std::endl;"], [null, "\n"],
+		["standard", "\t\tstd::cout "], ["operator", "<< "], ["function", "("], ["variable", "out "], ["operator", "? "], ["variable", "out "], ["operator", ": "], ["variable", "i"], ["function", ") "], ["operator", "<< "], ["standard", "std::endl;"], [null, "\n"],
 		["function", "\t}"], [null, "\n"],
 		["function", "}"]
 	],
