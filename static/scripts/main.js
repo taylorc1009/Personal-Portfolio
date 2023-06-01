@@ -153,6 +153,21 @@ animator = {
 }
 
 animations = {
+	ideStringsAndHighlights: [ //Nx2 matrix structure: first value is the CSS class which entails the syntax highlighting of the string, second is the string/code (null/"\n" indicates a new line)
+		["keyword", "#include "], ["string", "<iostream>"], [null, "\n"],
+		[null, "\n"],
+		["keyword", "void "], ["function", "fizzBuzz("], ["keyword", "int "], ["parameter", "n"], ["function", ")"], ["standard", ";"], [null, "\n"],
+		[null, "\n"],
+		["keyword", "int "], ["function", "main("], ["keyword", "int "], ["parameter", "argc"], ["standard", ", "], ["keyword", "char"], ["operator", "** "], ["parameter", "argv"], ["function", ") {"], [null, "\n"],
+		["standard", "\tstd::cout "], ["operator", "<< "], ["string", "\"Prepare to run some really bad code!\""], ["standard", ";"], [null, "\n"],
+		["function", "\tfizzBuzz("], ["variable", "100"], ["function", ")"], ["standard", ";"], [null, "\n"],
+		["function", "}"], [null, "\n"],
+		[null, "\n"],
+		["keyword", "void "], ["function", "fizzBuzz("], ["keyword", "int "], ["parameter", "n"], ["function", ") {"], [null, "\n"],
+		["keyword", "\tfor "], ["function", "("], ["keyword", "int "], ["variable", "i "], ["operator", "= "], ["variable", "1"], ["standard", "; "], ["variable", "i "], ["operator", "<= "], ["parameter", "n"], ["standard", "; "], ["variable", "i"], ["operator", "++"], ["function", ") {"], [null, "\n"],
+		["standard", "\t\tstd::"], ["keyword", "string"]
+	],
+
 	animateVectorFill: (SVGClass, delay) => {
 		$(`.${SVGClass}`).css({
 			'animation': `vector-fill-animation ${SVGClass === "heading-svg" ? mathematics.heading_svg_fid : mathematics.fade_in_duration}s ease forwards ${delay}s`
@@ -179,7 +194,7 @@ animations = {
 		}
 
 		$(`#${SVG.id}`).css({
-			'fill': `${preventIntro ? 'rgba(var(--color-pure-white))' : 'rgba(var(--color-transparent))'}`
+			'fill': `${preventIntro ? 'white' : 'transparent'}`
 		});
 	},
 
@@ -216,33 +231,26 @@ animations = {
 		await mathematics.sleep(SVGAnimationDuration * 1000);
 
 		const ideCode = document.getElementById("ide-code"),
-			  ideLineNumbers = document.getElementById("ide-line-numbers"),
-			  stringsAndHighlights = [ //Nx2 matrix structure: first value is the CSS class which entails the syntax highlighting of the string, second is the string/code (null/"\n" indicates a new line)
-				  ["ide-code-keyword", "#include "], ["ide-code-string", "<iostream>"], [null, "\n"],
-				  [null, "\n"],
-				  ["ide-code-keyword", "int "], ["ide-code-function", "main("], ["ide-code-keyword", "int "], ["ide-code-parameter", "argc"], ["ide-code-standard", ", "], ["ide-code-keyword", "char"], ["ide-code-operator", "** "], ["ide-code-parameter", "argv"], ["ide-code-function", ") {"], [null, "\n"],
-				  ["ide-code-standard", "\u00a0\u00a0\u00a0\u00a0std::cout "], ["ide-code-operator", "<< "], ["ide-code-string", "\"Prepare to run some really bad code!\""], ["ide-code-standard", ";"], [null, "\n"],
-				  ["ide-code-function", "}"]
-			  ];
+			  ideLineNumbers = document.getElementById("ide-line-numbers");
 
 		//add the first line number - the loop will start on this line and only ever add new line numbers when there's a new line in stringsAndHighlights
 		miscellaneous.createElement({type: "li", innerText: "1", parent: ideLineNumbers});
 		let element,
 			lines = 1;
-		for (const [i, [className, string]] of stringsAndHighlights.entries()) {
+		for (const [i, [className, string]] of animations.ideStringsAndHighlights.entries()) {
 			if (className && string !== "\n") {
-				element = miscellaneous.createElement({type: "span", className: className, parent: ideCode});
+				element = miscellaneous.createElement({type: "span", className: "ide-code-" + className, parent: ideCode});
 
 				$(element).css({ //gives the effect of having a text cursor
 					'border-right': '2px solid white'
 				});
 
 				for (const char of string) {
-					element.textContent += char;
+					element.textContent += char === "\t" ? "\u00a0\u00a0\u00a0\u00a0" : char; //"\t" indicates a tab, but I can't find a way of adding a tab that works and is friendly to this animation
 					await mathematics.sleep(mathematics.ide_code_dbl);
 				}
 
-				if (i < stringsAndHighlights.length) //don't remove the cursor effect from the last element as this is given an idle cursor animation once all strings have been outputted
+				if (i < animations.ideStringsAndHighlights.length) //don't remove the cursor effect from the last element as this is given an idle cursor animation once all strings have been outputted
 					$(element).css({ //removes the text cursor effect from "element" after the HTML element has been fully populated by the "string" variable, ready for the next element to have the cursor
 						'border-right': 'none'
 					});
