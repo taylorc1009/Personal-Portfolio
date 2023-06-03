@@ -120,7 +120,6 @@ a:hover {
 #heading-item-2 {
 	display: inline-flex;
 	justify-content: center;
-	opacity: 0;
 	gap: 10px;
 	align-items: center;
 }
@@ -130,6 +129,8 @@ a:hover {
 	font-family: 'Varela Round', serif;
 	font-weight: bold;
 	color: white;
+	margin-block-start: 0;
+    margin-block-end: 0;
 }
 
 @media screen and (min-width: 2560px) {
@@ -297,7 +298,6 @@ a:hover {
 .card-container {
 	display: table; /* allows centre-ing of lists to work */
 	margin: 0 auto;
-	opacity: 0;
 }
 .card-list {
 	list-style: none;
@@ -440,7 +440,6 @@ a:hover {
 	display: flow-root;
 	max-width: 920px;
 	margin: 0 auto;
-	opacity: 0;
 }
 
 #bitmoji {
@@ -630,7 +629,6 @@ a:hover {
 	max-width: 400px;
 	min-height: 400px;
 	margin: 10px;
-	opacity: 0;
 }
 
 #ide-window-top {
