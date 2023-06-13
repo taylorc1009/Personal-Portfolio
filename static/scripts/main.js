@@ -256,7 +256,8 @@ animations = {
 
 		let textElem,
 			lines = 1, //add the first line number - the loop will start on this line and only ever add new line numbers when there's a new line in stringsAndHighlights
-			lineNumElem = miscellaneous.createElement({type: "li", innerText: "1", parent: ideLineNumbers});
+			lineNumElem = miscellaneous.createElement({type: "li", innerText: "1", parent: ideLineNumbers}),
+			lineContainer = miscellaneous.createElement({type: "div", className: "ide-line-container", parent: ideCode});
 
 		for (const [i, [className, string]] of animations.ideStringsAndHighlights.entries()) {
 			$(lineNumElem).css({
@@ -264,7 +265,7 @@ animations = {
 			});
 
 			if (className && string !== "\n") {
-				textElem = miscellaneous.createElement({type: "span", className: "ide-code-" + className, parent: ideCode});
+				textElem = miscellaneous.createElement({type: "span", className: "ide-code-" + className, parent: lineContainer});
 
 				$(textElem).css({ //gives the effect of having a text cursor
 					'border-right': '2px solid white'
@@ -281,7 +282,8 @@ animations = {
 					});
 			}
 			else {
-				miscellaneous.createElement({type: "br", parent: ideCode});
+				miscellaneous.createElement({type: "br", parent: lineContainer});
+				lineContainer = miscellaneous.createElement({type: "div", className: "ide-line-container", parent: ideCode});
 
 				$(lineNumElem).css({
 					'color': 'grey'
@@ -293,7 +295,7 @@ animations = {
 		$(textElem).css({ //applies the idle text cursor animation
 			'animation': `ide-text-cursor-animation 2s infinite`
 		});
-	},
+	}
 }
 
 pendingAnimations = { //contains a list of methods that begin animations when specific elements are scrolled down to

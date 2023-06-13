@@ -727,6 +727,8 @@ a:hover {
 #ide-line-numbers > li {
 	font-family: FiraCodeiScript-Regular;
 	text-align: center;
+	font-size: 14px;
+	margin: 1px 0;
 }
 
 #ide-code {
@@ -734,10 +736,6 @@ a:hover {
 	overflow-x: auto;
 	margin-left: 5px;
 	margin-top: 4px;
-}
-
-#ide-code > span {
-	white-space: nowrap;
 }
 
 #ide-code::-webkit-scrollbar, #ide-editor::-webkit-scrollbar {
@@ -787,6 +785,15 @@ a:hover {
 	margin-right: 10px;
 }
 
+.ide-line-container {
+	margin: 0.4px 0;
+}
+
+.ide-line-container > span {
+	white-space: nowrap;
+	font-size: 14px;
+}
+
 .ide-code-standard {
 	font-family: FiraCodeiScript-Regular;
 	color: #ffffff;
@@ -823,13 +830,10 @@ a:hover {
 }
 
 @keyframes ide-text-cursor-animation {
-	0% {
-		border-right: 2px solid white;
-	}
 	50% {
 		border-right: none;
 	}
-	100% {
+	0%, 100% {
 		border-right: 2px solid white;
 	}
 }
