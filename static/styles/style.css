@@ -734,7 +734,6 @@ a:hover {
 #ide-code {
 	overflow-y: clip;
 	overflow-x: auto;
-	margin-left: 5px;
 	margin-top: 4px;
 }
 
@@ -786,7 +785,7 @@ a:hover {
 }
 
 .ide-line-container {
-	margin: 0.4px 0;
+	margin: 0.4px 5px;
 }
 
 .ide-line-container > span {
