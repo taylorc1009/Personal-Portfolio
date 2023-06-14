@@ -272,7 +272,7 @@ animations = {
 				'color': 'white'
 			});
 
-			if (className && string !== "\n") {
+			if (className && string !== "\n") { //list entries "[null, "\n"]" indicate that the ide should take a new line; this block of code runs when one of these entries was not found
 				textElem = miscellaneous.createElement({type: "span", className: "ide-code-" + className, parent: lineContainer});
 
 				$(textElem).css({ //gives the effect of having a text cursor
@@ -286,7 +286,7 @@ animations = {
 						'border-right': 'none'
 					});
 			}
-			else {
+			else { //take a new line when "[null, "\n"]" is encounter in the list of strings
 				let adjustVerticalScroll = mathematics.notOverflownVertically(lineContainer, ideEditor); //we need to calculate whether the user is already at the bottom of the scrollable box before we add new elements to it, then scroll to the bottom afterwards
 
 				lineContainer = miscellaneous.createElement({type: "div", className: "ide-line-container", parent: ideCode});
@@ -296,7 +296,7 @@ animations = {
 				});
 				lineNumElem = miscellaneous.createElement({type: "li", innerText: (++lines).toString(), parent: ideLineNumbers});
 
-				animator.adjustVerticalAndHorizontalScroll(adjustVerticalScroll, adjustHorizontalScroll);
+				animations.adjustVerticalAndHorizontalScroll(adjustVerticalScroll, adjustHorizontalScroll);
 			}
 		}
 
