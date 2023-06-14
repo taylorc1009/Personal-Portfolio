@@ -1,3 +1,9 @@
+window.onscroll = () => { //I tried to use the "scroll" event listener instead of this, but the listener would be deleted after the user's first scroll, rendering it useless for this purpose
+	for(const [key, value] of Object.entries(pendingAnimations.queue))
+		if (value.method.apply(this, value.args)) //executes the "animator.onScrollHandler" - '.apply()' unpacks the list of arguments required for this animation
+			pendingAnimations.deleteAnimation(key); //if this animation has begun (the animations' method returned 'true') then it is time to stop the animation from pending
+}
+
 animator = {
 	getAllTextSVGs: () => {
 		return Array.from(document.getElementsByClassName("text-as-svg")).reduce((groups, SVG) => {
@@ -249,18 +255,20 @@ animations = {
 	},
 
 	animateIDE: async (SVGAnimationDuration) => {
-		await mathematics.sleep(SVGAnimationDuration * 1000);
+		await miscellaneous.sleep(SVGAnimationDuration * 1000);
 
 		const ideCode = document.getElementById("ide-code"),
-			  ideLineNumbers = document.getElementById("ide-line-numbers");
+			  ideLineNumbers = document.getElementById("ide-line-numbers"),
+			  ideEditor = document.getElementById("ide-editor");
 
 		let textElem,
 			lines = 1, //add the first line number - the loop will start on this line and only ever add new line numbers when there's a new line in stringsAndHighlights
 			lineNumElem = miscellaneous.createElement({type: "li", innerText: "1", parent: ideLineNumbers}),
-			lineContainer = miscellaneous.createElement({type: "div", className: "ide-line-container", parent: ideCode});
+			lineContainer = miscellaneous.createElement({type: "div", className: "ide-line-container", parent: ideCode})
+			adjustHorizontalScroll = false; //this is declared in a higher scope because we may need to move the horizontal scroll position to 0 when the text takes a new line
 
 		for (const [i, [className, string]] of animations.ideStringsAndHighlights.entries()) {
-			$(lineNumElem).css({
+			$(lineNumElem).css({ //set the number of the line that's currently being animated to white, simulating this line to be the active line (similar to how actual IDEs make the number of the line - that the user is currently working on - white)
 				'color': 'white'
 			});
 
@@ -271,10 +279,7 @@ animations = {
 					'border-right': '2px solid white'
 				});
 
-				for (const char of string) {
-					textElem.textContent += char === "\t" ? "\u00a0\u00a0\u00a0\u00a0" : char; //"\t" indicates a tab, but I can't find a way of adding a tab that works and is friendly to this animation
-					await mathematics.sleep(mathematics.ide_code_dbl);
-				}
+				adjustHorizontalScroll = await animations.progressiveStringInjection(lineContainer, textElem, string);
 
 				if (i < animations.ideStringsAndHighlights.length) //don't remove the cursor effect from the last element as this is given an idle cursor animation once all strings have been outputted
 					$(textElem).css({ //removes the text cursor effect from "element" after the HTML element has been fully populated by the "string" variable, ready for the next element to have the cursor
@@ -282,19 +287,57 @@ animations = {
 					});
 			}
 			else {
-				miscellaneous.createElement({type: "br", parent: lineContainer});
+				let adjustVerticalScroll = mathematics.notOverflownVertically(lineContainer, ideEditor); //we need to calculate whether the user is already at the bottom of the scrollable box before we add new elements to it, then scroll to the bottom afterwards
+
 				lineContainer = miscellaneous.createElement({type: "div", className: "ide-line-container", parent: ideCode});
 
-				$(lineNumElem).css({
+				$(lineNumElem).css({ //since the animation is moving to a new line, the number of the current line should change from white to grey as it's no longer the currently active line (similar to an actual IDE)
 					'color': 'grey'
 				});
 				lineNumElem = miscellaneous.createElement({type: "li", innerText: (++lines).toString(), parent: ideLineNumbers});
+
+				animator.adjustVerticalAndHorizontalScroll(adjustVerticalScroll, adjustHorizontalScroll);
 			}
 		}
 
 		$(textElem).css({ //applies the idle text cursor animation
 			'animation': `ide-text-cursor-animation 2s infinite`
 		});
+	},
+
+	progressiveStringInjection: async (lineContainer, textElem, string) => {
+		//acquire these elements in this procedure to avoid asking for them as parameters
+		const ideCode = document.getElementById("ide-code"),
+			  ideEditor = document.getElementById("ide-editor");
+
+		let adjustHorizontalScroll = false;
+
+		for (const char of string) {
+			adjustHorizontalScroll = mathematics.notOverflownHorizontally(lineContainer, ideCode); //detect whether the right-edge of "lineContainer" has overflown horizontally
+			
+			textElem.textContent += char === "\t" ? "\u00a0\u00a0\u00a0\u00a0" : char; //"\t" indicates a tab, but I can't find a way of adding a tab that works and is friendly to this animation
+
+			if (adjustHorizontalScroll //if the text element had not overflown the eight-end of the container, before "char" was added to the text element...
+				&& mathematics.hasOverflownHorizontally(lineContainer, ideCode) //... and, after "char" was added, the text element has now overflown the right-side of the container...
+				&& mathematics.notOverflownVertically(lineContainer, ideEditor) //... and the text element has also not overflown the container vertically...
+			)
+				ideCode.scrollLeft = (lineContainer.offsetWidth - ideCode.offsetWidth) + 7; //... adjust horizontal scrolling so the edge of the text/line meets the right-end of the container (+7 to accommodate for the 2px-wide text cursor and the 5px-wide margin)
+
+			await miscellaneous.sleep(mathematics.ide_code_dbl);
+		}
+
+		return adjustHorizontalScroll;
+	},
+
+	adjustVerticalAndHorizontalScroll: (adjustVerticalScroll, adjustHorizontalScroll) => {
+		//acquire these elements in this procedure to avoid asking for them as parameters
+		const ideCode = document.getElementById("ide-code"),
+			  ideEditor = document.getElementById("ide-editor");
+
+		if (adjustVerticalScroll)
+			ideEditor.scrollTop = ideEditor.scrollHeight; //move the vertical scroll position down as whenever a new line is added, we will only ever want to move the scroll position down; not up
+		if (adjustHorizontalScroll)
+			ideCode.scrollLeft = 0;  //when the horizontal scroll position has been adjusted by this JavaScript, we need to reset it to 0 when the animation takes a "new line of code" (i.e. \n)
 	}
 }
 
@@ -318,10 +361,22 @@ mathematics = {
 	heading_svg_fid: 0.5,
 	ide_code_dbl: 60, //delay (ms) between adding the next letter to the IDE code
 
-	isOnScreen: (elm) => { //used to determine if an element is on screen (credit - https://stackoverflow.com/a/5354536/11136104)
-		const rect = elm.getBoundingClientRect();
+	isOnScreen: (element) => { //used to determine if an element is on screen (credit - https://stackoverflow.com/a/5354536/11136104)
+		const rect = element.getBoundingClientRect();
 		return !(rect.bottom < 0 || rect.top - Math.max(document.documentElement.clientHeight, window.innerHeight) >= 0);
 	},
+
+	notOverflownVertically: (element, container) => {
+		return element.offsetTop - container.scrollTop <= container.offsetHeight; //returns true if the top of the element has not overflown below the container (the "minus scrollTop" exists to detect if the element has not overflown, thanks to the user scrolling down)
+	},
+
+	hasOverflownHorizontally: (element, container) => {
+		return element.offsetWidth >= container.offsetWidth + container.scrollLeft; //returns true if the element is wider than: the container plus how far the user has scrolled along the container
+	},
+
+	notOverflownHorizontally: (element, container) => {
+		return element.offsetWidth - container.scrollLeft <= container.offsetWidth;
+	}
 
 	/*calculateRowOfItemInFlex: (item) => {
 		let row = 0, previousHighestDistance = 0;
@@ -342,16 +397,6 @@ mathematics = {
 	
 		return row;
 	},*/
-
-	sleep: (ms) => {
-		return new Promise(resolve => setTimeout(resolve, ms));
-	}
-}
-
-window.onscroll = () => { //I tried to use the "scroll" event listener instead of this, but the listener would be deleted after the user's first scroll, rendering it useless for this purpose
-	for(const [key, value] of Object.entries(pendingAnimations.queue))
-		if (value.method.apply(this, value.args)) //executes the "animator.onScrollHandler" - '.apply()' unpacks the list of arguments required for this animation
-			pendingAnimations.deleteAnimation(key); //if this animation has begun (the animations' method returned 'true') then it is time to stop the animation from pending
 }
 
 miscellaneous = {
@@ -371,5 +416,9 @@ miscellaneous = {
 			parent.appendChild(element);
 
 		return element;
+	},
+
+	sleep: (ms) => {
+		return new Promise(resolve => setTimeout(resolve, ms));
 	}
 }

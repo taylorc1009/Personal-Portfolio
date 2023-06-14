@@ -788,6 +788,7 @@ a:hover {
 .ide-line-container {
 	margin: 1px 5px;
 	height: 18px;
+	width: fit-content;
 }
 
 .ide-line-container > span {
