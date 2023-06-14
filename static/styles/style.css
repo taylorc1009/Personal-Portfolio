@@ -729,6 +729,7 @@ a:hover {
 	text-align: center;
 	font-size: 14px;
 	margin: 1px 0;
+	height: 18px;
 }
 
 #ide-code {
@@ -785,7 +786,8 @@ a:hover {
 }
 
 .ide-line-container {
-	margin: 0.4px 5px;
+	margin: 1px 5px;
+	height: 18px;
 }
 
 .ide-line-container > span {
