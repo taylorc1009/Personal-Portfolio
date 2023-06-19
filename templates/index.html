@@ -110,10 +110,9 @@
 				<div style="opacity: 0;">
 					<div id="about-me">
 						<img id="bitmoji" src="{{ url_for('static', filename='bitmoji.svg') }}" onclick="miscellaneous.copyrightNotice();">
-						<p class="about-me-paragraph body-paragraph">I am graduate student from the Greater Edinburgh area, with a First Class Bachelor's (with Honours) Degree in Software Engineering from Edinburgh Napier University. I have been coding since I was 14 years old (2015).</p>
-						<p class="about-me-paragraph body-paragraph">During my time practicing software engineering, I have: developed personal projects (such as this), completed multiple university coursework assignments, contributed to group projects, and worked in professional teams.</p>
-						<p class="about-me-paragraph body-paragraph">Here, you will find notable experiences of mine and a little more about me. Some links indicating how to get in touch will also be included.</p>
-						<p class="about-me-paragraph body-paragraph">This page was developed by me, entirely in vanilla HTML, CSS, JavaScript, and jQuery! Head to GitHub to find the source code for it.</p>
+						<p class="about-me-paragraph body-paragraph">I am a first class graduate student from the Greater Edinburgh area, Scotland. Here, you will find notable experiences and links to relevant (social) media pages of mine.</p>
+						<p class="about-me-paragraph body-paragraph">I have been coding since I was 14 years old (2015). During my time practicing software engineering, I have: developed personal projects (such as this), completed multiple university coursework assignments, contributed to group projects, and worked in professional teams.</p>
+						<p class="about-me-paragraph body-paragraph">This page was developed by me, entirely in vanilla HTML, CSS, JavaScript, and jQuery! Head to the <a target="+blank" href="https://github.com/taylorc1009/Personal-Portfolio">GitHub repo</a> to find the source code.</p>
 						<p class="about-me-paragraph body-paragraph">Here are some personal favorites of the projects I have made:</p>
 					</div>
 					<div id="cards-1" class="card-container">
@@ -297,6 +296,61 @@
 				</div>
 				<div style="opacity: 0;">
 					<ul class="experience-list">
+						<li class="experience-list-item">
+							<div class="experience-item-grid">
+								<div class="experience-item-heading">
+									<img class="experience-item-image" src="{{ url_for('static', filename='napier.svg') }}" onclick="window.open('https://www.napier.ac.uk', '_blank').focus()" style="cursor: pointer;"/>
+									<h1 class="experience-item-title experience-item-text-globals">Edinburgh Napier University</h1>
+								</div>
+								<div class="experience-item-body-grid">
+									<div class="dot experience-dot"></div>
+									<div>
+										<h2 class="experience-item-subtitle experience-item-text-globals">First Class BEng (Hons) Software Engineering Degree</h2>
+										<h3 class="experience-item-duration experience-item-text-globals">Sep 2018 - Jul 2022 • Acquire a reference via the <a target="_blank" href="https://www.hedd.ac.uk">Higher Education Degree Datacheck</a></h3>
+									</div>
+									<div></div>
+									<div class="experience-item-body-container">
+										<p class="experience-item-body-text">The following is a list of the modules I took each year.</p>
+										<p class="experience-item-body-text">
+											Year 1:<br/>
+											• Computer Systems 1 (consisted of computer hardware, networking, and operating systems)<br/>
+											• Foundations of Software Design and Development<br/>
+											• Foundation Mathematics<br/>
+											• Introduction to Human Computer Interaction<br/>
+											• Programming Fundamentals<br/>
+											• Mathematics for Software Engineering
+										</p>
+										<p class="experience-item-body-text">
+											Year 2:<br/>
+											• Operating Systems<br/>
+											• Database Systems<br/>
+											• Object Oriented Software Development<br/>
+											• Algorithms and Data Structures<br/>
+											• Mobile Applications Development<br/>
+											• Software Engineering Methods
+										</p>
+										<p class="experience-item-body-text">
+											Year 3:<br/>
+											• Artificial Intelligence<br/>
+											• Data Analytics<br/>
+											• Software Engineering (consisted of design, development, testing, and agile methodologies)<br/>
+											• Computing in Contemporary Society<br/>
+											• Group Project (Street Soccer PITCH project)<br/>
+											• Advanced Database Systems
+										</p>
+										<p class="experience-item-body-text">
+											Year 4:<br/>
+											• Honours Project<br/>
+											• Agile Project Management<br/>
+											• Concurrent and Parallel Systems<br/>
+											• Formal Approaches to Software Engineering<br/>
+											• Secure Software Development
+										</p>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="experience-list-separator"/>
 						<li class="experience-list-item">
 							<div class="experience-item-grid">
 								<div class="experience-item-heading">
