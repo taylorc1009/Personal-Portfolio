@@ -19,12 +19,15 @@ body {
 a {
 	color: #1c8ade;
 	font-weight: bolder;
-	text-decoration: none;
+	text-decoration: underline #00000000;
+	text-underline-offset: 3px;
+	transition: color .2s, text-decoration-color .2s, text-underline-offset .2s;
 }
 a:hover {
-	color: #1d9af9;
+	color: #46afff;
 	font-weight: bolder;
-	text-decoration: underline;
+	text-decoration-color: #46afffff;
+	text-underline-offset: 1px;
 }
 
 .text-as-svg {
