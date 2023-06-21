@@ -652,11 +652,15 @@ a:hover {
 	margin: auto 0;
 }
 
+.inverse-grid-text-container > :last-child {
+	margin-block-end: 0;
+}
+
 .inverse-grid:nth-child(odd) > .inverse-grid-text-container > p {
 	text-align: right;
 }
 
-@media screen and (max-width: 678px) {
+@media screen and (max-width: 746px) {
 	.inverse-grid {
 		grid-template-columns: auto;
 	}
@@ -664,6 +668,14 @@ a:hover {
 	.inverse-grid:nth-child(odd) > .inverse-grid-text-container > p {
 		text-align: center;
 	}
+}
+
+.project-heading {
+    text-align: left;
+    font-family: 'Varela Round', serif;
+	color: white;
+    border-bottom: solid white 2px;
+	margin-block-start: 0;
 }
 
 #ide-background {
