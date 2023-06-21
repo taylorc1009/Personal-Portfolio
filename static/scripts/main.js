@@ -136,7 +136,7 @@ animator = {
 			case "heading-svg":
 				animations.initialiseSubheadingAnimation(true, totalAnimationDuration);
 				break;
-			case "aspirations-svg":
+			case "projects-svg":
 				animations.animateIDE(totalAnimationDuration);
 				break;
 		}
