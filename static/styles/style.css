@@ -261,7 +261,7 @@ a:hover {
 
 @media screen and (max-width: 474px) {
 	#welcome-container svg:nth-child(1) {
-		width: 63.291139240506329113924050632911vw;
+		width: 64.34599156118143459915611814346vw;
 	}
 
 	#welcome-container svg:nth-child(2) {
@@ -269,7 +269,7 @@ a:hover {
 	}
 
 	#welcome-container svg:nth-child(3) {
-		width: 21.940928270042194092827004219409vw;
+		width: 22.151898734177215189873417721519vw;
 	}
 
 	#welcome-container svg:nth-child(4) {
@@ -277,19 +277,23 @@ a:hover {
 	}
 
 	#experience-container svg:nth-child(1) {
-		width: 63.291139240506329113924050632911vw;
+		width: 63.924050632911392405063291139241vw;
 	}
 
 	#experience-container svg:nth-child(2) {
-		width: 74.050632911392405063291139240506vw;
+		width: 74.894514767932489451476793248945vw;
 	}
 
 	#certifications-container svg:nth-child(1) {
 		width: 94.514767932489451476793248945148vw;
 	}
 
-	#aspirations-container svg:nth-child(1) {
-		width: 90.084388185654008438818565400844vw;
+	#projects-container svg:nth-child(1) {
+		width: 58.227848101265822784810126582278vw;
+	}
+
+	#projects-container svg:nth-child(2) {
+		width: 64.34599156118143459915611814346vw;
 	}
 
 	#languages-tools-container svg:nth-child(1) {
