@@ -25,7 +25,6 @@ a {
 }
 a:hover {
 	color: #46afff;
-	font-weight: bolder;
 	text-decoration-color: #46afffff;
 	text-underline-offset: 1px;
 }
@@ -291,6 +290,22 @@ a:hover {
 
 	#aspirations-container svg:nth-child(1) {
 		width: 90.084388185654008438818565400844vw;
+	}
+
+	#languages-tools-container svg:nth-child(1) {
+		width: 76.160337552742616033755274261603vw
+	}
+
+	#languages-tools-container svg:nth-child(2) {
+		width: 14.978902953586497890295358649789vw
+	}
+
+	#languages-tools-container svg:nth-child(3) {
+		width: 38.185654008438818565400843881857vw;
+	}
+
+	#languages-tools-container svg:nth-child(4) {
+		width: 39.240506329113924050632911392405vw;
 	}
 }
 
