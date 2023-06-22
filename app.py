@@ -38,7 +38,11 @@ api.add_resource(UserRegister, '/register')"""
 
 @app.route("/")
 def home():
-	return render_template("index.html")
+	n = 0
+	for file in os.listdir(f"{os.getcwd()}/static/cvrptw_graphs/"):
+		if file.endswith(".svg"):
+			n += 1
+	return render_template("index.html", num_cvrptw_graphs=n)
 
 if __name__ == '__main__':
 	from argparse import ArgumentParser, BooleanOptionalAction

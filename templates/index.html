@@ -2,6 +2,7 @@
 <html lang ="en">
 	<head>
 		<meta content="width=device-width, initial-scale=1" name="viewport"/>
+		<meta id="num-cvrptw-graphs" value={{num_cvrptw_graphs}}>
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/style.css') }}"/>
 		<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"/>
 		<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"/>
@@ -18,6 +19,14 @@
 	</head>
 
 	<body onload="animator.initialiseVectorAnimations()">
+		<script>
+			const cvrptwGraphs = "{{ url_for('static', filename='cvrptw_graphs') }}",
+				  root = document.querySelector(":root");
+			window.numCVRPTWGraphs = parseInt(document.getElementById("num-cvrptw-graphs").getAttribute("value"));
+
+			for (let i = 0; i < window.numCVRPTWGraphs; i++)
+				root.style.setProperty(`--cvrptw_graph_url_${i}`, `url(\"${cvrptwGraphs}/${i}.svg\"")`);
+		</script>
 		<div id="page-grid">
 			<div id="heading">
 				<div id="waves-container">

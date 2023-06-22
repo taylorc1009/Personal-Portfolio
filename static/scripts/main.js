@@ -138,6 +138,7 @@ animator = {
 				break;
 			case "projects-svg":
 				animations.animateIDE(totalAnimationDuration);
+				animations.animateCVRPTW(totalAnimationDuration);
 				break;
 		}
 	},
@@ -296,12 +297,12 @@ animations = {
 				});
 				lineNumElem = miscellaneous.createElement({type: "li", innerText: (++lines).toString(), parent: ideLineNumbers});
 
-				animations.adjustVerticalAndHorizontalScroll(adjustVerticalScroll, adjustHorizontalScroll);
+				animations.ideAdjustVerticalAndHorizontalScroll(adjustVerticalScroll, adjustHorizontalScroll);
 			}
 		}
 
 		$(textElem).css({ //applies the idle text cursor animation
-			'animation': `ide-text-cursor-animation 2s infinite`
+			'animation': 'ide-text-cursor-animation 2s infinite'
 		});
 	},
 
@@ -329,7 +330,7 @@ animations = {
 		return adjustHorizontalScroll;
 	},
 
-	adjustVerticalAndHorizontalScroll: (adjustVerticalScroll, adjustHorizontalScroll) => {
+	ideAdjustVerticalAndHorizontalScroll: (adjustVerticalScroll, adjustHorizontalScroll) => {
 		//acquire these elements in this procedure to avoid asking for them as parameters
 		const ideCode = document.getElementById("ide-code"),
 			  ideEditor = document.getElementById("ide-editor");
@@ -338,6 +339,14 @@ animations = {
 			ideEditor.scrollTop = ideEditor.scrollHeight; //move the vertical scroll position down as whenever a new line is added, we will only ever want to move the scroll position down; not up
 		if (adjustHorizontalScroll)
 			ideCode.scrollLeft = 0;  //when the horizontal scroll position has been adjusted by this JavaScript, we need to reset it to 0 when the animation takes a "new line of code" (i.e. \n)
+	},
+
+	animateCVRPTW: async (totalAnimationDuration) => {
+		const cvrptwSVGsDirectory = require(window.staticFolder + "/crptw_paths"),
+			  cvrptwSVGs = files.filter(file => {
+				  return cvrptwSVGsDirectory.extname(file).toLowerCase() == ".svg";
+			  });
+		console.log(cvrptwSVGs);
 	}
 }
 
