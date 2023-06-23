@@ -638,34 +638,43 @@ a:hover {
 	border-radius: 50px;
 }
 
-.inverse-grid {
+.list-alternating-left-right {
 	margin: 0 auto;
 	padding: 0 10px;
 	width: fit-content;
-	display: grid;
-	grid-template-columns: auto auto;
-	column-gap: 20px;
+	display: flex;
+	flex-direction: column;
 }
 
-.inverse-grid-text-container {
+.alternating-left-right-row {
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+}
+
+.alternating-left-right-text-container {
 	max-width: 400px;
 	margin: auto 0;
 }
 
-.inverse-grid-text-container > :last-child {
+.alternating-left-right-text-container > :last-child {
 	margin-block-end: 0;
 }
 
-.inverse-grid:nth-child(odd) > .inverse-grid-text-container > p {
+.list-alternating-left-right:nth-child(odd) > .alternating-left-right-row > .alternating-left-right-text-container > p {
 	text-align: right;
 }
 
 @media screen and (max-width: 746px) {
-	.inverse-grid {
+	.list-alternating-left-right {
 		grid-template-columns: auto;
 	}
 
-	.inverse-grid:nth-child(odd) > .inverse-grid-text-container > p {
+	.alternating-left-right-row {
+		flex-direction: column;
+	}
+
+	.list-alternating-left-right:nth-child(odd) > .alternating-left-right-row > .alternating-left-right-text-container > p {
 		text-align: center;
 	}
 }
@@ -688,14 +697,15 @@ a:hover {
 	border-width: 1px;
 	width: 400px;
 	height: 400px;
+	flex-shrink: 0;
 }
 
 @media screen and (max-width: 420px) {
-	.inverse-grid {
+	.list-alternating-left-right {
 		padding: 0;
 	}
 
-	.inverse-grid-text-container {
+	.alternating-left-right-text-container {
 		width: 95.238095238095238095238095238095vw;
 		margin: 0 auto;
 	}
@@ -703,6 +713,7 @@ a:hover {
 	#ide-background {
 		width: 95.238095238095238095238095238095vw;
 		margin: 0 auto;
+		flex-shrink: 1;
 	}
 }
 
