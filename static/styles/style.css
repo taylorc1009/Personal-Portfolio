@@ -644,12 +644,14 @@ a:hover {
 	width: fit-content;
 	display: flex;
 	flex-direction: column;
+	gap: 200px
 }
 
 .alternating-left-right-row {
 	display: flex;
 	flex-direction: row;
 	gap: 20px;
+	margin: 0 auto;
 }
 
 .alternating-left-right-text-container {
@@ -661,7 +663,11 @@ a:hover {
 	margin-block-end: 0;
 }
 
-.list-alternating-left-right:nth-child(odd) > .alternating-left-right-row > .alternating-left-right-text-container > p {
+.list-alternating-left-right > :nth-of-type(odd) > .alternating-left-right-text-container > .body-paragraph {
+	text-align: right;
+}
+
+.list-alternating-left-right > :nth-of-type(even) > .alternating-left-right-text-container > .project-heading {
 	text-align: right;
 }
 
@@ -670,11 +676,15 @@ a:hover {
 		grid-template-columns: auto;
 	}
 
-	.alternating-left-right-row {
+	.list-alternating-left-right > :nth-of-type(odd) {
 		flex-direction: column;
 	}
 
-	.list-alternating-left-right:nth-child(odd) > .alternating-left-right-row > .alternating-left-right-text-container > p {
+	.list-alternating-left-right > :nth-of-type(even) {
+		flex-direction: column-reverse;
+	}
+
+	.alternating-left-right-text-container > .body-paragraph {
 		text-align: center;
 	}
 }
@@ -687,7 +697,7 @@ a:hover {
 	margin-block-start: 0;
 }
 
-#ide-background {
+#ide-container {
 	display: grid;
 	grid-template-rows: 30px auto;
 	grid-template-columns: auto;
@@ -710,7 +720,7 @@ a:hover {
 		margin: 0 auto;
 	}
 
-	#ide-background {
+	#ide-container {
 		width: 95.238095238095238095238095238095vw;
 		margin: 0 auto;
 		flex-shrink: 1;
@@ -883,4 +893,9 @@ a:hover {
 	0%, 100% {
 		border-right: 2px solid white;
 	}
+}
+
+#cvrptw-animated-image {
+	width: 400px;
+	height: 400px;
 }

@@ -11,7 +11,21 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
 		<style>
-			:root { --bitmoji-url: url("{{ url_for('static', filename='bitmoji.svg') }}"); }
+			:root {
+				--bitmoji-url: url("{{ url_for('static', filename='bitmoji.svg') }}");
+				--cvrptw_graph_url_0: url("{{ url_for('static', filename='cvrptw_graphs/0.svg') }}");
+				--cvrptw_graph_url_1: url("{{ url_for('static', filename='cvrptw_graphs/1.svg') }}");
+				--cvrptw_graph_url_2: url("{{ url_for('static', filename='cvrptw_graphs/2.svg') }}");
+				--cvrptw_graph_url_3: url("{{ url_for('static', filename='cvrptw_graphs/3.svg') }}");
+				--cvrptw_graph_url_4: url("{{ url_for('static', filename='cvrptw_graphs/4.svg') }}");
+				--cvrptw_graph_url_5: url("{{ url_for('static', filename='cvrptw_graphs/5.svg') }}");
+				--cvrptw_graph_url_6: url("{{ url_for('static', filename='cvrptw_graphs/6.svg') }}");
+				--cvrptw_graph_url_7: url("{{ url_for('static', filename='cvrptw_graphs/7.svg') }}");
+				--cvrptw_graph_url_8: url("{{ url_for('static', filename='cvrptw_graphs/8.svg') }}");
+				--cvrptw_graph_url_9: url("{{ url_for('static', filename='cvrptw_graphs/9.svg') }}");
+				--cvrptw_graph_url_10: url("{{ url_for('static', filename='cvrptw_graphs/10.svg') }}");
+				--cvrptw_graph_url_11: url("{{ url_for('static', filename='cvrptw_graphs/11.svg') }}");
+			}
 			@font-face { font-family: FiraCodeiScript-Regular; src: url("{{ url_for('static', filename='styles/FiraCodeiScript-Regular.ttf') }}"); }
 			@font-face { font-family: FiraCodeiScript-Bold; src: url("{{ url_for('static', filename='styles/FiraCodeiScript-Bold.ttf') }}"); }
 			@font-face { font-family: FiraCodeiScript-Italic; src: url("{{ url_for('static', filename='styles/FiraCodeiScript-Italic.ttf') }}"); }
@@ -19,14 +33,13 @@
 	</head>
 
 	<body onload="animator.initialiseVectorAnimations()">
-		<script>
-			const cvrptwGraphs = "{{ url_for('static', filename='cvrptw_graphs') }}",
-				  root = document.querySelector(":root"),
+		<!--<script>
+			const root = document.querySelector(":root"),
 				  n = parseInt(document.getElementById("num-cvrptw-graphs").getAttribute("value"));
 
-			for (let i = 0; i < window.numCVRPTWGraphs; i++)
-				root.style.setProperty(`--cvrptw_graph_url_${i}`, `url(\"${cvrptwGraphs}/${i}.svg\"")`);
-		</script>
+			for (let i = 0; i < n; i++)
+				root.style.setProperty(`--cvrptw_graph_url_${i}`, `url(\"{{ url_for('static', filename='cvrptw_graphs/${i}.svg') }}\"")`);
+		</script>-->
 		<div id="page-grid">
 			<div id="heading">
 				<div id="waves-container">
@@ -423,7 +436,7 @@
 								<p class="body-paragraph">Of course, gaining further software engineering experience through professional and personal development is a great interest of mine.</p>
 								<p class="body-paragraph">When I'm not working on personal projects, I try to tackle Data Structures and Algorithms problems. For instance, my LeetCode solutions can be found on both <a target="_blank" href="https://github.com/taylorc1009/LeetCode-Solutions">GitHub</a> and <a target="_blank" href="https://leetcode.com/taylorcourtney2000/">LeetCode</a>.</p>
 							</div>
-							<div id="ide-background">
+							<div id="ide-container">
 								<div id="ide-window-top">
 									<!--<img id="ide-app-icon" src="{{ url_for('static', filename='vs_code.png') }}"/>-->
 									<p id="ide-file-name">fizzBuzz.cpp</p>
@@ -437,6 +450,13 @@
 									<ul id="ide-line-numbers"></ul>
 									<div id="ide-code"></div>
 								</div>
+							</div>
+						</div>
+						<div class="alternating-left-right-row">
+							<img id="cvrptw-animated-image"/>
+							<div class="alternating-left-right-text-container">
+								<h1 class="project-heading">CVRPTW</h1>
+								<p class="body-paragraph">//TODO</p>
 							</div>
 						</div>
 					</div>

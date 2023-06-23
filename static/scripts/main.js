@@ -256,7 +256,7 @@ animations = {
 	},
 
 	animateIDE: async (SVGAnimationDuration) => {
-		await miscellaneous.sleep(SVGAnimationDuration * 1000);
+		await miscellaneous.sleep(SVGAnimationDuration);
 
 		const ideCode = document.getElementById("ide-code"),
 			  ideLineNumbers = document.getElementById("ide-line-numbers"),
@@ -342,11 +342,22 @@ animations = {
 	},
 
 	animateCVRPTW: async (totalAnimationDuration) => {
-		const cvrptwSVGsDirectory = require(window.staticFolder + "/crptw_paths"),
-			  cvrptwSVGs = files.filter(file => {
-				  return cvrptwSVGsDirectory.extname(file).toLowerCase() == ".svg";
-			  });
-		console.log(cvrptwSVGs);
+		await miscellaneous.sleep(totalAnimationDuration);
+
+		const n = parseInt(document.getElementById("num-cvrptw-graphs").getAttribute("value"))
+			  cvrptwvImageElem = document.getElementById("cvrptw-animated-image");
+
+		for(;;) {
+			for (let i = 0; i < n; i++) {
+				$(cvrptwvImageElem).css({
+					'content': `var(--cvrptw_graph_url_${i})`
+				});
+
+				await miscellaneous.sleep((i + 1) * .05);
+			}
+
+			await miscellaneous.sleep(5);
+		}
 	}
 }
 
@@ -362,13 +373,13 @@ pendingAnimations = { //contains a list of methods that begin animations when sp
 mathematics = {
 	//there's different animation durations for text vectors in the page body as we don't want the user to have to wait long for them to finish every time
 	//the heading animation lasts longer and, as you can see, it's parameters begin with "heading_svg_"
-	delay_between_letters: 0.1, //delay (s) between the beginning of 1 letter stroke animation and the next letters' beginning
+	delay_between_letters: .1, //delay (s) between the beginning of 1 letter stroke animation and the next letters' beginning
 	duration_per_letter: 1.5, //duration (s) of one full letters' stroke animation
-	fade_in_duration: 0.25, //duration (s) of the SVG fill's fade in effect
-	heading_svg_dbl: 0.2,
+	fade_in_duration: .25, //duration (s) of the SVG fill's fade in effect
+	heading_svg_dbl: .2,
 	heading_svg_dpl: 2,
-	heading_svg_fid: 0.5,
-	ide_code_dbl: 60, //delay (ms) between adding the next letter to the IDE code
+	heading_svg_fid: .5,
+	ide_code_dbl: .06, //delay (ms) between adding the next letter to the IDE code
 
 	isOnScreen: (element) => { //used to determine if an element is on screen (credit - https://stackoverflow.com/a/5354536/11136104)
 		const rect = element.getBoundingClientRect();
@@ -428,6 +439,6 @@ miscellaneous = {
 	},
 
 	sleep: (ms) => {
-		return new Promise(resolve => setTimeout(resolve, ms));
+		return new Promise(resolve => setTimeout(resolve, ms * 1000));
 	}
 }
