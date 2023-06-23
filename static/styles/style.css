@@ -882,7 +882,7 @@ a:hover {
 	height: 400px;
 }
 
-@media screen and (max-width: 896px) {
+@media screen and (max-width: 888px) {
 	.list-alternating-left-right {
 		grid-template-columns: auto;
 	}
