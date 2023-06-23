@@ -20,11 +20,18 @@ for filename in [file for file in os.listdir(os.getcwd()) if file.endswith(".svg
 
     updated_lines = []
     for line in lines:
-        hex_values = re.findall(r'#[0-9A-Fa-f]{6}+', line)
-        for hex_value in hex_values:
-            if hex_value in replacements:
-                line = line.replace(hex_value, replacements[hex_value])
-        updated_lines.append(line)
+        try:
+            hex_values = re.findall(r'#[0-9A-Fa-f]{6}+', line)
+
+            for hex_value in hex_values:
+                if hex_value in replacements:
+                    line = line.replace(hex_value, replacements[hex_value])
+        except:
+            pass
+
+        updated_lines.append(
+            re.sub(r'(?<!\n)<path', r'\n<path', line)
+        )
 
     with open(os.path.join(os.getcwd(), filename), "w") as svg:
             svg.writelines(updated_lines)
