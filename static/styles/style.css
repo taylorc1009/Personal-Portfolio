@@ -655,7 +655,7 @@ a:hover {
 }
 
 .alternating-left-right-text-container {
-	max-width: 400px;
+	max-width: 600px;
 	margin: auto 0;
 }
 
@@ -669,24 +669,6 @@ a:hover {
 
 .list-alternating-left-right > :nth-of-type(even) > .alternating-left-right-text-container > .project-heading {
 	text-align: right;
-}
-
-@media screen and (max-width: 746px) {
-	.list-alternating-left-right {
-		grid-template-columns: auto;
-	}
-
-	.list-alternating-left-right > :nth-of-type(odd) {
-		flex-direction: column;
-	}
-
-	.list-alternating-left-right > :nth-of-type(even) {
-		flex-direction: column-reverse;
-	}
-
-	.alternating-left-right-text-container > .body-paragraph {
-		text-align: center;
-	}
 }
 
 .project-heading {
@@ -898,4 +880,26 @@ a:hover {
 #cvrptw-animated-image {
 	width: 400px;
 	height: 400px;
+}
+
+@media screen and (max-width: 896px) {
+	.list-alternating-left-right {
+		grid-template-columns: auto;
+	}
+
+	.list-alternating-left-right > :nth-of-type(odd) {
+		flex-direction: column;
+	}
+
+	.list-alternating-left-right > :nth-of-type(even) {
+		flex-direction: column-reverse;
+	}
+
+	.alternating-left-right-text-container > .body-paragraph {
+		text-align: center;
+	}
+
+	#cvrptw-animated-image, #ide-container {
+		margin: 0 auto;
+	}
 }
