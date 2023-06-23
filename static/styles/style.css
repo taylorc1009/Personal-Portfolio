@@ -863,7 +863,7 @@ a:hover {
 	}
 }
 
-#cvrptw-animated-image-container {
+#cvrptw-image-cycler-container {
 	width: 400px;
 	height: 400px;
 }
@@ -885,7 +885,7 @@ a:hover {
 		text-align: center;
 	}
 
-	#cvrptw-animated-image-container, #ide-container {
+	#cvrptw-image-cycler-container, #ide-container {
 		margin: 0 auto;
 	}
 }
@@ -903,11 +903,11 @@ a:hover {
 		margin: 0 10px;
 	}
 
-	#ide-container, #cvrptw-animated-image-container {
+	#ide-container, #cvrptw-image-cycler-container {
 		width: 95.238095238095238095238095238095vw;
 	}
 
-	#cvrptw-animated-image-container {
+	#cvrptw-image-cycler-container {
 		height: 95.238095238095238095238095238095vw;
 	}
 }

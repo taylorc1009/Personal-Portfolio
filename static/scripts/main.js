@@ -344,19 +344,22 @@ animations = {
 	animateCVRPTW: async (totalAnimationDuration) => {
 		await miscellaneous.sleep(totalAnimationDuration);
 
-		const n = parseInt(document.getElementById("num-cvrptw-graphs").getAttribute("value"))
-			  cvrptwvImageElem = document.getElementById("cvrptw-animated-image");
+		const cvrptwImageContainer = document.getElementById("cvrptw-image-cycler-container")
+			  n = cvrptwImageContainer.children.length;
+			  imageIterator = Object.entries(cvrptwImageContainer.children);
 
 		for(;;) {
-			for (let i = 0; i < n; i++) {
-				$(cvrptwvImageElem).css({
-					'content': `var(--cvrptw_graph_url_${i})`
+			for (const [i, SVG] of imageIterator) {
+				$(SVG).css({
+					'display': `block`,
 				});
 
-				await miscellaneous.sleep((i + 1) * .05);
-			}
+				await miscellaneous.sleep(i < n - 1 ? (i + 1) * .005 : 5);
 
-			await miscellaneous.sleep(5);
+				$(SVG).css({
+					'display': `none`,
+				});
+			}
 		}
 	}
 }
