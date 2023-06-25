@@ -881,8 +881,12 @@ a:hover {
 		flex-direction: column-reverse;
 	}
 
+	.list-alternating-left-right > :nth-of-type(even) > .alternating-left-right-text-container > .project-heading {
+		text-align: left;
+	}
+
 	.alternating-left-right-text-container > .body-paragraph {
-		text-align: center;
+		text-align: center !important;
 	}
 
 	#cvrptw-image-cycler, #ide-container {
