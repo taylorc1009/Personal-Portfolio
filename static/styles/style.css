@@ -77,16 +77,10 @@ a:hover {
 }
 
 #heading-items-list {
-	list-style: none;
-	padding-inline-start: 0;
-
 	display: inline-flex;
 	flex-wrap: wrap;
 	flex-direction: column;
 	align-items: center;
-
-	margin-block-start: 0;
-    margin-block-end: 0;
 }
 
 @keyframes vector-stroke-animation {
@@ -253,14 +247,8 @@ a:hover {
 }
 
 .card-container {
-	display: table; /* allows centre-ing of lists to work */
 	margin: 0 auto;
-}
-.card-list {
-	list-style: none;
-	padding-inline-start: 0;
-
-	display: inline-flex;
+	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 }
@@ -435,10 +423,6 @@ a:hover {
 }
 
 .experience-list {
-	list-style-type: none;
-	margin-block-start: 0;
-	margin-block-end: 0;
-	padding-inline-start: 0;
 	max-width: fit-content;
 	margin: 0 auto;
 }
@@ -564,6 +548,10 @@ a:hover {
 	width: 3px;
 	background-color: rgba(var(--color-hard-white));
 	border-radius: 50px;
+
+	margin-block-start: 0;
+	margin-block-end: 0;
+	border: none;
 }
 
 .experience-list-separator {
@@ -571,6 +559,7 @@ a:hover {
 	height: 4px;
 	background-color: white;
 	border-radius: 50px;
+	border: none;
 }
 
 .list-alternating-left-right {
