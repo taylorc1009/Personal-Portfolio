@@ -19,8 +19,8 @@ body {
 a {
 	color: #1c8ade;
 	font-weight: bolder;
-	text-decoration: underline #00000000;
-	text-underline-offset: 3px;
+	text-decoration: underline #46afff00;
+	text-underline-offset: 2px;
 	transition: color .2s, text-decoration-color .2s, text-underline-offset .2s;
 }
 a:hover {
@@ -159,54 +159,12 @@ a:hover {
 	}
 }
 
-/*.custom-shape-divider-top-1669035928 {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-}
-
-.custom-shape-divider-top-1669035928 svg {
-    position: relative;
-    display: block;
-    width: calc(100% + 1.3px);
-    height: 150px;
-}
-
-.custom-shape-divider-top-1669035928 .shape-fill {
-    fill: white;
-}*/
-
 @media screen and (max-width: 1279px) {
 	#heading-item-1 {
 		flex-direction: column;
 	}
 
-	@media screen and (orientation: landscape) {
-		#heading-text {
-			font-size: 36.99px;
-		}
-
-		#heading-icon {
-			width: 36.99px;
-			height: auto;
-		}
-
-		#heading-svg-1 {
-			width: 366.15px;
-			height: auto;
-			
-		}
-
-		#heading-svg-2 {
-			width: 529.95px;
-			height: auto;
-		}
-	}
-
-	@media screen and (orientation: portrait), (max-width: 560px) {
+	@media screen and (orientation: portrait) {
 		#heading-text {
 			font-size: 6.605357142857142857142857142857vw;
 		}
@@ -228,29 +186,6 @@ a:hover {
 		}
 	}
 }
-
-/* @media screen and (orientation: landscape) and (max-height: 784px) {
-	/* TODO: fix dynamic heights causing widths to overflow the page size *
-
-	#heading-text {
-		font-size: 9.794642857142857142857142857143vh;
-	}
-
-	#heading-icon {
-		height: 7.609693877551020408163265306122vh;
-		width: auto;
-	}
-
-	#heading-svg-1 {
-		height: 38.87372448979591836734693877551vh;
-		width: auto;
-	}
-
-	#heading-svg-2 {
-		height: 38.87372448979591836734693877551vh;
-		width: auto;
-	}
-} */
 
 .body-svg-container {
 	display: flex;
