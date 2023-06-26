@@ -42,7 +42,7 @@ a:hover {
 	display: grid;
 }
 
-#waves-container, #heading-container {
+#waves-container, #heading-svg-container {
 	grid-column: 1;
 	grid-row: 1;
 }
@@ -72,11 +72,8 @@ a:hover {
 	}
 }
 
-#heading-container {
+#heading-svg-container {
 	margin: auto auto;
-}
-
-#heading-items-list {
 	display: inline-flex;
 	flex-wrap: wrap;
 	flex-direction: column;
@@ -422,7 +419,7 @@ a:hover {
 	}
 }
 
-.experience-list {
+.experiences-container {
 	max-width: fit-content;
 	margin: 0 auto;
 }
@@ -460,7 +457,7 @@ a:hover {
 	font-size: 10pt;
 }
 
-.experience-list-item {
+.experiences-item {
 	margin: 0 20px;
 }
 
@@ -554,7 +551,7 @@ a:hover {
 	border: none;
 }
 
-.experience-list-separator {
+.experiences-separator {
 	margin: 40px 20px;
 	height: 4px;
 	background-color: white;
