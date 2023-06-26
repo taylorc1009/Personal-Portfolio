@@ -242,7 +242,7 @@ animations = {
 					'border-right': '2px solid white'
 				});
 
-				adjustHorizontalScroll = await animations.progressiveStringInjection(lineContainer, textElem, string);
+				adjustHorizontalScroll = await animations.ideProgressiveStringInjection(lineContainer, textElem, string);
 
 				if (i < data.ideStringsAndHighlights.length) //don't remove the cursor effect from the last element as this is given an idle cursor animation once all strings have been outputted
 					$(textElem).css({ //removes the text cursor effect from "element" after the HTML element has been fully populated by the "string" variable, ready for the next element to have the cursor
@@ -268,7 +268,7 @@ animations = {
 		});
 	},
 
-	progressiveStringInjection: async (lineContainer, textElem, string) => {
+	ideProgressiveStringInjection: async (lineContainer, textElem, string) => {
 		//acquire these elements in this procedure to avoid asking for them as parameters
 		const ideCode = document.getElementById("ide-code"),
 			  ideEditor = document.getElementById("ide-editor");

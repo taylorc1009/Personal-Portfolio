@@ -10,9 +10,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
 		<style>
-			:root {
-				--bitmoji-url: url("{{ url_for('static', filename='bitmoji.svg') }}");
-			}
+			:root { --bitmoji-url: url("{{ url_for('static', filename='bitmoji.svg') }}"); }
 			@font-face { font-family: FiraCodeiScript-Regular; src: url("{{ url_for('static', filename='styles/FiraCodeiScript-Regular.ttf') }}"); }
 			@font-face { font-family: FiraCodeiScript-Bold; src: url("{{ url_for('static', filename='styles/FiraCodeiScript-Bold.ttf') }}"); }
 			@font-face { font-family: FiraCodeiScript-Italic; src: url("{{ url_for('static', filename='styles/FiraCodeiScript-Italic.ttf') }}"); }

@@ -100,14 +100,14 @@ a:hover {
 
 #heading-svg-1 {
 	width: 29.6875vw;
+	height: auto;
 	max-width: 760px;
-	max-height: 295.55px;
 }
 
 #heading-svg-2 {
 	width: 42.96875vw;
+	height: auto;
 	max-width: 1000px;
-	max-height: 295.55px;
 }
 
 #heading-item-2 {
@@ -126,11 +126,11 @@ a:hover {
     margin-block-end: 0;
 }
 
-@media screen and (min-width: 2560px) {
+/*@media screen and (min-width: 2560px) {
 	#heading-text {
 		font-size: 76.79px;
 	}
-}
+}*/
 
 #heading-icon {
 	width: 2.999609375vw;
@@ -150,30 +150,69 @@ a:hover {
 	}
 }
 
-@media screen and (max-width: 1279px) {
-	#heading-item-1 {
-		flex-direction: column;
+@media screen and (max-width: 1280px) {
+	/* TODO: could try setting max-width and max-height of the elements to vw/vh so that they automatically scale down when they reach, for example, 33vh and/or 80vw, simultaneously? */
+
+	#heading-text {
+		font-size: 38.395px;
+	}
+
+	#heading-icon {
+		width: 38.395px;
+	}
+
+	#heading-svg-1 {
+		width: 380px;
+	}
+
+	#heading-svg-2 {
+		width: 550px;
+	}
+
+	@media screen and (max-height: 386px) {
+		#heading-svg-1, #heading-svg-2, #heading-icon {
+			width: auto;
+		}
+
+		#heading-text {
+			font-size: 9.917098445595854922279792746114vh;
+		}
+
+		#heading-icon {
+			width: auto;
+			height: 7.58549222797927461139896373057vh
+		}
+
+		#heading-svg-1 {
+			height: 38.282383419689119170984455958549vh;
+		}
+
+		#heading-svg-2 {
+			height: 39.448186528497409326424870466321vh;
+		}
 	}
 
 	@media screen and (orientation: portrait) {
+		#heading-item-1 {
+			flex-direction: column;
+		}
+
 		#heading-text {
 			font-size: 6.605357142857142857142857142857vw;
 		}
 
 		#heading-icon {
 			width: 6.605357142857142857142857142857vw;
-			height: auto;
 		}
 
 		#heading-svg-1 {
 			width: 65.383928571428571428571428571429vw;
-			height: auto;
-			
+			max-width: none;
 		}
 
 		#heading-svg-2 {
 			width: 94.633928571428571428571428571429vw;
-			height: auto;
+			max-width: none;
 		}
 	}
 }
