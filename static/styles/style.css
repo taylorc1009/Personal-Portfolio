@@ -529,7 +529,7 @@ a:hover {
 	margin-bottom: 10px;
 }
 
-@media screen and (max-width: 472px) {
+@media screen and (max-width: 547px) {
 	.experience-item-grid {
 		grid-template-columns: 60px auto;
 		column-gap: 10px;
