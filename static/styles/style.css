@@ -875,3 +875,19 @@ a:hover {
 		height: 95.238095238095238095238095238095vw;
 	}
 }
+
+#n-queens-board {
+	display: grid;
+	grid-template-rows: auto auto auto auto auto;
+	grid-template-columns: auto auto auto auto auto;
+	width: 400px;
+	height: 400px;
+}
+
+#n-queens-board > :nth-of-type(odd) {
+	background-color: #eacfa4;
+}
+
+#n-queens-board > :nth-of-type(even) {
+	background-color: #B58863;
+}

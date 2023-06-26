@@ -319,6 +319,22 @@ animations = {
 				await miscellaneous.sleep(i < n - 1 ? (i + 1) * .005 : 5);
 			}
 		}
+	},
+
+	animateNQueens: async (totalAnimationDuration) => {
+		await miscellaneous.sleep(totalAnimationDuration);
+
+		const boardElem = document.getElementById("n-queens-board");
+
+		for (;;) {
+			let board = generateNQueens();
+
+			
+		}
+	},
+
+	generateNQueens: () => {
+		
 	}
 }
 
