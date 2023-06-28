@@ -330,10 +330,10 @@ animations = {
 
 		let queensPositions = Array(n).fill(0);
 
-		miscellaneous.removeChildrenNotOfType(boardElem, "span");
+		miscellaneous.removeChildrenNotOfType(boardElem, "span"); //the boardElem.childNodes list also contains any '\n' characters that are in the code, simply for readability; remove these
 
 		for (;;) {
-			let board = animations.generateNQueens(n);
+			const board = animations.generateNQueens(n);
 
 			board.forEach((column, i) => {
 				const row = n * i;
@@ -394,17 +394,23 @@ mathematics = {
 	},
 
 	nQueensIsValid: (board) => {
-		for (let rowItOne = 0; rowItOne < board.length; rowItOne++) {
-			const curColumn = board[rowItOne];
+		let errors = [];
 
-			for (let rowItTwo = rowItOne + 1; rowItTwo < board.length; rowItTwo++)
-				if (board[rowItTwo] == curColumn ||
-					board[rowItTwo] == curColumn - (rowItOne - rowItTwo) ||
-					board[rowItTwo] == curColumn + (rowItOne - rowItTwo))
-					return false;
+		for (let rowItOne = 0; rowItOne < board.length; rowItOne++) {
+			const columnOne = board[rowItOne];
+
+			for (let rowItTwo = rowItOne + 1; rowItTwo < board.length; rowItTwo++) {
+				const columnTwo = board[rowItTwo];
+
+				if (columnTwo == columnOne ||
+					columnTwo == columnOne - (rowItOne - rowItTwo) ||
+					columnTwo == columnOne + (rowItOne - rowItTwo)
+				)
+					errors.push([rowItOne, rowItTwo]);
+			}
 		}
 
-		return true;
+		return errors;
 	}
 
 	/*calculateRowOfItemInFlex: (item) => {
