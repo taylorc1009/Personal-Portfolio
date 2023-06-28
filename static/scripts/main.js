@@ -330,6 +330,8 @@ animations = {
 
 		let queensPositions = Array(n).fill(0);
 
+		miscellaneous.removeChildrenNotOfType(boardElem, "span");
+
 		for (;;) {
 			let board = animations.generateNQueens(n);
 
@@ -450,7 +452,13 @@ miscellaneous = {
 	},
 
 	swapChildren: (parent, childOne, childTwo) => {
-		parent.insertBefore(parent.childNodes[childOne], parent.childNodes[childTwo]);
+		parent.insertBefore(parent.childNodes[childTwo], parent.childNodes[childOne].nextSibling);
+	},
+
+	removeChildrenNotOfType: (parent, type) => {
+		for (const child of parent.childNodes)
+			if (child.nodeName.toLowerCase() !== type)
+				parent.removeChild(child);
 	}
 }
 
