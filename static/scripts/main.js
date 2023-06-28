@@ -458,7 +458,7 @@ miscellaneous = {
 	},
 
 	swapChildren: (parent, childOne, childTwo) => {
-		parent.insertBefore(parent.childNodes[childTwo], parent.childNodes[childOne].nextSibling);
+		parent.insertBefore(parent.childNodes[childTwo], childTwo < childOne ? parent.childNodes[childOne].nextSibling : parent.childNodes[childOne]);
 	},
 
 	removeChildrenNotOfType: (parent, type) => {
