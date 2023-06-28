@@ -139,6 +139,7 @@ animator = {
 			case "projects-svg":
 				animations.animateIDE(totalAnimationDuration);
 				animations.animateCVRPTW(totalAnimationDuration);
+				animations.animateNQueens(totalAnimationDuration);
 				break;
 		}
 	},
@@ -324,17 +325,28 @@ animations = {
 	animateNQueens: async (totalAnimationDuration) => {
 		await miscellaneous.sleep(totalAnimationDuration);
 
-		const boardElem = document.getElementById("n-queens-board");
+		const boardElem = document.getElementById("n-queens-board"),
+			  n = Math.sqrt(boardElem.children.length); //board size will always be NxN
+
+		let queensPositions = Array(n).fill(0);
 
 		for (;;) {
-			let board = generateNQueens();
+			let board = animations.generateNQueens(n);
 
-			
+			board.forEach((column, i) => {
+				const row = n * i;
+
+				miscellaneous.swapChildren(boardElem, row + column, row + queensPositions[i]);
+
+				queensPositions[i] = column;
+			});
+
+			await miscellaneous.sleep(5);
 		}
 	},
 
-	generateNQueens: () => {
-		
+	generateNQueens: (n) => {
+		return Array.from({length: n}, () => mathematics.randomInt(n));
 	}
 }
 
@@ -358,6 +370,10 @@ mathematics = {
 	heading_svg_fid: .5,
 	ide_code_dbl: .06, //delay (ms) between adding the next letter to the IDE code
 
+	randomInt: (n) => {
+		return Math.floor(Math.random() * n);
+	},
+
 	isOnScreen: (element) => { //used to determine if an element is on screen (credit - https://stackoverflow.com/a/5354536/11136104)
 		const rect = element.getBoundingClientRect();
 		return !(rect.bottom < 0 || rect.top - Math.max(document.documentElement.clientHeight, window.innerHeight) >= 0);
@@ -373,6 +389,20 @@ mathematics = {
 
 	notOverflownHorizontally: (element, container) => {
 		return element.offsetWidth - container.scrollLeft <= container.offsetWidth;
+	},
+
+	nQueensIsValid: (board) => {
+		for (let rowItOne = 0; rowItOne < board.length; rowItOne++) {
+			const curColumn = board[rowItOne];
+
+			for (let rowItTwo = rowItOne + 1; rowItTwo < board.length; rowItTwo++)
+				if (board[rowItTwo] == curColumn ||
+					board[rowItTwo] == curColumn - (rowItOne - rowItTwo) ||
+					board[rowItTwo] == curColumn + (rowItOne - rowItTwo))
+					return false;
+		}
+
+		return true;
 	}
 
 	/*calculateRowOfItemInFlex: (item) => {
@@ -417,6 +447,10 @@ miscellaneous = {
 
 	sleep: (ms) => {
 		return new Promise(resolve => setTimeout(resolve, ms * 1000));
+	},
+
+	swapChildren: (parent, childOne, childTwo) => {
+		parent.insertBefore(parent.childNodes[childOne], parent.childNodes[childTwo]);
 	}
 }
 
@@ -472,5 +506,5 @@ data = {
 		"data:image/svg+xml,%3Csvg width='1651' height='990' fill='none' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cg clip-path='url(%23clip0_622_272)'%3E%3Cmask id='mask0_622_272' style='mask-type:luminance' maskUnits='userSpaceOnUse' x='0' y='0' width='1651' height='990'%3E%3Cpath d='M1650.5 0H0.5V990H1650.5V0Z' fill='white'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_622_272)'%3E%3Cpath d='M702.1 440V825.05H735.1V880.06L768 935H702.1H669L702.1 440Z' stroke='%235B9BD5' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M702 440L586.1 605.05V638.05L570.1 660L537.09 638.05V660H504L702 440Z' stroke='%238360C3' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M702 440L619.1 638.05V660.05V935L669.1 825.05L454 660.05L471.09 638.05L454 605.05L702 440Z' stroke='%23FFFDE4' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M702 440L999.11 165.032L1032.11 110.03H1065.11L1114.11 88.029L1147 55H1114.11H1032.11H949.11V110.03L702 440Z' stroke='%236BE585' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M702 440L1032.11 385.04H1114.11H1131.11H1230.12H1279L1197.12 352.04L1164.11 330H1114.11L1081.11 352.04L702 440Z' stroke='%23FFC000' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M702 440L207.08 550.04H174.08L207.08 605H124.08L75.0801 550.04H42V495.04H124.08H174.08L702 440Z' stroke='%23FF4B2B' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M702.1 440L405.09 165.032H339.09H289V110.03H372.09V55H405.09H454.09L1032 330.04L702.1 440Z' stroke='%23C31432' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M702 440L817.1 550.04H834.1H867.1V605.05H916V660H867.1H834.1H784.1L817.1 605.05L702 440Z' stroke='%23F2727F' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M702 440H537.09H454.09V418.04H421.09L372 440V385H421.09H454.09H504.09V418.04H537.09L702 440Z' stroke='%23ED7D31' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M702.1 440L1444.12 605.05H1494.13H1527.13H1609V660.05H1560.13H1494.13H1477.12L1444.12 715L784.1 605.05H504H537.09L702.1 440Z' stroke='%2370AD47' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M702.1 440L735.1 275.04V264.03H702.1L669.1 242.03L619 264.03V231.03L669.1 220L702.1 231.03L735.1 242.03L784 220V242.03V275.04L702.1 440Z' stroke='%2378FFDB' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/g%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_622_272'%3E%3Crect width='1650' height='990' fill='white' transform='translate(0.5)'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E",
 		"data:image/svg+xml,%3Csvg width='1654' height='986' fill='none' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cg clip-path='url(%23clip0_622_299)'%3E%3Cmask id='mask0_622_299' style='mask-type:luminance' maskUnits='userSpaceOnUse' x='0' y='0' width='1654' height='986'%3E%3Cpath d='M1653.5 0H0.5V986H1653.5V0Z' fill='white'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_622_299)'%3E%3Cpath d='M703.1 438V822.05H736.1V877.05L769 931H703.1H670.1H621L670.1 822.05L703.1 438Z' stroke='%235B9BD5' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M703 438L406.09 164.032H340.09H290V110.03H373.09V55H406.09H455.09L703 438Z' stroke='%23C31432' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M703 438L208.08 548.04H175.08L208.08 603H125.08L75.0801 548.04H42V493.04H125.08H175.08L703 438Z' stroke='%23FF4B2B' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M703 438L1001.11 164.032L1034.11 110.03H1067.11L1116.11 88.029L1149 55H1116.11H1034.11H951.11V110.03L703 438Z' stroke='%236BE585' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M703 438L819.1 548.04H835.1H868.1V603.05H918V658H868.1H835.1H786.1L819.1 603.05L703 438Z' stroke='%23F2727F' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M703 438L1447.12 603.05H1496.13H1529.13H1612V657.05H1562.13H1496.13H1480.12L1447.12 712L786.1 603.05L703 438Z' stroke='%2370AD47' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M703.1 438L736.1 274.04V263.03H703.1L670.1 241.03L621 263.03V230.03L670.1 219L703.1 230.03L736.1 241.03L786 219V241.03L703.1 438Z' stroke='%2378FFDB' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M703 438H538.09H455.09V416.04H422.09L373 438V384H422.09H455.09H505.09V416.04H538.09L703 438Z' stroke='%23ED7D31' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M703 438L1034.11 384.04H1116.11H1133.11H1232.12H1282L1199.12 351.04L1166.11 329.04H1116.11L1083.11 351.04L1034.11 329.04L786.1 274L703 438Z' stroke='%23FFC000' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M703 438L588.1 603.05V636.05H621.1V658H571.1L538.09 636.05V658H505.09H455L472.09 636.05L455 603.05H505.09H538.09L703 438Z' stroke='%238360C3' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/g%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_622_299'%3E%3Crect width='1653' height='986' fill='white' transform='translate(0.5)'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E",
 		"data:image/svg+xml,%3Csvg width='1650' height='990' fill='none' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cg clip-path='url(%23clip0_622_2)'%3E%3Cmask id='mask0_622_2' style='mask-type:luminance' maskUnits='userSpaceOnUse' x='0' y='0' width='1650' height='990'%3E%3Cpath d='M1650 0H0V990H1650V0Z' fill='white'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_622_2)'%3E%3Cpath d='M701 440L404.09 165.032H338.09H288V110.03H371.09V55H404.09H453.09L701 440Z' stroke='%23C31432' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M701.1 440V825.05H734.1V880.06L767 935H701.1H668.1H618L668.1 825.05L701.1 440Z' stroke='%235B9BD5' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M701 440L998.11 165.032L1031.11 110.03H1064.11L1113.11 88.029L1146 55H1113.11H1031.11H948.11V110.03L701 440Z' stroke='%236BE585' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M701 440L1443.12 605.05H1493.13H1526.13H1608V660.05H1559.13H1493.13H1476.12L1443.12 715L701 440Z' stroke='%2370AD47' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M701 440L206.08 550.04H173.08L206.08 605H123.08L74.0801 550.04H41V495.04H123.08H173.08L701 440Z' stroke='%23FF4B2B' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M701 440L1031.11 385.04H1113.11H1130.11H1229.12H1278L1196.12 352.04L1163.11 330H1113.11L1080.11 352.04L1031.11 330L701 440Z' stroke='%23FFC000' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M701 440L816.1 550.04H833.1H866.1V605.05H915V660H866.1H833.1H783.1L816.1 605.05H783.1L701 440Z' stroke='%23F2727F' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M701 440H536.09H453.09V418.04H420.09L371 440V385H420.09H453.09H503.09V418.04H536.09L701 440Z' stroke='%23ED7D31' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M701.1 440L734.1 275.04V264.03H701.1L668.1 242.03L618 264.03V231.03L668.1 220L701.1 231.03L734.1 242.03L783 220V242.03V275.04L701.1 440Z' stroke='%2378FFDB' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M701 440L585.1 605.05V638.05H618.1V660H569.1L536.09 638.05V660H503.09H453L470.09 638.05L453 605.05H503.09H536.09L701 440Z' stroke='%238360C3' stroke-width='6.875' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/g%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_622_2'%3E%3Crect width='1650' height='990' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E",
-	]
+	],
 }
