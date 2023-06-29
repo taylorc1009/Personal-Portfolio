@@ -343,12 +343,34 @@ animations = {
 				queensPositions[i] = column;
 			});
 
-			await miscellaneous.sleep(5);
+			await animations.fadeQueensInAndOut(boardElem, queensPositions);
 		}
 	},
 
 	generateNQueens: (n) => {
 		return Array.from({length: n}, () => mathematics.randomInt(n));
+	},
+
+	fadeQueensInAndOut: async (boardElem, queensPositions) => {
+		const n = Math.sqrt(boardElem.children.length);
+
+		for (const [i, column] of queensPositions.entries())
+			$(boardElem.childNodes[n * i + column].querySelector("img")).animate({
+				'opacity': '1'
+			}, {
+				duration: 1000
+			});
+
+		await miscellaneous.sleep(5);
+
+		for (const [i, column] of queensPositions.entries())
+			$(boardElem.childNodes[n * i + column].querySelector("img")).animate({
+				'opacity': '0'
+			}, {
+				duration: 1000
+			});
+
+		await miscellaneous.sleep(1.5);
 	}
 }
 
@@ -458,7 +480,10 @@ miscellaneous = {
 	},
 
 	swapChildren: (parent, childOne, childTwo) => {
-		parent.insertBefore(parent.childNodes[childTwo], childTwo < childOne ? parent.childNodes[childOne].nextSibling : parent.childNodes[childOne]);
+		parent.insertBefore(
+			parent.childNodes[childTwo],
+			childTwo < childOne ? parent.childNodes[childOne].nextSibling : parent.childNodes[childOne]
+		);
 	},
 
 	removeChildrenNotOfType: (parent, type) => {
