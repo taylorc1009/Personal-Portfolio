@@ -885,7 +885,7 @@ a:hover {
 }
 
 #n-queens-board > :nth-of-type(odd) {
-	background-color: #eacfa4;
+	background-color: #EACFA4;
 }
 
 #n-queens-board > :nth-of-type(even) {

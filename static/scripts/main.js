@@ -343,7 +343,7 @@ animations = {
 				queensPositions[i] = column;
 			});
 
-			await animations.fadeQueensInAndOut(boardElem, queensPositions);
+			await animations.fadeQueensInAndOut(board, queensPositions);
 		}
 	},
 
@@ -351,8 +351,9 @@ animations = {
 		return Array.from({length: n}, () => mathematics.randomInt(n));
 	},
 
-	fadeQueensInAndOut: async (boardElem, queensPositions) => {
-		const n = Math.sqrt(boardElem.children.length);
+	fadeQueensInAndOut: async (board, queensPositions) => {
+		const boardElem = document.getElementById("n-queens-board"),
+			  n = Math.sqrt(boardElem.children.length);
 
 		for (const [i, column] of queensPositions.entries())
 			$(boardElem.childNodes[n * i + column].querySelector("img")).animate({
@@ -361,7 +362,29 @@ animations = {
 				duration: 1000
 			});
 
-		await miscellaneous.sleep(5);
+		await miscellaneous.sleep(2.5);
+
+		const errors = mathematics.nQueensIsValid(board);
+		let originalColours = {};
+
+		for (const rowsWithErrors of errors) {
+			for (const cell of mathematics.getCellsBetweenQueens(board, rowsWithErrors)) {
+				const originalColour = $(cell).attr("background-color");
+
+				if (originalColour in originalColours)
+					originalColours[originalColour].push(cell);
+				else
+					originalColours[originalColour] = [cell];
+
+				$(cell).animate({
+					'background-color': '#e68989'
+				}, {
+					duration: 1000
+				});
+			}
+		}
+
+		await miscellaneous.sleep(2.5);
 
 		for (const [i, column] of queensPositions.entries())
 			$(boardElem.childNodes[n * i + column].querySelector("img")).animate({
@@ -370,7 +393,15 @@ animations = {
 				duration: 1000
 			});
 
-		await miscellaneous.sleep(1.5);
+		for (const [originalColour, cells] of Object.entries(originalColours))
+			for (const cell of cells)
+				$(cell).animate({
+					'background-colour': originalColour
+				}, {
+					duration: 1000
+				});
+
+		await miscellaneous.sleep(1);
 	}
 }
 
@@ -433,6 +464,27 @@ mathematics = {
 		}
 
 		return errors;
+	},
+
+	getCellsBetweenQueens: (board, rowsWithErrors) => {
+		const boardElem = document.getElementById("n-queens-board"),
+			  [rowOne, rowTwo] = rowsWithErrors,
+			  [minRow, maxRow] = rowOne < rowTwo ? [rowOne, rowTwo] : [rowTwo, rowOne],
+			  n = board.length;
+
+		let connectingCells = [];
+
+		if (board[rowOne] === board[rowTwo]) //queens conflict by column
+			for (let i = minRow; i < maxRow; i++)
+				connectingCells.push(boardElem.children[n * i + board[rowOne]]);
+		else if (board[minRow] < board[maxRow]) //queens conflict diagonally
+			for (let i = minRow; i < maxRow; i++)
+				connectingCells.push(boardElem.children[n * i + (board[rowOne] + i)]);
+		else if (board[minRow] > board[maxRow]) //queens conflict with an incline diagonal
+			for (let i = minRow; i < maxRow; i++)
+				connectingCells.push(boardElem.children[n * i + (board[rowOne] - i)]);
+
+		return connectingCells;
 	}
 
 	/*calculateRowOfItemInFlex: (item) => {
