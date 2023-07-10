@@ -369,7 +369,7 @@ animations = {
 
 		for (const rowsWithErrors of errors) {
 			for (const cell of mathematics.getCellsBetweenQueens(board, rowsWithErrors)) {
-				const originalColour = $(cell).attr("background-color");
+				const originalColour = $(cell).css("background-color");
 
 				if (originalColour in originalColours)
 					originalColours[originalColour].push(cell);
@@ -409,7 +409,7 @@ pendingAnimations = { //contains a list of methods that begin animations when sp
 	queue: {}, //this is a list of methods which invoke pending animations
 
 	deleteAnimation: (SVGClass) => {
-		if(pendingAnimations.queue.hasOwnProperty(SVGClass))
+		if (pendingAnimations.queue.hasOwnProperty(SVGClass))
 			delete pendingAnimations.queue[SVGClass];
 	}
 };
@@ -542,6 +542,10 @@ miscellaneous = {
 		for (const child of parent.childNodes)
 			if (child.nodeName.toLowerCase() !== type)
 				parent.removeChild(child);
+	},
+
+	rgbToHex: (rgbString) => {
+		return `#${rgbString.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`;
 	}
 }
 
