@@ -1,6 +1,9 @@
 :root {
-	--color-soft-white: 255, 255, 255, 0.3;
-	--color-hard-white: 255, 255, 255, 0.6;
+	--soft-white: 255, 255, 255, 0.3;
+	--hard-white: 255, 255, 255, 0.6;
+
+	--chess-board-light: #EACFA4;
+	--chess-board-dark: #B58863;
 }
 
 body {
@@ -298,7 +301,7 @@ a:hover {
 
 	background-image: linear-gradient(to right top, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.35));
 	border-radius: 15px;
-	box-shadow: 0 0 10px rgba(var(--color-soft-white));
+	box-shadow: 0 0 10px rgba(var(--soft-white));
 	backdrop-filter: blur(5px);
 }
 .body-card-grid {
@@ -582,7 +585,7 @@ a:hover {
 	margin: 0 auto;
 	height: auto;
 	width: 3px;
-	background-color: rgba(var(--color-hard-white));
+	background-color: rgba(var(--hard-white));
 	border-radius: 50px;
 
 	margin-block-start: 0;
@@ -734,7 +737,7 @@ a:hover {
 }
 
 #ide-code::-webkit-scrollbar-thumb, #ide-editor::-webkit-scrollbar-thumb {
-    background-color: rgba(var(--color-hard-white));
+    background-color: rgba(var(--hard-white));
 	background-clip: content-box;
 	border: 5px solid transparent;
     border-radius: 90px;
@@ -885,11 +888,11 @@ a:hover {
 }
 
 #n-queens-board > :nth-of-type(odd) {
-	background-color: #EACFA4;
+	background-color: var(--chess-board-light);
 }
 
 #n-queens-board > :nth-of-type(even) {
-	background-color: #B58863;
+	background-color: var(--chess-board-dark);
 }
 
 .chess-board-cell {

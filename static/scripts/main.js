@@ -338,13 +338,18 @@ animations = {
 			board.forEach((column, i) => {
 				const row = n * i;
 
-				miscellaneous.swapChildren(boardElem, row + column, row + queensPositions[i]);
+				animations.moveQueen(boardElem, row + queensPositions[i], row + column);
 
 				queensPositions[i] = column;
 			});
 
 			await animations.fadeQueensInAndOut(board, queensPositions);
 		}
+	},
+
+	moveQueen: (boardElem, origin, destination) => {
+		boardElem.childNodes[destination].appendChild(boardElem.childNodes[origin].childNodes[0]);
+		boardElem.childNodes[origin].appendChild(boardElem.childNodes[destination].childNodes[0]);
 	},
 
 	generateNQueens: (n) => {
@@ -356,7 +361,7 @@ animations = {
 			  n = Math.sqrt(boardElem.children.length);
 
 		for (const [i, column] of queensPositions.entries())
-			$(boardElem.childNodes[n * i + column].querySelector("img")).animate({
+			$(boardElem.childNodes[n * i + column].childNodes[0]).animate({
 				'opacity': '1'
 			}, {
 				duration: 1000
@@ -377,7 +382,7 @@ animations = {
 					originalColours[originalColour] = [cell];
 
 				$(cell).animate({
-					'background-color': '#e68989'
+					'background-color': '#E68989'
 				}, {
 					duration: 1000
 				});
@@ -387,19 +392,22 @@ animations = {
 		await miscellaneous.sleep(2.5);
 
 		for (const [i, column] of queensPositions.entries())
-			$(boardElem.childNodes[n * i + column].querySelector("img")).animate({
+			$(boardElem.childNodes[n * i + column].childNodes[0]).animate({
 				'opacity': '0'
 			}, {
 				duration: 1000
 			});
 
-		for (const [originalColour, cells] of Object.entries(originalColours))
+		for (const [originalColour, cells] of Object.entries(originalColours)) {
 			for (const cell of cells)
 				$(cell).animate({
-					'background-colour': originalColour
+					'background-color': originalColour
 				}, {
 					duration: 1000
 				});
+
+			originalColours[originalColour] = [];
+		}
 
 		await miscellaneous.sleep(1);
 	}
@@ -529,13 +537,6 @@ miscellaneous = {
 
 	sleep: (ms) => {
 		return new Promise(resolve => setTimeout(resolve, ms * 1000));
-	},
-
-	swapChildren: (parent, childOne, childTwo) => {
-		parent.insertBefore(
-			parent.childNodes[childTwo],
-			childTwo < childOne ? parent.childNodes[childOne].nextSibling : parent.childNodes[childOne]
-		);
 	},
 
 	removeChildrenNotOfType: (parent, type) => {
