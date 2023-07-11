@@ -357,59 +357,60 @@ animations = {
 	},
 
 	fadeQueensInAndOut: async (board, queensPositions) => {
-		const boardElem = document.getElementById("n-queens-board"),
-			  n = Math.sqrt(boardElem.children.length);
-
-		for (const [i, column] of queensPositions.entries())
-			$(boardElem.childNodes[n * i + column].childNodes[0]).animate({
-				'opacity': '1'
-			}, {
-				duration: 1000
-			});
+		animations.fadeQueensOpacity(queensPositions, 1);
 
 		await miscellaneous.sleep(2.5);
 
 		const errors = mathematics.nQueensIsValid(board);
-		let originalColours = {};
+		let originalColours = {},
+			alreadyAnimated = false;
 
 		for (const rowsWithErrors of errors) {
 			for (const cell of mathematics.getCellsBetweenQueens(board, rowsWithErrors)) {
 				const originalColour = $(cell).css("background-color");
 
-				if (originalColour in originalColours)
+				if (originalColour in originalColours && originalColours[originalColour].indexOf(cell) < 0)
 					originalColours[originalColour].push(cell);
 				else
 					originalColours[originalColour] = [cell];
 
-				$(cell).animate({
-					'background-color': '#E68989'
-				}, {
-					duration: 1000
-				});
+				if (!alreadyAnimated)
+					animations.fadeBoardCellColour(cell, '#E68989');
 			}
 		}
 
 		await miscellaneous.sleep(2.5);
 
-		for (const [i, column] of queensPositions.entries())
-			$(boardElem.childNodes[n * i + column].childNodes[0]).animate({
-				'opacity': '0'
-			}, {
-				duration: 1000
-			});
+		animations.fadeQueensOpacity(queensPositions, 0);
 
 		for (const [originalColour, cells] of Object.entries(originalColours)) {
 			for (const cell of cells)
-				$(cell).animate({
-					'background-color': originalColour
-				}, {
-					duration: 1000
-				});
+				animations.fadeBoardCellColour(cell, originalColour);
 
 			originalColours[originalColour] = [];
 		}
 
 		await miscellaneous.sleep(1);
+	},
+
+	fadeQueensOpacity: (queensPositions, opacity) => {
+		const boardElem = document.getElementById("n-queens-board"),
+			  n = queensPositions.length;
+
+		for (const [i, column] of queensPositions.entries())
+			$(boardElem.childNodes[n * i + column].childNodes[0]).animate({
+				'opacity': `${opacity}`
+			}, {
+				duration: 1000
+			});
+	},
+
+	fadeBoardCellColour: (cell, colour) => {
+		$(cell).animate({
+			'background-color': colour
+		}, {
+			duration: 1000
+		});
 	}
 }
 
@@ -481,16 +482,16 @@ mathematics = {
 			  n = board.length;
 
 		let connectingCells = [];
-
-		if (board[rowOne] === board[rowTwo]) //queens conflict by column
-			for (let i = minRow; i < maxRow; i++)
-				connectingCells.push(boardElem.children[n * i + board[rowOne]]);
-		else if (board[minRow] < board[maxRow]) //queens conflict diagonally
+			
+		if (board[minRow] < board[maxRow]) //queens conflict diagonally
 			for (let i = minRow; i < maxRow; i++)
 				connectingCells.push(boardElem.children[n * i + (board[rowOne] + i)]);
 		else if (board[minRow] > board[maxRow]) //queens conflict with an incline diagonal
 			for (let i = minRow; i < maxRow; i++)
 				connectingCells.push(boardElem.children[n * i + (board[rowOne] - i)]);
+		else //queens conflict by column
+			for (let i = minRow; i < maxRow; i++)
+				connectingCells.push(boardElem.children[n * i + board[rowOne]]);
 
 		return connectingCells;
 	}
