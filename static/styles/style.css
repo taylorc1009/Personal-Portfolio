@@ -2,8 +2,8 @@
 	--soft-white: 255, 255, 255, 0.3;
 	--hard-white: 255, 255, 255, 0.6;
 
-	--chess-board-light: #EACFA4;
-	--chess-board-dark: #B58863;
+	--chess-board-odd: #EACFA4;
+	--chess-board-even: #B58863;
 }
 
 body {
@@ -888,11 +888,11 @@ a:hover {
 }
 
 #n-queens-board > :nth-of-type(odd) {
-	background-color: var(--chess-board-light);
+	background-color: var(--chess-board-odd);
 }
 
 #n-queens-board > :nth-of-type(even) {
-	background-color: var(--chess-board-dark);
+	background-color: var(--chess-board-even);
 }
 
 .chess-board-cell {

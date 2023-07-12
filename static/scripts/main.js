@@ -159,6 +159,11 @@ animator = {
 }
 
 animations = {
+	chessBoardColours: {
+			"odd": getComputedStyle(document.documentElement).getPropertyValue("--chess-board-odd"),
+			"even": getComputedStyle(document.documentElement).getPropertyValue("--chess-board-even")
+		},
+
 	animateVectorFill: (SVGClass, delay) => {
 		$(`.${SVGClass}`).css({
 			'animation': `vector-fill-animation ${SVGClass === "heading-svg" ? mathematics.heading_svg_fid : mathematics.fade_in_duration}s ease forwards ${delay}s`
@@ -361,21 +366,22 @@ animations = {
 
 		await miscellaneous.sleep(2.5);
 
-		const errors = mathematics.nQueensIsValid(board);
-		let originalColours = {},
-			alreadyAnimated = false;
+		const boardElem = document.getElementById("n-queens-board"),
+			  errors = mathematics.nQueensIsValid(board);
+		let cellsToRecolour = {
+				"odd": new Set(),
+				"even": new Set()
+			};
 
 		for (const rowsWithErrors of errors) {
-			for (const cell of mathematics.getCellsBetweenQueens(board, rowsWithErrors)) {
-				const originalColour = $(cell).css("background-color");
+			for (const cellIndex of mathematics.getCellsBetweenQueens(board, rowsWithErrors)) {
+				const cell = boardElem.children[cellIndex],
+					  numType = cellIndex % 2 ? "odd" : "even";
 
-				if (originalColour in originalColours && originalColours[originalColour].indexOf(cell) < 0)
-					originalColours[originalColour].push(cell);
-				else
-					originalColours[originalColour] = [cell];
-
-				if (!alreadyAnimated)
+				if (!cellsToRecolour[numType].has(cellIndex))
 					animations.fadeBoardCellColour(cell, '#E68989');
+
+				cellsToRecolour[numType].add(cellIndex); //because the values of the object are Sets, there will be no duplicates because ".add()" won't insert a number if it already exists
 			}
 		}
 
@@ -383,12 +389,9 @@ animations = {
 
 		animations.fadeQueensOpacity(queensPositions, 0);
 
-		for (const [originalColour, cells] of Object.entries(originalColours)) {
-			for (const cell of cells)
-				animations.fadeBoardCellColour(cell, originalColour);
-
-			originalColours[originalColour] = [];
-		}
+		for (const [numType, cellIndexes] of Object.entries(cellsToRecolour))
+			for (const cellIndex of cellIndexes)
+				animations.fadeBoardCellColour(boardElem.children[cellIndex], animations.chessBoardColours[numType]);
 
 		await miscellaneous.sleep(1);
 	},
@@ -476,22 +479,21 @@ mathematics = {
 	},
 
 	getCellsBetweenQueens: (board, rowsWithErrors) => {
-		const boardElem = document.getElementById("n-queens-board"),
-			  [rowOne, rowTwo] = rowsWithErrors,
+		const [rowOne, rowTwo] = rowsWithErrors,
 			  [minRow, maxRow] = rowOne < rowTwo ? [rowOne, rowTwo] : [rowTwo, rowOne],
 			  n = board.length;
 
 		let connectingCells = [];
 			
-		if (board[minRow] < board[maxRow]) //queens conflict diagonally
-			for (let i = minRow; i < maxRow; i++)
-				connectingCells.push(boardElem.children[n * i + (board[rowOne] + i)]);
-		else if (board[minRow] > board[maxRow]) //queens conflict with an incline diagonal
-			for (let i = minRow; i < maxRow; i++)
-				connectingCells.push(boardElem.children[n * i + (board[rowOne] - i)]);
+		if (board[minRow] < board[maxRow]) //queens conflict with an incline diagonal
+			for (let i = minRow; i <= maxRow; i++)
+				connectingCells.push(n * i + (board[minRow] + (i - minRow)));
+		else if (board[minRow] > board[maxRow]) //queens conflict with an decline diagonal
+			for (let i = minRow; i <= maxRow; i++)
+				connectingCells.push(n * i + (board[minRow] - (i - minRow)));
 		else //queens conflict by column
-			for (let i = minRow; i < maxRow; i++)
-				connectingCells.push(boardElem.children[n * i + board[rowOne]]);
+			for (let i = minRow; i <= maxRow; i++)
+				connectingCells.push(n * i + board[minRow]);
 
 		return connectingCells;
 	}
