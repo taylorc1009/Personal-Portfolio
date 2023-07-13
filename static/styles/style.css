@@ -4,6 +4,8 @@
 
 	--chess-board-odd: #EACFA4;
 	--chess-board-even: #B58863;
+	--chess-board-error-odd: #F8AFAF;
+	--chess-board-error-even: #E68989;
 }
 
 body {
