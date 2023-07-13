@@ -437,7 +437,8 @@
 						<div class="alternating-left-right-row">
 							<div class="alternating-left-right-text-container">
 								<h1 class="project-heading">Parallel N-Queens</h1>
-								<p class="body-paragraph">//TODO</p>
+								<p class="body-paragraph">N-Queens is a DS&A problem that entails finding all permutations on an NxN board where N amount of queens do not attack each other. The animation you're seeing is generating random permutations and testing their validity; red cells highlight conflicts, and green queens are valid.</p>
+								<p class="body-paragraph">An effective solution is backtracking. However, recursion can be a bad idea in multi-threading as it can spawn too many threads. I developed a <a target="_blank" href="https://github.com/taylorc1009/Parallel-N-Queens">coursework</a> which aims to solve the problem in OpenMP and CUDA.</p>
 							</div>
 							<div id="n-queens-board">
 								<span class="chess-board-cell"><img class="chess-queen-svg" src="{{ url_for('static', filename='queen.svg') }}"/></span><span class="chess-board-cell"><text>&nbsp;</text></span><span class="chess-board-cell"><text>&nbsp;</text></span><span class="chess-board-cell"><text>&nbsp;</text></span><span class="chess-board-cell"><text>&nbsp;</text></span>

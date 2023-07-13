@@ -835,54 +835,6 @@ a:hover {
 	height: 400px;
 }
 
-@media screen and (max-width: 888px) {
-	.list-alternating-left-right {
-		grid-template-columns: auto;
-	}
-
-	.list-alternating-left-right > :nth-of-type(odd) {
-		flex-direction: column;
-	}
-
-	.list-alternating-left-right > :nth-of-type(even) {
-		flex-direction: column-reverse;
-	}
-
-	.list-alternating-left-right > :nth-of-type(even) > .alternating-left-right-text-container > .project-heading {
-		text-align: left;
-	}
-
-	.alternating-left-right-text-container > .body-paragraph {
-		text-align: center !important;
-	}
-
-	#cvrptw-image-cycler, #ide-container {
-		margin: 0 auto;
-	}
-}
-
-@media screen and (max-width: 420px) {
-	.list-alternating-left-right {
-		padding: 0;
-	}
-
-	.list-alternating-left-right > :nth-of-type(even) > :first-child, .list-alternating-left-right > :nth-of-type(odd) > :nth-child(2) {
-		flex-shrink: 1;
-	}
-
-	.alternating-left-right-text-container {
-		margin: 0 10px;
-	}
-
-	#ide-container, #cvrptw-image-cycler {
-		width: 95.238095238095238095238095238095vw;
-	}
-
-	#cvrptw-image-cycler {
-		height: 95.238095238095238095238095238095vw;
-	}
-}
-
 #n-queens-board {
 	display: grid;
 	grid-template-rows: 20% 20% 20% 20% 20%;
@@ -910,4 +862,52 @@ a:hover {
 	width: 85%;
 	height: 85%;
 	opacity: 0;
+}
+
+@media screen and (max-width: 888px) {
+	.list-alternating-left-right {
+		grid-template-columns: auto;
+	}
+
+	.list-alternating-left-right > :nth-of-type(odd) {
+		flex-direction: column;
+	}
+
+	.list-alternating-left-right > :nth-of-type(even) {
+		flex-direction: column-reverse;
+	}
+
+	.list-alternating-left-right > :nth-of-type(even) > .alternating-left-right-text-container > .project-heading {
+		text-align: left;
+	}
+
+	.alternating-left-right-text-container > .body-paragraph {
+		text-align: center !important;
+	}
+
+	#cvrptw-image-cycler, #ide-container, #n-queens-board {
+		margin: 0 auto;
+	}
+}
+
+@media screen and (max-width: 420px) {
+	.list-alternating-left-right {
+		padding: 0;
+	}
+
+	.list-alternating-left-right > :nth-of-type(even) > :first-child, .list-alternating-left-right > :nth-of-type(odd) > :nth-child(2) {
+		flex-shrink: 1;
+	}
+
+	.alternating-left-right-text-container {
+		margin: 0 10px;
+	}
+
+	#ide-container, #cvrptw-image-cycler, #n-queens-board {
+		width: 95.238095238095238095238095238095vw;
+	}
+
+	#cvrptw-image-cycler, #n-queens-board {
+		height: 95.238095238095238095238095238095vw;
+	}
 }
