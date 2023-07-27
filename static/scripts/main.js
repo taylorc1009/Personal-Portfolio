@@ -362,39 +362,14 @@ animations = {
 		await miscellaneous.sleep(2.5);
 
 		const boardElem = document.getElementById("n-queens-board"),
-			  errors = mathematics.nQueensIsValid(board),
-			  rowsWithInvalidQueens = new Set();
+			  errors = mathematics.nQueensIsValid(board);
 		let cellsToRecolour = {
 				"odd": new Set(),
 				"even": new Set()
 			};
 
-		for (const rowsWithErrors of errors) {
-			rowsWithErrors.forEach(rowsWithInvalidQueens.add, rowsWithInvalidQueens);
-
-			for (const cellIndex of mathematics.getCellsBetweenQueens(board, rowsWithErrors)) {
-				const cell = boardElem.children[cellIndex],
-					  numType = cellIndex % 2 ? "even" : "odd"; //this is inverted because the colours are named in CSS with respect to CSS's indexing starting at 1; since JS starts at 0, if we try to set the first "#n-queens-board" child to odds' colour (which we would do in CSS, due to it being at index 1) then we would be setting an even node to odds' colour as the first child is at 0 in JS
-
-				if (!cellsToRecolour[numType].has(cellIndex))
-					animations.fadeBoardCellColour(cell, data.chessBoardColours[numType + "-error"]);
-
-				cellsToRecolour[numType].add(cellIndex); //because the values of the object are Sets, there will be no duplicates because ".add()" won't insert a number if it already exists
-			}
-		}
-
-		if (rowsWithInvalidQueens.size < board.length) {
-			rowsWithValidQueens = [...Array(board.length).keys()].filter((row) => { return !rowsWithInvalidQueens.has(row) });
-
-			for (const row of rowsWithValidQueens) {
-				const cellIndex = board.length * row + board[row],
-					  numType = cellIndex % 2 ? "even" : "odd";
-
-				animations.fadeBoardCellColour(boardElem.children[cellIndex], data.chessBoardColours[numType + "-valid"]);
-
-				cellsToRecolour[numType].add(cellIndex)
-			}
-		}
+		animations.highlightInvalidQueens(board, errors, cellsToRecolour);
+		animations.highlightValidQueens(board, new Set(errors.flat()), cellsToRecolour);
 
 		await miscellaneous.sleep(5);
 
@@ -405,6 +380,38 @@ animations = {
 				animations.fadeBoardCellColour(boardElem.children[cellIndex], data.chessBoardColours[numType]);
 
 		await miscellaneous.sleep(1);
+	},
+
+	highlightInvalidQueens: (board, errors, cellsToRecolour) => {
+		const boardElem = document.getElementById("n-queens-board");
+
+		for (const rowsWithErrors of errors) {
+			for (const cellIndex of mathematics.getCellsBetweenQueens(board, rowsWithErrors)) {
+				const cell = boardElem.children[cellIndex],
+					  numType = cellIndex % 2 ? "even" : "odd"; //this is inverted because the colours are named in CSS with respect to CSS's indexing starting at 1; since JS starts at 0, if we try to set the first "#n-queens-board" child to odds' colour (which we would do in CSS, due to it being at index 1) then we would be setting an even node to odds' colour as the first child is at 0 in JS
+
+				if (!cellsToRecolour[numType].has(cellIndex))
+					animations.fadeBoardCellColour(cell, data.chessBoardColours[numType + "-error"]);
+
+				cellsToRecolour[numType].add(cellIndex); //because the values of the object are Sets, there will be no duplicates because ".add()" won't insert a number if it already exists
+			}
+		}
+	},
+
+	highlightValidQueens: (board, rowsWithInvalidQueens, cellsToRecolour) => {
+		if (rowsWithInvalidQueens.size < board.length) {
+			const boardElem = document.getElementById("n-queens-board"),
+				  rowsWithValidQueens = [...Array(board.length).keys()].filter((row) => { return !rowsWithInvalidQueens.has(row) });
+
+			for (const row of rowsWithValidQueens) {
+				const cellIndex = board.length * row + board[row],
+					  numType = cellIndex % 2 ? "even" : "odd";
+
+				animations.fadeBoardCellColour(boardElem.children[cellIndex], data.chessBoardColours[numType + "-valid"]);
+
+				cellsToRecolour[numType].add(cellIndex)
+			}
+		}
 	},
 
 	fadeQueensOpacity: (board, opacity) => {
