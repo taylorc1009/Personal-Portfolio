@@ -30,10 +30,15 @@ a {
 	text-underline-offset: 2px;
 	transition: color .2s, text-decoration-color .2s, text-underline-offset .2s;
 }
+
 a:hover {
 	color: #46afff;
 	text-decoration-color: #46afffff;
 	text-underline-offset: 1px;
+}
+
+.clickable {
+	cursor: pointer;
 }
 
 .text-as-svg {
@@ -132,12 +137,6 @@ a:hover {
 	margin-block-start: 0;
     margin-block-end: 0;
 }
-
-/*@media screen and (min-width: 2560px) {
-	#heading-text {
-		font-size: 76.79px;
-	}
-}*/
 
 #heading-icon {
 	width: 2.999609375vw;
@@ -295,6 +294,7 @@ a:hover {
 	flex-wrap: wrap;
 	justify-content: center;
 }
+
 .body-card {
 	display: inline;
 	overflow: hidden;
@@ -308,6 +308,7 @@ a:hover {
 	box-shadow: 0 0 10px rgba(var(--soft-white));
 	backdrop-filter: blur(5px);
 }
+
 .body-card-grid {
 	display: grid;
 	grid-template-columns: auto auto;
@@ -315,13 +316,14 @@ a:hover {
 	row-gap: 2px;
 	height: 100%;
 }
+
 .body-card-heading {
 	width: inherit;
 	display: flex;
     flex-wrap: nowrap;
     align-items: center;
-	cursor: pointer;
 }
+
 .body-card-heading > .card-title {
 	font-size: 20pt;
 	text-align: center;
@@ -332,12 +334,15 @@ a:hover {
 	margin-block-end: 0;
 	width: 70%;
 }
+
 .body-card-heading > img {
 	width: 30%;
 }
+
 .circle-img {
 	clip-path: circle();
 }
+
 .body-card-body {
 	grid-column-start: 1;
     grid-column-end: 2;
@@ -366,53 +371,66 @@ a:hover {
     -webkit-mask-position: 0 0, 100% 0;
     -webkit-mask-repeat: no-repeat, no-repeat;
 }
+
 .body-card-body::-webkit-scrollbar {
 	display: block;
     width: 6px;
 	right: 50px;
 }
+
 .body-card-body::-webkit-scrollbar-thumb {
     background-color: white;
     border-radius: 90px;
 }
+
 .body-card-body::-webkit-scrollbar-track {
     background-color: transparent;
 }
+
 .body-card-body::-webkit-scrollbar-track-piece:start {
 	background: transparent;
 	margin-top: 32px;
 }
+
 .body-card-body::-webkit-scrollbar-track-piece:end {
 	background: transparent;
 	margin-bottom: 32px;
 }
+
 .body-card-body::-webkit-scrollbar-track-piece {
 	margin-left: 10px;
 }
+
 .card-text {
 	font-size: 12pt;
 	text-align: left;
 	font-family: 'Varela Round', serif;
 	color: white;
 }
+
 .body-card-body > :first-child {
 	margin-block-start: 0;
 	margin-top: 32px;
 }
+
 .body-card-body > :last-child {
 	margin-block-end: 0;
 	margin-bottom: 32px;
 }
+
 .body-card-grid > :first-child {
 	margin-top: 10px;
 }
+
 .body-card-grid > * {
 	margin-left: 10px;
 	margin-right: 10px;
 }
+
 .body-card-grid > :last-child {
 	margin-bottom: 10px;
 }
+
 @keyframes svg-sibling-reveal-animation {
 	from {
 		opacity: 0;
@@ -431,7 +449,6 @@ a:hover {
 }
 
 #bitmoji {
-	cursor: pointer;
 	width: 300px;
 	float: right;
 	-webkit-shape-outside: var(--bitmoji-url);
@@ -487,7 +504,6 @@ a:hover {
 
 .experience-item-image {
 	width: 80px;
-	cursor: pointer;
 }
 
 .experience-item-title {
