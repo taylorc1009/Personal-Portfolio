@@ -700,20 +700,18 @@ a:hover {
 
 #ide-window-top {
 	display: flex;
-    justify-content: flex-end;
-	flex-wrap: wrap;
-	align-content: center;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid #3d444e;
 }
 
 #ide-app-icon {
 	width: 17px;
 	height: 17px;
-	margin-left: 6px;
+	margin: 0 6px;
 }
 
 #ide-file-name {
-	margin: auto;
 	margin-block-start: 0;
 	margin-block-end: 0;
 	font-size: 14px;
@@ -721,9 +719,8 @@ a:hover {
 	color: white;
 }
 
-#ide-window-controllers {
-	float: right;
-	margin-right: 10px;
+#ide-window-controls {
+	margin: 0 10px;
 }
 
 .ide-dot {
