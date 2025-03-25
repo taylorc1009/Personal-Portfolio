@@ -8,6 +8,26 @@
 	--chess-board-error-even: #E68989;
 	--chess-board-valid-odd: #a3dc92;
 	--chess-board-valid-even: #72cc72;
+
+	--bitmoji-url: url("../images/bitmoji.svg");
+}
+
+@font-face { font-family: FiraCodeiScript-Regular; src: url("FiraCodeiScript-Regular.ttf"); }
+@font-face { font-family: FiraCodeiScript-Bold; src: url("FiraCodeiScript-Bold.ttf"); }
+@font-face { font-family: FiraCodeiScript-Italic; src: url("FiraCodeiScript-Italic.ttf"); }
+
+/* TODO: replace with custom scrollbar to get transparent track background working */
+html::-webkit-scrollbar {
+	display: block;
+    width: 8px;
+}
+html::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 90px;
+}
+html::-webkit-scrollbar-track {
+    background: rgb(59, 59, 59);
+	border-left: 1px solid gray;
 }
 
 body {

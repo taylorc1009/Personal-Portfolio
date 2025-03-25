@@ -237,7 +237,7 @@ animations = {
 			});
 
 			if (className && string !== "\n") { //list entries "[null, "\n"]" indicate that the ide should take a new line; this block of code runs when one of these entries was not found
-				textElem = miscellaneous.createElement({type: "span", className: "ide-code-" + className, parent: lineContainer});
+				textElem = miscellaneous.createElement({type: "span", className: `ide-code-${className}`, parent: lineContainer});
 
 				$(textElem).css({ //gives the effect of having a text cursor
 					'border-right': '2px solid white'
@@ -391,7 +391,7 @@ animations = {
 					  numType = cellIndex % 2 ? "even" : "odd"; //this is inverted because the colours are named in CSS with respect to CSS's indexing starting at 1; since JS starts at 0, if we try to set the first "#n-queens-board" child to odds' colour (which we would do in CSS, due to it being at index 1) then we would be setting an even node to odds' colour as the first child is at 0 in JS
 
 				if (!cellsToRecolour[numType].has(cellIndex))
-					animations.fadeBoardCellColour(cell, data.chessBoardColours[numType + "-error"]);
+					animations.fadeBoardCellColour(cell, data.chessBoardColours[`${numType}error`]);
 
 				cellsToRecolour[numType].add(cellIndex); //because the values of the object are Sets, there will be no duplicates because ".add()" won't insert a number if it already exists
 			}
@@ -407,7 +407,7 @@ animations = {
 				const cellIndex = board.length * row + board[row],
 					  numType = cellIndex % 2 ? "even" : "odd";
 
-				animations.fadeBoardCellColour(boardElem.children[cellIndex], data.chessBoardColours[numType + "-valid"]);
+				animations.fadeBoardCellColour(boardElem.children[cellIndex], data.chessBoardColours[`${numType}-valid`]);
 
 				cellsToRecolour[numType].add(cellIndex)
 			}
@@ -459,7 +459,7 @@ mathematics = {
 		return Math.floor(Math.random() * n);
 	},
 
-	isOnScreen: (element) => { //used to determine if an element is on screen (credit - https://stackoverflow.com/a/5354536/11136104)
+	isOnScreen: (element) => { //used to determine if an element is on screen
 		const rect = element.getBoundingClientRect();
 		return !(rect.bottom < 0 || rect.top - Math.max(document.documentElement.clientHeight, window.innerHeight) >= 0);
 	},
