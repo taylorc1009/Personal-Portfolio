@@ -6,8 +6,8 @@
 	--chess-board-even: #B58863;
 	--chess-board-error-odd: #F8AFAF;
 	--chess-board-error-even: #E68989;
-	--chess-board-valid-odd: #a3dc92;
-	--chess-board-valid-even: #72cc72;
+	--chess-board-valid-odd: #A3DC92;
+	--chess-board-valid-even: #85CE85;
 
 	--bitmoji-url: url("../images/bitmoji.svg");
 }
