@@ -34,12 +34,9 @@ body {
 	padding: 0;
 	margin: 0;
 	background-image: linear-gradient(to right, rgb(20, 20, 30), rgb(20, 20, 55));
-}
-
-#page-grid {
-	padding: 0;
-	margin: 0;
-	display: grid;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	row-gap: 300px;
 }
 
@@ -74,7 +71,7 @@ a:hover {
 	display: grid;
 }
 
-#waves-container, #heading-svg-container {
+#waves-container, #heading-text-container {
 	grid-column: 1;
 	grid-row: 1;
 }
@@ -104,7 +101,7 @@ a:hover {
 	}
 }
 
-#heading-svg-container {
+#heading-text-container {
 	margin: auto auto;
 	display: inline-flex;
 	flex-wrap: wrap;
@@ -163,6 +160,10 @@ a:hover {
 	max-width: 76.79px;
 	height: auto;
 	text-align: unset;
+}
+
+.container-to-fade-in {
+	opacity: 0;
 }
 
 @keyframes subheading-reveal-animation {
@@ -247,7 +248,8 @@ a:hover {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	/* gap: 0 10px; */
+	column-gap: 0 10px;
+	margin: 0 5px;
 }
 
 @media screen and (max-width: 474px) {
@@ -304,8 +306,11 @@ a:hover {
 	}
 }
 
-.body-grid-item > *:not(:last-child) {
-    margin-bottom: 50px !important;
+.body-segment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+	row-gap: 50px;
 }
 
 .card-container {
@@ -313,28 +318,24 @@ a:hover {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
+	gap: 40px;
+    margin: 20px 20px 0 20px;
 }
 
 .body-card {
-	display: inline;
-	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	row-gap: 2px;
 
+	overflow: hidden;
 	max-width: 300px;
 	height: 450px;
-	margin: 20px;
+	padding: 10px;
 
 	background-image: linear-gradient(to right top, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.35));
 	border-radius: 15px;
-	box-shadow: 0 0 10px rgba(var(--soft-white));
+	box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 	backdrop-filter: blur(5px);
-}
-
-.body-card-grid {
-	display: grid;
-	grid-template-columns: auto auto;
-	grid-template-rows: 100px;
-	row-gap: 2px;
-	height: 100%;
 }
 
 .body-card-heading {
@@ -438,19 +439,6 @@ a:hover {
 	margin-bottom: 32px;
 }
 
-.body-card-grid > :first-child {
-	margin-top: 10px;
-}
-
-.body-card-grid > * {
-	margin-left: 10px;
-	margin-right: 10px;
-}
-
-.body-card-grid > :last-child {
-	margin-bottom: 10px;
-}
-
 @keyframes svg-sibling-reveal-animation {
 	from {
 		opacity: 0;
@@ -487,12 +475,12 @@ a:hover {
 }
 
 @media screen and (max-width: 970px) {
-	#about-me {
-		margin: 0 25px;
+	body {
+		row-gap: 200px;
 	}
 
-	#page-grid {
-		row-gap: 200px;
+	#about-me {
+		margin: 0 25px;
 	}
 }
 
